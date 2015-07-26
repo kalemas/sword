@@ -111,6 +111,9 @@
 
 SWORD_NAMESPACE_START
 
+#ifdef WINAPI_FAMILY
+#define getenv(x) SWBuf::nullStr
+#endif
 
 #ifdef _ICU_
 bool SWMgr::isICU = true;
