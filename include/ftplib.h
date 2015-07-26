@@ -28,7 +28,7 @@
 #endif
 
 
-#if defined(__unix__) || defined(VMS)
+#if defined(__unix__) || defined(VMS) || (defined(_WIN32) && defined(__MINGW32__))
 #define GLOBALDEF
 #define GLOBALREF extern
 #elif defined(_WIN32)
