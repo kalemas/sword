@@ -353,7 +353,7 @@ int untar (gzFile in, const char *dest) {
 
 					localt = *localtime(&tartime);
 
-#if defined(WINAPI_FAMILY)
+#if defined(WINAPI_FAMILY) && WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP
 					hFile = CreateFile2(fname, GENERIC_READ | GENERIC_WRITE,
 					0, OPEN_EXISTING, NULL);
 #else
