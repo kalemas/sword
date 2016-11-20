@@ -355,7 +355,7 @@ int untar (gzFile in, const char *dest) {
 
 #if defined(WINAPI_FAMILY)
 					hFile = CreateFile2(fname, GENERIC_READ | GENERIC_WRITE,
-					0, NULL, OPEN_EXISTING, 0, NULL);
+					0, OPEN_EXISTING, NULL);
 #else
 					hFile = CreateFile(fname, GENERIC_READ | GENERIC_WRITE,
 					0, NULL, OPEN_EXISTING, 0, NULL);
