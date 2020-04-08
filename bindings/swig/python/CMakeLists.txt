@@ -26,16 +26,18 @@ ENDIF(NOT PYTHONLIBS_FOUND)
 SET(PY_SCRIPT "#!${PYTHON_EXECUTABLE}
 
 from distutils.core import setup, Extension
-setup(name='sword',version='${SWORD_VERSION}',
-maintainer='Sword Developers',
-maintainer_email='sword-devel@crosswire.org',
-url='http://www.crosswire.org/sword',
-py_modules=['Sword'],
-include_dirs=['${CMAKE_CURRENT_SOURCE_DIR}', '${CMAKE_SOURCE_DIR}/include', '${CMAKE_CURRENT_SOURCE_DIR}/..', '${CMAKE_CURRENT_SOURCE_DIR}../../'],
-ext_modules = [Extension('_Sword',['Sword.cxx'],
-libraries=[('sword')],
-library_dirs=[('${CMAKE_BINARY_DIR}')],
-)]
+setup(
+    name='sword',
+    version='${SWORD_VERSION}',
+    maintainer='Sword Developers',
+    maintainer_email='sword-devel@crosswire.org',
+    url='http://www.crosswire.org/sword',
+    py_modules=['Sword'],
+    include_dirs=['${CMAKE_CURRENT_SOURCE_DIR}', '${CMAKE_SOURCE_DIR}/include', '${CMAKE_CURRENT_SOURCE_DIR}/..', '${CMAKE_CURRENT_SOURCE_DIR}../../'],
+    ext_modules = [Extension('_Sword',['Sword.cxx'],
+        libraries=[('sword')],
+        library_dirs=[('${CMAKE_BINARY_DIR}')],
+    )]
 ,)"
 )
 
