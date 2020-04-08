@@ -1,9 +1,11 @@
-#!/bin/bash -e
+#!/bin/bash
 #
 # A sample script showing how to build most of the options available to this system.
 # Invoke it from the top directory of SWORD by calling $ cmake/build-debug.sh
 #
 
+set -ex -o pipefail
+rm -rf build
 mkdir -p build
 cd build
 # Configure with Python and Perl bindings, examples, tests and a debug build into
