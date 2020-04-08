@@ -22,9 +22,9 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
 	'NAME'		=> 'Sword',
 	'VERSION'	=> '${SWORD_VERSION}',
-	'INC'		=> '-I${CMAKE_SOURCE_DIR}/include -I${CMAKE_CURRENT_SOURCE_DIR}/..',
+	'INC'		=> '-I\"${CMAKE_SOURCE_DIR}/include\" -I\"${CMAKE_CURRENT_SOURCE_DIR}/..\"',
 	'DEFINE'	=> '-DSWIG',
-	'LIBS'		=> '-L${CMAKE_BINARY_DIR} -lsword -lz',
+	'LIBS'		=> '-L\"${CMAKE_BINARY_DIR}\" -lsword -lz',
 	'FIRST_MAKEFILE' => 'Makefile.perlswig',
 	'PREREQ_PM'	=> {},
 		($] >= 5.005 ? ## Add these new keywords supported since 5.005
