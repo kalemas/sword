@@ -36,6 +36,7 @@ SWORD_NAMESPACE_START
  * ENT:	ipstr	- pointer to a string pointer to set if necessary
  *	istr	- string to set to *ipstr
  *			0 - only get
+ *	memPadFactor - memory will be allocated the size of istr * memPadFactor
  *
  * RET:	*ipstr
  */
@@ -66,14 +67,12 @@ extern const unsigned char SW_toupper_array[256];
 #define SW_toupper(c) SW_toupper_array[(unsigned char)c]
 
 /******************************************************************************
- * getUniCharFromUTF8 - retrieves the next Unicode codepoint from a UTF8 string
- * 					and increments buf to start of next codepoint
+ * SW_tolower - array of lowercase values for any given Latin-1 value
  *
- * ENT:	buf - address of a utf8 buffer
- *
- * RET:	buf - incremented past last byte used in computing the current codepoint
- * 		unicode codepoint value (0 with buf incremented is invalid UTF8 byte
+ * use this instead of tolower() for fast lookups on accented characters
  */
+extern const unsigned char SW_tolower_array[256];
+#define SW_tolower(c) SW_tolower_array[(unsigned char)c]
 
 
 /******************************************************************************

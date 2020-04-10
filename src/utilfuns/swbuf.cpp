@@ -122,6 +122,30 @@ void SWBuf::insert(unsigned long pos, const char* str, unsigned long start, sign
 }
 
 
-void SWBuf::toUpper() { assureSize(size()*3); toupperstr(buf, size()*3-1); }
+/**
+ * Converts an SWBuf filled with UTF-8 to upper case
+ *
+ * @param b SWBuf to change to upper case
+ * 
+ * @return b for convenience
+ */
+SWBuf &SWBuf::toUpper() { 
+	char *utf8 = 0;
+	stdstr(&utf8, c_str(), 3);
+	sword::toupperstr(utf8, (unsigned int)size()*3-1);
+	*this = utf8;
+	delete [] utf8;
+
+	return *this;
+}
+SWBuf &SWBuf::toLower() {
+	char *utf8 = 0;
+	stdstr(&utf8, c_str(), 3);
+	sword::tolowerstr(utf8, (unsigned int)size()*3-1);
+	*this = utf8;
+	delete [] utf8;
+
+	return *this;
+}
 
 SWORD_NAMESPACE_END

@@ -446,7 +446,7 @@ bool OSISHTMLHREF::handleToken(SWBuf &buf, const char *token, BasicFilterUserDat
 				SWBuf lastText = u->lastSuspendSegment.c_str();
 				u->suspendTextPassThru = (--u->suspendLevel);
 				if (lastText.size()) {
-					toupperstr(lastText);
+					lastText.toUpper();
 					scratch.setFormatted("%c<font size=\"-1\">%s</font>", lastText[0], lastText.c_str()+1);
 
 					const unsigned char *tmpBuf = (const unsigned char *)lastText.c_str();

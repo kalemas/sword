@@ -119,6 +119,21 @@ namespace {
 	#endif
 		return countUTF8 ? 1 : -1;
 	}
+
+	char *lowerLatin1(char *buf, unsigned int maxlen = 0) {
+		if (!buf)
+			return 0;
+			
+		char *ret = buf;
+		bool checkMax = maxlen;
+
+		while (*buf && (!checkMax || maxlen--)) {
+			*buf = SW_tolower(*buf);
+			buf++;
+		}
+
+		return ret;
+	}
 }
 
 
@@ -128,6 +143,11 @@ namespace {
 class ICUStringMgr : public StringMgr {
 public:
 	virtual char *upperUTF8(char *, unsigned int maxlen = 0) const;
+	virtual char *lowerUTF8(char *, unsigned int maxlen = 0) const;
+	virtual bool isUpper(__u32 character) const;
+	virtual bool isLower(__u32 character) const;
+	virtual bool isDigit(__u32 character) const;
+	virtual bool isAlpha(__u32 character) const;
 	
 protected:
 	virtual bool supportsUnicode() const { return true; };
@@ -221,6 +241,56 @@ char *StringMgr::upperUTF8(char *t, unsigned int maxlen) const {
 
 
 /**
+ * This is a fallback method.  It should never be called.
+ * If UTF8 support is desired, then a UTF8 StringMgr needs
+ * to be used.
+ *
+ * Here we just do our best.
+ *
+ * Converts the param to a lower case UTF8 string
+ * @param t - The text encoded in utf8 which should be turned into an lower case string
+ *
+ */	
+char *StringMgr::lowerUTF8(char *t, unsigned int maxlen) const {
+	// try to decide if it's worth trying to tolower.  Do we have more
+	// characters which are probably lower latin than not?
+	// we still don't use isValidUTF8 optimally. what if we have 1 unicode
+	// character in the string?  should we not try to lower any of the string?
+	// dunno.  Best solution is to lower all other characters. Don't have
+	// time to write that before release.
+	long performOp = 0;
+	if (!isValidUTF8((unsigned char *)t)) {
+		performOp = 1;
+	}
+	else {
+		for (const char *ch = t; *ch; ch++) {
+			performOp += (*ch > 0) ? 1 : -1;
+		}
+	}
+
+	if (performOp > 0) {
+		return lowerLatin1(t);
+	}
+
+	return t;
+}
+
+bool StringMgr::isUpper(__u32 character) const {
+	return isupper(character);
+}
+bool StringMgr::isLower(__u32 character) const {
+	return islower(character);
+}
+bool StringMgr::isDigit(__u32 character) const {
+	return isdigit(character);
+}
+bool StringMgr::isAlpha(__u32 character) const {
+	return isalpha(character);
+}
+
+
+
+/**
  * Converts the param to an uppercase latin1 string
  * @param The text encoded in latin1 which should be turned into an upper case string
  */	
@@ -280,6 +350,55 @@ char *ICUStringMgr::upperUTF8(char *buf, unsigned int maxlen) const {
 	delete [] lowerStr;
 	delete [] upperStr;
 	return ret;
+}
+
+char *ICUStringMgr::lowerUTF8(char *buf, unsigned int maxlen) const {
+	char *ret = buf;
+	int max = (int)((maxlen) ? maxlen : strlen(buf));
+		
+	UErrorCode err = U_ZERO_ERROR;
+		
+	if (!buf || !max) {
+		return ret;
+	}
+		
+	UChar *sourceStr = new UChar[max+10];
+	UChar *resultStr = new UChar[max+10];
+		
+	u_strFromUTF8(sourceStr, max+9, 0, buf, -1, &err);
+	if (err != U_ZERO_ERROR) {
+//		SWLog::getSystemLog()->logError("from: %s", u_errorName(err));
+		delete [] sourceStr;
+		delete [] resultStr;
+		return ret;
+	}
+
+	u_strToLower(resultStr, max+9, sourceStr, -1, 0, &err);
+	if (err != U_ZERO_ERROR) {
+//		SWLog::getSystemLog()->logError("upperCase: %s", u_errorName(err));
+		delete [] sourceStr;
+		delete [] resultStr;
+		return ret;
+	}
+
+	ret = u_strToUTF8(ret, max, 0, resultStr, -1, &err);
+		
+	delete [] sourceStr;
+	delete [] resultStr;
+	return ret;
+}
+
+bool ICUStringMgr::isUpper(__u32 character) const {
+	return u_isupper(character);
+}
+bool ICUStringMgr::isLower(__u32 character) const {
+	return u_islower(character);
+}
+bool ICUStringMgr::isDigit(__u32 character) const {
+	return u_isdigit(character);
+}
+bool ICUStringMgr::isAlpha(__u32 character) const {
+	return u_isalpha(character);
 }
 	
 #endif

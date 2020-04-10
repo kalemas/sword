@@ -99,7 +99,7 @@ public:
 	inline SWBuf(const char *initVal, unsigned long initSize = 0) {
 		init(initSize);
 		if (initVal)
-			set(initVal);
+			set(initVal, initSize);
 	}
 
 	/******************************************************************************
@@ -211,9 +211,10 @@ public:
 	* If the allocated memory is bigger than the new string, it will NOT be resized.
 	* @param newVal the value to set this buffer to. 
 	*/
-	inline void set(const char *newVal) {
+	inline void set(const char *newVal, unsigned long maxSize = 0) {
 		if (newVal) {
 			unsigned long len = strlen(newVal) + 1;
+			if (maxSize && maxSize < (len-1)) len = maxSize + 1;
 			assureSize(len);
 			memcpy(buf, newVal, len);
 			end = buf + (len - 1);
@@ -221,8 +222,8 @@ public:
 		else {
 			assureSize(1);
 			end = buf;
-			*end = 0;
 		}
+		*end = 0;
 	}
 
 	/**
@@ -463,7 +464,16 @@ public:
 	 * @return returns true if this buffer starts with the specified prefix
 	 */
 	inline bool startsWith(const SWBuf &prefix) const { return !strncmp(c_str(), prefix.c_str(), prefix.size()); }
-	void toUpper();
+	/**
+	 * Converts this SWBuf to uppercase
+	 * &return this
+	 */
+	SWBuf &toUpper();
+	/**
+	 * Converts this SWBuf to lowercase
+	 * &return this
+	 */
+	SWBuf &toLower();
 
 	/**
 	 * @return returns true if this buffer ends with the specified postfix
