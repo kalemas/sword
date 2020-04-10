@@ -11,4 +11,23 @@
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$/../../..">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://crosswire.org/svn/sword/branches" />
+                  <option value="https://crosswire.org/svn/sword/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://crosswire.org/svn/sword/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
 </project>

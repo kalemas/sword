@@ -462,6 +462,16 @@ Log.d(TAG, "... finished renderChapter");
 			if (mod == null) { callbackContext.error("couldn't find module: " + args.getString(0)); return true; }
 			callbackContext.success(mod.getRenderText());
 		}
+		else if (action.equals("SWModule_getStripText")) {
+			SWModule mod = mgr.getModuleByName(args.getString(0));
+			if (mod == null) { callbackContext.error("couldn't find module: " + args.getString(0)); return true; }
+			callbackContext.success(mod.getStripText());
+		}
+		else if (action.equals("SWModule_getRawEntry")) {
+			SWModule mod = mgr.getModuleByName(args.getString(0));
+			if (mod == null) { callbackContext.error("couldn't find module: " + args.getString(0)); return true; }
+			callbackContext.success(mod.getRawEntry());
+		}
 		else if (action.equals("SWModule_sendText")) {
 			SWModule mod = mgr.getModuleByName(args.getString(0));
 			if (mod == null) { callbackContext.error("couldn't find module: " + args.getString(0)); return true; }
@@ -542,6 +552,16 @@ Log.d(TAG, "... finished renderChapter");
 				bookInfo.put("osisName",    vkInfo[SWModule.VERSEKEY_OSISBOOKNAME]);
 				bookInfo.put("chapterMax", Integer.parseInt(vkInfo[SWModule.VERSEKEY_CHAPTERMAX]));
 				r.put(bookInfo);
+			}
+			callbackContext.success(r);
+		}
+		else if (action.equals("SWModule_parseKeyList")) {
+			SWModule mod = mgr.getModuleByName(args.getString(0));
+			if (mod == null) { callbackContext.error("couldn't find module: " + args.getString(0)); return true; }
+			String keyText = args.getString(1);
+			JSONArray r = new JSONArray();
+			for (String k : mod.parseKeyList(keyText)) {
+				r.put(k);
 			}
 			callbackContext.success(r);
 		}

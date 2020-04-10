@@ -145,6 +145,24 @@ SWModule.prototype.getRenderText = function(callback) {
 	return retVal;
 }
 
+SWModule.prototype.getStripText = function(callback) {
+	var retVal = null;
+	exec(callback?callback:function(m) { retVal = m; },
+		function(err) { utils.alert('[ERROR] problem: ' + err); },
+		"SWORD", "SWModule_getStripText", [this.name]
+	);
+	return retVal;
+}
+
+SWModule.prototype.getRawEntry = function(callback) {
+	var retVal = null;
+	exec(callback?callback:function(m) { retVal = m; },
+		function(err) { utils.alert('[ERROR] problem: ' + err); },
+		"SWORD", "SWModule_getRawEntry", [this.name]
+	);
+	return retVal;
+}
+
 SWModule.prototype.shareVerse = function(callback) {
 	var retVal = null;
 	exec(callback?callback:function(m) { retVal = m; },
@@ -257,6 +275,15 @@ SWModule.prototype.getBookNames = function(callback) {
 	exec(callback?callback:function(r) { retVal = r; },
 		function(err) { utils.alert('[ERROR] problem: ' + err); },
 		"SWORD", "SWModule_getBookNames", [this.name]
+	);
+	return retVal;
+}
+
+SWModule.prototype.parseKeyList = function(keyText, callback) {
+	var retVal = [];
+	exec(callback?callback:function(r) { retVal = r; },
+		function(err) { utils.alert('[ERROR] problem: ' + err); },
+		"SWORD", "SWModule_parseKeyList", [this.name, keyText]
 	);
 	return retVal;
 }
