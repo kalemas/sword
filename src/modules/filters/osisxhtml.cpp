@@ -685,6 +685,7 @@ bool OSISXHTML::handleToken(SWBuf &buf, const char *token, BasicFilterUserData *
 				else if (type == "i" || type == "italic") {
 					outText("<i>", buf, u);
 				} else {	// all other types
+					if (type.startsWith("x-")) type << 2;
 					outText(SWBuf("<span class=\"") + type + SWBuf("\">"), buf, u);
 				}
 				u->hiStack->push(tag.toString());
