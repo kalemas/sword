@@ -418,6 +418,18 @@ debugPrint("initMgr, mgr: " + String(describing: mgr))
         }
     }
     
+    @objc(SWModule_parseKeyList:)
+    func SWModule_parseKeyList(command: CDVInvokedUrlCommand) {
+        initMgr()
+        let mod = getModule(command: command)
+        if (mod != 0) {
+            let retVal = getStringArray(buffer: org_crosswire_sword_SWModule_parseKeyList(mod, command.arguments[1] as? String ?? ""))
+            self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: retVal), callbackId: command.callbackId)
+        }
+        else {
+            self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_ERROR), callbackId: command.callbackId)
+        }
+    }
     
     @objc(SWModule_getConfigEntry:)
     func SWModule_getConfigEntry(command: CDVInvokedUrlCommand) {
@@ -500,6 +512,15 @@ debugPrint("initMgr, mgr: " + String(describing: mgr))
         }
     }
 
+    @objc(SWModule_setGlobalOption:)
+    func SWModule_setGlobalOption(command: CDVInvokedUrlCommand) {
+        initMgr()
+        let option = command.arguments[0] as? String ?? ""
+        let value = command.arguments[1] as? String ?? ""
+        org_crosswire_sword_SWMgr_setGlobalOption(mgr, option, value)
+        self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: "SWModule_setGlobalOption"), callbackId: command.callbackId)
+    }
+    
     @objc(SWModule_getRenderText:)
     func SWModule_getRenderText(command: CDVInvokedUrlCommand) {
         initMgr()
@@ -513,6 +534,32 @@ debugPrint("initMgr, mgr: " + String(describing: mgr))
         }
     }
     
+    @objc(SWModule_getStripText:)
+    func SWModule_getStripText(command: CDVInvokedUrlCommand) {
+        initMgr()
+        let mod = getModule(command: command)
+        if (mod != 0) {
+            let retVal = String(cString: org_crosswire_sword_SWModule_stripText(mod))
+            self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: retVal), callbackId: command.callbackId)
+        }
+        else {
+            self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_ERROR), callbackId: command.callbackId)
+        }
+    }
+    
+    @objc(SWModule_getRawEntry:)
+    func SWModule_getRawEntry(command: CDVInvokedUrlCommand) {
+        initMgr()
+        let mod = getModule(command: command)
+        if (mod != 0) {
+            let retVal = String(cString: org_crosswire_sword_SWModule_getRawEntry(mod))
+            self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: retVal), callbackId: command.callbackId)
+        }
+        else {
+            self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_ERROR), callbackId: command.callbackId)
+        }
+    }
+
     
     @objc(SWMgr_startBibleSync:)
     func SWMgr_startBibleSync(command: CDVInvokedUrlCommand) {
@@ -613,12 +660,12 @@ debugPrint("initMgr, mgr: " + String(describing: mgr))
                 var v = [String:Any]()
                 if (error == 0) {
                     v["verse"] = getVerseKey(keyChildren: getStringArray(buffer: org_crosswire_sword_SWModule_getKeyChildren(mod)))
+                    v["text"] = String(cString: org_crosswire_sword_SWModule_renderText(mod))
                     var preVerse = ""
                     for i in getStringArray(buffer: org_crosswire_sword_SWModule_getEntryAttribute(mod, "Heading", "Preverse", "", 1)) {
                         preVerse += i
                     }
                     v["preVerse"] = preVerse
-                    v["text"] = String(cString: org_crosswire_sword_SWModule_renderText(mod))
                 }
                 else {
                     

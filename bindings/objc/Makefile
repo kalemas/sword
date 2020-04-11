@@ -1,10 +1,12 @@
 #
 # First enter dependencies/ and run make
 #
-# Then open this project ObjCSword.xcodeproj with xcode, select Product|Scheme|SWORD (note all caps)
-# Build
+# For Universal libSWORD.a use XCode and compile SWORD/SWORD.xcodeproj
+# then if you'd like to add ios support to the ../cordova bindings,
+# this Makefile in here will copy the Universal lib and other deps
+# to the correct locations
 #
-# Then come here and type make
+# just type: make
 #
 
 all: deploycordova
