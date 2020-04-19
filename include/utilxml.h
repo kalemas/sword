@@ -75,6 +75,13 @@ public:
 	 * otherwise, we return if we're a simple XML end </tag>.
 	 */
 	bool isEndTag(const char *eID = 0) const;
+	inline void setEndTag(bool value) {
+		if (!parsed)
+			parse();
+		endTag = value;
+		if (value)
+			empty = false;
+	}
 
 	const StringList getAttributeNames() const;
 	int getAttributePartCount(const char *attribName, char partSplit = '|') const;

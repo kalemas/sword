@@ -291,13 +291,16 @@ const char *XMLTag::toString() const {
 		tag.append('/');
 
 	tag.append(getName());
-	for (StringPairMap::iterator it = attributes.begin(); it != attributes.end(); it++) {
-		//tag.appendFormatted(" %s=\"%s\"", it->first.c_str(), it->second.c_str());
-		tag.append(' ');
-		tag.append(it->first.c_str());
-		tag.append((strchr(it->second.c_str(), '\"')) ? "=\'" : "=\"");
-		tag.append(it->second.c_str());
-		tag.append((strchr(it->second.c_str(), '\"'))? '\'' : '\"');
+
+	if (!isEndTag()) {
+		for (StringPairMap::iterator it = attributes.begin(); it != attributes.end(); it++) {
+			//tag.appendFormatted(" %s=\"%s\"", it->first.c_str(), it->second.c_str());
+			tag.append(' ');
+			tag.append(it->first.c_str());
+			tag.append((strchr(it->second.c_str(), '\"')) ? "=\'" : "=\"");
+			tag.append(it->second.c_str());
+			tag.append((strchr(it->second.c_str(), '\"'))? '\'' : '\"');
+		}
 	}
 
 	if (isEmpty())
