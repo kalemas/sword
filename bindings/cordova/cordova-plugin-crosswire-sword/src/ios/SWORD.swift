@@ -512,8 +512,8 @@ debugPrint("initMgr, mgr: " + String(describing: mgr))
         }
     }
 
-    @objc(SWModule_setGlobalOption:)
-    func SWModule_setGlobalOption(command: CDVInvokedUrlCommand) {
+    @objc(SWMgr_setGlobalOption:)
+    func SWMgr_setGlobalOption(command: CDVInvokedUrlCommand) {
         initMgr()
         let option = command.arguments[0] as? String ?? ""
         let value = command.arguments[1] as? String ?? ""
