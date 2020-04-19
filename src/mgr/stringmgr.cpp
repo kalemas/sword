@@ -20,6 +20,7 @@
  *
  */
 
+#include <ctype.h>
 #include <stringmgr.h>
 #include <swlog.h>
 #include <localemgr.h>
