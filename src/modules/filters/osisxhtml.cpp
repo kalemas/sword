@@ -849,7 +849,11 @@ bool OSISXHTML::handleToken(SWBuf &buf, const char *token, BasicFilterUserData *
 			     else if (tag.isEndTag()) {
 			     	outText("</div>", buf, u);
 			}
-			else if (!(type == "colophon")) outText(tag, buf, u);
+			else if (!(type == "colophon")) {
+				if (tag.getAttribute("sID")) tag.setEmpty(false);
+				if (tag.getAttribute("eID")) tag.setEndTag(true);
+				outText(tag, buf, u);
+			}
 			
 		}
 		else if (!strcmp(tag.getName(), "span")) {
