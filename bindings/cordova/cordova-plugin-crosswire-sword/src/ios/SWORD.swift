@@ -19,7 +19,13 @@ var mySWORDPlugin:SWORD? = nil
 	var VERSEKEY_SHORTTEXT = Int(org_crosswire_sword_SWModule_VERSEKEY_SHORTTEXT);
 	var VERSEKEY_BOOKABBREV = Int(org_crosswire_sword_SWModule_VERSEKEY_BOOKABBREV);
 	var VERSEKEY_OSISBOOKNAME = Int(org_crosswire_sword_SWModule_VERSEKEY_OSISBOOKNAME);
-    
+
+    var LOG_ERROR = Int32(org_crosswire_sword_SWLog_LOG_ERROR);
+    var LOG_WARN = Int32(org_crosswire_sword_SWLog_LOG_WARN);
+    var LOG_INFO = Int32(org_crosswire_sword_SWLog_LOG_INFO);
+    var LOG_TIMEDINFO = Int32(org_crosswire_sword_SWLog_LOG_TIMEDINFO);
+    var LOG_DEBUG = Int32(org_crosswire_sword_SWLog_LOG_DEBUG);
+
 	@objc(initSWORD:)
 	func initSWORD(command: CDVInvokedUrlCommand) {
 		mgr = 0
@@ -38,6 +44,14 @@ var mySWORDPlugin:SWORD? = nil
 		VERSEKEY_BOOKABBREV = Int(org_crosswire_sword_SWModule_VERSEKEY_BOOKABBREV);
 		VERSEKEY_OSISBOOKNAME = Int(org_crosswire_sword_SWModule_VERSEKEY_OSISBOOKNAME);
 
+        LOG_ERROR = Int32(org_crosswire_sword_SWLog_LOG_ERROR);
+        LOG_WARN = Int32(org_crosswire_sword_SWLog_LOG_WARN);
+        LOG_INFO = Int32(org_crosswire_sword_SWLog_LOG_INFO);
+        LOG_TIMEDINFO = Int32(org_crosswire_sword_SWLog_LOG_TIMEDINFO);
+        LOG_DEBUG = Int32(org_crosswire_sword_SWLog_LOG_DEBUG);
+
+        org_crosswire_sword_SWLog_setLogLevel(LOG_ERROR);
+        
 		org_crosswire_sword_StringMgr_setToUpper({ (text: Optional<UnsafePointer<Int8>>, maxBytes: u_long) in
 			let lower = String(cString: text!)
 			let upper = lower.uppercased()
@@ -94,19 +108,19 @@ debugPrint("initMgr, mgr: " + String(describing: mgr))
     }
     
     func logError(message: String) {
-        org_crosswire_sword_SWlog_logError(message)
+        org_crosswire_sword_SWLog_logError(message)
     }
     func logDebug(message: String) {
-        org_crosswire_sword_SWlog_logDebug(message)
+        org_crosswire_sword_SWLog_logDebug(message)
     }
     func logWarning(message: String) {
-        org_crosswire_sword_SWlog_logWarning(message)
+        org_crosswire_sword_SWLog_logWarning(message)
     }
     func logInformation(message: String) {
-        org_crosswire_sword_SWlog_logInformation(message)
+        org_crosswire_sword_SWLog_logInformation(message)
     }
     func logTimedInformation(message: String) {
-        org_crosswire_sword_SWlog_logTimedInformation(message)
+        org_crosswire_sword_SWLog_logTimedInformation(message)
     }
 
     
@@ -616,7 +630,7 @@ debugPrint("initMgr, mgr: " + String(describing: mgr))
     @objc(SWMgr_sendBibleSyncMessage:)
     func SWMgr_sendBibleSyncMessage(command: CDVInvokedUrlCommand) {
         initMgr()
-        let osisRef = command.arguments[1] as? String ?? ""
+        let osisRef = command.arguments[0] as? String ?? ""
         org_crosswire_sword_SWMgr_sendBibleSyncMessage(mgr, osisRef)
         self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: "SWMgr_sendBibleSyncMessage"), callbackId: command.callbackId)
     }

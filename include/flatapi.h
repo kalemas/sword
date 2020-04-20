@@ -76,6 +76,11 @@ struct org_crosswire_sword_SearchHit {
 	// for backward compat.  Remove
     const int org_crosswire_sword_SWModule_VERSEKEY_CHAPMAX = 4;
 
+	const int org_crosswire_sword_SWLog_LOG_ERROR = 1;
+	const int org_crosswire_sword_SWLog_LOG_WARN = 2;
+	const int org_crosswire_sword_SWLog_LOG_INFO = 3;
+	const int org_crosswire_sword_SWLog_LOG_TIMEDINFO = 4;
+	const int org_crosswire_sword_SWLog_LOG_DEBUG = 5;
     
     
     
@@ -608,11 +613,13 @@ void SWDLLEXPORT org_crosswire_sword_SWMgr_stopBibleSync
 void SWDLLEXPORT org_crosswire_sword_SWMgr_sendBibleSyncMessage
 		(SWHANDLE hMgr, const char *osisRefRaw);
 
-void SWDLLEXPORT org_crosswire_sword_SWlog_logError(const char *msg);
-void SWDLLEXPORT org_crosswire_sword_SWlog_logDebug(const char *msg);
-void SWDLLEXPORT org_crosswire_sword_SWlog_logWarning(const char *msg);
-void SWDLLEXPORT org_crosswire_sword_SWlog_logInformation(const char *msg);
-void SWDLLEXPORT org_crosswire_sword_SWlog_logTimedInformation(const char *msg);
+void SWDLLEXPORT org_crosswire_sword_SWLog_logError(const char *msg);
+void SWDLLEXPORT org_crosswire_sword_SWLog_logDebug(const char *msg);
+void SWDLLEXPORT org_crosswire_sword_SWLog_logWarning(const char *msg);
+void SWDLLEXPORT org_crosswire_sword_SWLog_logInformation(const char *msg);
+void SWDLLEXPORT org_crosswire_sword_SWLog_logTimedInformation(const char *msg);
+void SWDLLEXPORT org_crosswire_sword_SWLog_setLogLevel(int level);
+int SWDLLEXPORT org_crosswire_sword_SWLog_getLogLevel();
 
 #ifdef __cplusplus
 }

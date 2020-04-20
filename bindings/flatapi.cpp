@@ -392,24 +392,32 @@ public:
 //
 //
 
-void SWDLLEXPORT org_crosswire_sword_SWlog_logError(const char *msg) {
+void SWDLLEXPORT org_crosswire_sword_SWLog_logError(const char *msg) {
 	SWLog::getSystemLog()->logError(msg);
 }
 
-void SWDLLEXPORT org_crosswire_sword_SWlog_logDebug(const char *msg) {
+void SWDLLEXPORT org_crosswire_sword_SWLog_logDebug(const char *msg) {
 	SWLog::getSystemLog()->logDebug(msg);
 }
 
-void SWDLLEXPORT org_crosswire_sword_SWlog_logWarning(const char *msg) {
+void SWDLLEXPORT org_crosswire_sword_SWLog_logWarning(const char *msg) {
 	SWLog::getSystemLog()->logWarning(msg);
 }
 
-void SWDLLEXPORT org_crosswire_sword_SWlog_logInformation(const char *msg) {
+void SWDLLEXPORT org_crosswire_sword_SWLog_logInformation(const char *msg) {
 	SWLog::getSystemLog()->logInformation(msg);
 }
 
-void SWDLLEXPORT org_crosswire_sword_SWlog_logTimedInformation(const char *msg) {
+void SWDLLEXPORT org_crosswire_sword_SWLog_logTimedInformation(const char *msg) {
 	SWLog::getSystemLog()->logTimedInformation(msg);
+}
+
+void SWDLLEXPORT org_crosswire_sword_SWLog_setLogLevel(int level) {
+	SWLog::getSystemLog()->setLogLevel((char)level);
+}
+
+int SWDLLEXPORT org_crosswire_sword_SWLog_getLogLevel() {
+	return SWLog::getSystemLog()->getLogLevel();
 }
 
 
