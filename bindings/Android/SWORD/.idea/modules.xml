@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file:///data/home/scribe/src/sword/bindings/Android/SWORD/Android-SWORD.iml" filepath="/data/home/scribe/src/sword/bindings/Android/SWORD/Android-SWORD.iml" group="SWORD" />
-      <module fileurl="file:///data/home/scribe/src/sword/bindings/Android/SWORD/SWORD.iml" filepath="/data/home/scribe/src/sword/bindings/Android/SWORD/SWORD.iml" />
-      <module fileurl="file:///data/home/scribe/src/sword/bindings/Android/SWORD/app/SWORD-app.iml" filepath="/data/home/scribe/src/sword/bindings/Android/SWORD/app/SWORD-app.iml" group="SWORD/app" />
-      <module fileurl="file:///data/home/scribe/src/sword/bindings/Android/SWORD/app/app.iml" filepath="/data/home/scribe/src/sword/bindings/Android/SWORD/app/app.iml" />
+      <module fileurl="file:///data/home/scribe/src/sword/bindings/Android/SWORD/app/app.iml" filepath="/data/home/scribe/src/sword/bindings/Android/SWORD/app/app.iml" group="SWORD/app" />
     </modules>
   </component>
 </project>

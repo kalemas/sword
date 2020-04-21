@@ -72,7 +72,7 @@ jobject bibleSyncListener = 0;
 JNIEnv *bibleSyncListenerEnv = 0;
 #endif
 static SWBuf STORAGE_BASE;
-const char *SWORD_PATH = "/sdcard/sword";
+const char *SDCARD_PATH = "/sdcard/sword";
 const char *AND_BIBLE_MODULES_PATH = "/sdcard/Android/data/net.bible.android.activity/files";
 //ANativeActivity *_activity;
 
@@ -219,7 +219,7 @@ static void init(JNIEnv *env) {
 	}
 	if (!mgr) {
 SWLog::getSystemLog()->logDebug("libsword: init() begin");
-		SWBuf baseDir  = SWORD_PATH;
+		SWBuf baseDir  = SDCARD_PATH;
 		SWBuf confPath = baseDir + "/mods.d/globals.conf";
 		// be sure we have at least some config file already out there
 		if (!FileMgr::existsFile(confPath.c_str())) {
@@ -261,15 +261,21 @@ SWLog::getSystemLog()->logDebug("libsword: init() augmenting modules from: %s", 
 		// for And Bible modules
 		mgr->augmentModules(AND_BIBLE_MODULES_PATH, true);
 		// if our basedir isn't the sdcard, let's augment the sdcard
-		if (strcmp(baseDir.c_str(), SWORD_PATH)) {
-SWLog::getSystemLog()->logDebug("libsword: init() augmenting modules from: %s", SWORD_PATH);
-			mgr->augmentModules(SWORD_PATH, true);
+		if (strcmp(baseDir.c_str(), SDCARD_PATH)) {
+SWLog::getSystemLog()->logDebug("libsword: init() augmenting modules from: %s", SDCARD_PATH);
+			mgr->augmentModules(SDCARD_PATH, true);
+		}
+		// if our basedir isn't the private storage base, let's augment the private
+		// storage base in case a prevous version of the app stored modules there.
+		if (strcmp(baseDir.c_str(), STORAGE_BASE)) {
+SWLog::getSystemLog()->logDebug("libsword: init() augmenting modules from: %s", STORAGE_BASE.c_str());
+			mgr->augmentModules(STORAGE_BASE, true);
 		}
 SWLog::getSystemLog()->logDebug("libsword: init() adding locales from baseDir.");
 		LocaleMgr::getSystemLocaleMgr()->loadConfigDir(SWBuf(STORAGE_BASE + "/locales.d").c_str());
 		LocaleMgr::getSystemLocaleMgr()->loadConfigDir(SWBuf(STORAGE_BASE + "/uilocales.d").c_str());
-		LocaleMgr::getSystemLocaleMgr()->loadConfigDir((SWBuf(SWORD_PATH) + "/locales.d").c_str());
-		LocaleMgr::getSystemLocaleMgr()->loadConfigDir((SWBuf(SWORD_PATH) + "/uilocales.d").c_str());
+		LocaleMgr::getSystemLocaleMgr()->loadConfigDir((SWBuf(SDCARD_PATH) + "/locales.d").c_str());
+		LocaleMgr::getSystemLocaleMgr()->loadConfigDir((SWBuf(SDCARD_PATH) + "/uilocales.d").c_str());
 
 		mgr->setGlobalOption("Footnotes", "On");
 		mgr->setGlobalOption("Cross-references", "On");
@@ -285,7 +291,7 @@ static void initInstall(JNIEnv *env, jobject progressReporter = 0) {
 	installStatusReporter->init(env, progressReporter);
 	if (!installMgr) {
 SWLog::getSystemLog()->logDebug("initInstall: installMgr is null");
-		SWBuf baseDir  = SWORD_PATH;
+		SWBuf baseDir  = SDCARD_PATH;
 		baseDir += "/InstallMgr";
 		SWBuf confPath = baseDir + "/InstallMgr.conf";
 		// be sure we have at least some config file already out there
