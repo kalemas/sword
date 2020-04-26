@@ -211,14 +211,28 @@ bool ThMLXHTML::handleToken(SWBuf &buf, const char *token, BasicFilterUserData *
 		// <note> tag
 		else if (!strcmp(tag.getName(), "note")) {
 			if (!tag.isEndTag()) {
+				SWBuf type = tag.getAttribute("type");
+
+				// for backward compatibility
+				if (type == "x-cross-ref") type = "crossReference";
+
+				SWBuf subType = tag.getAttribute("subType");
+				SWBuf footnoteNumber = tag.getAttribute("swordFootnote");
+				SWBuf noteName = tag.getAttribute("n");
+				SWBuf classExtras = "";
+
+				if (type.size()) {
+					classExtras.append(" ").append(type);
+				}
+				if (subType.size()) {
+                                        classExtras.append(" ").append(subType);
+                                }
 				if (!tag.isEmpty()) {
-					SWBuf type = tag.getAttribute("type");
-					SWBuf footnoteNumber = tag.getAttribute("swordFootnote");
-					SWBuf noteName = tag.getAttribute("n");
 					if (u->vkey) {
 						// leave this special osis type in for crossReference notes types?  Might thml use this some day? Doesn't hurt.
-						char ch = ((tag.getAttribute("type") && ((!strcmp(tag.getAttribute("type"), "crossReference")) || (!strcmp(tag.getAttribute("type"), "x-cross-ref")))) ? 'x':'n');
-						buf.appendFormatted("<a href=\"passagestudy.jsp?action=showNote&type=%c&value=%s&module=%s&passage=%s\"><small><sup class=\"%c\">*%c%s</sup></small></a>", 
+						char ch = (type == "crossReference" ? 'x':'n');
+						buf.appendFormatted("<a class=\"noteMarker%s\" href=\"passagestudy.jsp?action=showNote&type=%c&value=%s&module=%s&passage=%s\"><small><sup class=\"%c\">*%c%s</sup></small></a>", 
+							classExtras.c_str(),
 							ch, 
 							URL::encode(footnoteNumber.c_str()).c_str(), 
 							URL::encode(u->version.c_str()).c_str(), 
@@ -229,7 +243,8 @@ bool ThMLXHTML::handleToken(SWBuf &buf, const char *token, BasicFilterUserData *
 					}
 					else {
 						char ch = ((tag.getAttribute("type") && ((!strcmp(tag.getAttribute("type"), "crossReference")) || (!strcmp(tag.getAttribute("type"), "x-cross-ref")))) ? 'x':'n');
-						buf.appendFormatted("<a href=\"passagestudy.jsp?action=showNote&type=%c&value=%s&module=%s&passage=%s\"><small><sup class=\"%c\">*%c%s</sup></small></a>", 
+						buf.appendFormatted("<a class=\"noteMarker%s\" href=\"passagestudy.jsp?action=showNote&type=%c&value=%s&module=%s&passage=%s\"><small><sup class=\"%c\">*%c%s</sup></small></a>", 
+							classExtras.c_str(),
 							ch, 
 							URL::encode(footnoteNumber.c_str()).c_str(), 
 							URL::encode(u->version.c_str()).c_str(), 

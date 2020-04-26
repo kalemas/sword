@@ -288,6 +288,11 @@ bool OSISXHTML::handleToken(SWBuf &buf, const char *token, BasicFilterUserData *
 		else if (!strcmp(tag.getName(), "note")) {
 			if (!tag.isEndTag()) {
 				SWBuf type = tag.getAttribute("type");
+
+				// for backward compatibility
+				if (type == "strongsMarkup") type = "x-strongsMarkup";
+				if (type == "x-cross-ref") type = "crossReference";
+
 				SWBuf subType = tag.getAttribute("subType");
 				SWBuf classExtras = "";
 
@@ -298,7 +303,7 @@ bool OSISXHTML::handleToken(SWBuf &buf, const char *token, BasicFilterUserData *
                                         classExtras.append(" ").append(subType);
                                 }
 
-				bool strongsMarkup = (type == "x-strongsMarkup" || type == "strongsMarkup");	// the latter is deprecated
+				bool strongsMarkup = type == "x-strongsMarkup";
 				if (strongsMarkup) {
 					tag.setEmpty(false);	// handle bug in KJV2003 module where some note open tags were <note ... />
 				}
@@ -308,7 +313,7 @@ bool OSISXHTML::handleToken(SWBuf &buf, const char *token, BasicFilterUserData *
 					if (!strongsMarkup) {	// leave strong's markup notes out, in the future we'll probably have different option filters to turn different note types on or off
 						SWBuf footnoteNumber = tag.getAttribute("swordFootnote");
 						SWBuf noteName = tag.getAttribute("n");
-						char ch = ((tag.getAttribute("type") && ((!strcmp(tag.getAttribute("type"), "crossReference")) || (!strcmp(tag.getAttribute("type"), "x-cross-ref")))) ? 'x':'n');
+						char ch = (type == "crossReference" ? 'x':'n');
 
 						u->inXRefNote = true; // Why this change? Ben Morgan: Any note can have references in, so we need to set this to true for all notes
 //						u->inXRefNote = (ch == 'x');

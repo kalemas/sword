@@ -293,6 +293,7 @@ bool TEIXHTML::handleToken(SWBuf &buf, const char *token, BasicFilterUserData *u
 					u->suspendTextPassThru = true;
 				}
 			}
+			// how does any of this work??? If isEndTag is true, </note>, there will be no attributes.
 			if (tag.isEndTag()) {
 				SWBuf footnoteNumber = tag.getAttribute("swordFootnote");
 				SWBuf noteName = tag.getAttribute("n");
