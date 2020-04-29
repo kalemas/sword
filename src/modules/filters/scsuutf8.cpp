@@ -40,8 +40,13 @@
 SWORD_NAMESPACE_START
 
 
-SCSUUTF8::SCSUUTF8() {
+SCSUUTF8::SCSUUTF8()
 #ifdef _ICU_
+ : err()
+#endif
+{
+#ifdef _ICU_
+	
 	// initialize SCSU converter
 	scsuConv = ucnv_open("SCSU", &err);
 	// initialize UTF-8 converter
