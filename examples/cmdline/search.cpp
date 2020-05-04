@@ -50,6 +50,8 @@ char SEARCH_TYPE=-2;
 int flags = 0
 // for case insensitivity
 | REG_ICASE
+// for enforcing strict verse boundaries
+| SEARCHFLAG_STRICTBOUNDARIES
 // for use with entryAttrib search type to match whole entry to value, e.g., G1234 and not G12345
 //| SEARCHFLAG_MATCHWHOLEENTRY
 ;

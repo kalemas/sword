@@ -387,6 +387,18 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 	SWBuf term = istr;
 	bool includeComponents = false;	// for entryAttrib e.g., /Lemma.1/ 
 
+	// this only works for 1 or 2 verses right now, and for some search types (regex and multi word).
+	// future plans are to extend functionality
+	// By default SWORD defaults to allowing searches to cross the artificial boundaries of verse markers
+	// Searching are done in a sliding window of 2 verses right now.
+	// To turn this off, include SEARCHFLAG_STRICTBOUNDARIES in search flags
+	int windowSize = 2;
+	if ((flags & SEARCHFLAG_STRICTBOUNDARIES) && (searchType == -2 || searchType > 0)) {
+		// remove custom SWORD flag to prevent possible overlap with unknown regex option
+		flags ^= SEARCHFLAG_STRICTBOUNDARIES;
+		windowSize = 1;
+	}
+
 	SWBuf target = getConfigEntry("AbsoluteDataPath");
 	if (!target.endsWith("/") && !target.endsWith("\\")) {
 		target.append('/');
@@ -653,6 +665,8 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 				"Serious error: new percentage complete is less than previous value\nindex: %d\nhighIndex: %d\nnewperc == %d%% is smaller than\nperc == %d%%",
 				key->getIndex(), highIndex, (int)newperc, (int )perc);
 		}
+
+		// regex
 		if (searchType >= 0) {
 			SWBuf textBuf = stripText();
 #ifdef USECXX11REGEX
@@ -683,23 +697,22 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 #endif
 				lastKey->clearBound();
 				listKey << *lastKey;
-				lastBuf = textBuf;
+				lastBuf = (windowSize > 1) ? textBuf : "";
 			}
 			else {
-				lastBuf = textBuf;
+				lastBuf = (windowSize > 1) ? textBuf : "";
 			}
 #if defined(USEICUREGEX)
 			}
 #endif
 		}
 
-		// phrase
 		else {
 			SWBuf textBuf;
 			switch (searchType) {
 
 			// phrase
-			case -1:
+			case -1: {
 				textBuf = stripText();
 				if ((flags & REG_ICASE) == REG_ICASE) textBuf.toUpper();
 				sres = strstr(textBuf.c_str(), term.c_str());
@@ -709,6 +722,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 					listKey << *resultKey;
 				}
 				break;
+			}
 
 			// multiword
 			case -2: { // enclose our allocations
@@ -754,19 +768,21 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 						++stripped;
 					} while ( (stripped < 2) && (foundWords == words.size()));
 					++multiVerse;
-				} while ( (multiVerse < 2) && (stripped != 2 || foundWords != words.size()));
+				} while ((windowSize > 1) && (multiVerse < 2) && (stripped != 2 || foundWords != words.size()));
 
 				if ((stripped == 2) && (foundWords == words.size())) { //we found the right words in both raw and stripped text, which means it's a valid result item
 					*resultKey = (multiVerse == 1) ? *getKey() : *lastKey;
 					resultKey->clearBound();
 					listKey << *resultKey;
 					lastBuf = "";
-					if (twoVerse == 2) {
+					// if we're searching windowSize > 1 and we had a hit which required the current verse
+					// let's start the next window with our current verse in case we have another hit adjacent
+					if (multiVerse == 2) {
 						lastBuf = textBuf;
 					}
 				}
 				else {
-					lastBuf = textBuf;
+					lastBuf = (windowSize > 1) ? textBuf : "";
 				}
 			}
 			break;

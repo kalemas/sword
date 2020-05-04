@@ -44,7 +44,12 @@ SWORD_NAMESPACE_START
 class SWOptionFilter;
 class SWFilter;
 
+// used for matching whole entry (not substring) in entry attributes searches.
 #define SEARCHFLAG_MATCHWHOLEENTRY 4096
+
+// used for turning off the default behavior of SWORD to use a sliding search window 
+// which allows hits across verse boundaries.
+#define SEARCHFLAG_STRICTBOUNDARIES 8192
 
 #define SWMODULE_OPERATORS \
 	operator SWBuf() { return renderText(); } \
@@ -388,7 +393,10 @@ public:
 	 *			-3  - entryAttrib (eg. Word//Lemma./G1234/)	 (Lemma with dot means check components (Lemma.[1-9]) also)
 	 *			-4  - Lucene
 	 *			-5  - multilemma window; set 'flags' param to window size (NOT DONE)
-	 * @param flags options flags for search
+	 * @param flags bitwise options flags for search.  Each search type supports different options.
+	 * 			REG_ICASE	- perform case insensitive search.  Supported by most all search types
+	 * 			SEARCHFLAG_*	- SWORD-specific search flags for various search types.  See defines for details
+	 *
 	 * @param scope Key containing the scope. VerseKey or ListKey are useful here.
 	 * @param justCheckIfSupported If set, don't search but instead set this variable to true/false if the requested search is supported,
 	 * @param percent Callback function to get the current search status in %.
