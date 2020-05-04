@@ -82,6 +82,8 @@ int main(int argc, char **argv)
 	manager.setGlobalOption("Strong's Numbers", "Off");
 	manager.setGlobalOption("Lemmas", "Off");
 //	manager.setGlobalOption("Greek Accents", "Off");
+	manager.setGlobalOption("Footnotes", "On");
+	manager.setGlobalOption("Cross-references", "On");
 
 	VerseKey *vk = dynamic_cast<VerseKey *>(target->getKey());
 
