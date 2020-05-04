@@ -649,13 +649,9 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 			(*percent)(perc, percentUserData);
 		}
 		else if (newperc < perc) {
-#ifndef _MSC_VER
-			std::cerr << "Serious error: new percentage complete is less than previous value\n";
-			std::cerr << "index: " << (key->getIndex()) << "\n";
-			std::cerr << "highIndex: " << highIndex << "\n";
-			std::cerr << "newperc ==" << (int)newperc << "%" << "is smaller than\n";
-			std::cerr << "perc == "  << (int )perc << "% \n";
-#endif
+			SWLog::getSystemLog()->logError(
+				"Serious error: new percentage complete is less than previous value\nindex: %d\nhighIndex: %d\nnewperc == %d%% is smaller than\nperc == %d%%",
+				key->getIndex(), highIndex, (int)newperc, (int )perc);
 		}
 		if (searchType >= 0) {
 			SWBuf textBuf = stripText();
@@ -717,15 +713,30 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 			// multiword
 			case -2: { // enclose our allocations
 				int stripped = 0;
-				int twoVerse = 0;
+				int multiVerse = 0;
 				unsigned int foundWords = 0;
 				textBuf = getRawEntry();
 				SWBuf testBuf;
+
+				// Here we loop twice, once for the current verse, to see if we have a simple match within our verse.
+				// This always takes precedence over a windowed search.  If we match a window, but also one verse within
+				// our window matches by itself, prefer the single verse as the hit address-- the larger window is not needed.
+				//
+				// The second loop includes our current verse within the context of the sliding window
+				// Currrently that window size is set to 2 verses, but future plans include allowing this to be configurable
+				// 
 				do {
+					// Herein lies optimization.
+					//
+					// First we check getRawEntry because it's the fastest;
+					// it might return false positives because all the markup is include, but is the quickest
+					// way to eliminate a verse. If it passes, then we do the real work to strip the markup and 
+					// really test the verse for our keywords.
+					//
 					stripped = 0;
 					do {
-						if (stripped||specialStrips||twoVerse) {
-							testBuf = twoVerse ? lastBuf + ' ' + textBuf : textBuf;
+						if (stripped||specialStrips||multiVerse) {
+							testBuf = multiVerse ? lastBuf + ' ' + textBuf : textBuf;
 							if (stripped) testBuf = stripText(testBuf);
 						}
 						else testBuf.setSize(0);
@@ -742,11 +753,11 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 
 						++stripped;
 					} while ( (stripped < 2) && (foundWords == words.size()));
-					++twoVerse;
-				} while ( (twoVerse < 2) && (stripped != 2 || foundWords != words.size()));
+					++multiVerse;
+				} while ( (multiVerse < 2) && (stripped != 2 || foundWords != words.size()));
 
 				if ((stripped == 2) && (foundWords == words.size())) { //we found the right words in both raw and stripped text, which means it's a valid result item
-					*resultKey = (twoVerse == 1) ? *getKey() : *lastKey;
+					*resultKey = (multiVerse == 1) ? *getKey() : *lastKey;
 					resultKey->clearBound();
 					listKey << *resultKey;
 					lastBuf = "";
