@@ -57,7 +57,8 @@ int main(int argc, char **argv) {
 	modFrom->setKey(argv[1]);
 	modTo->setKey(modFrom->getKey());
 
-	cout	<< modFrom->getKeyText()
+	cout	<< "\n"
+		<< modFrom->getKeyText()
 		<< " (" << modFrom->getName() << ") => "
 		<< modTo->getKey()->getRangeText()
 		<< " (" << modTo->getName() << ")\n" << endl;
