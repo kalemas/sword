@@ -35,10 +35,11 @@ using namespace std;
 int main(int argc, char **argv) {
 
 	if (argc < 3) {
-		cerr << "\nUsage: " << *argv << " <key> <moduleNameFrom> <moduleNameTo>\n" << endl;
+		cerr << "\nUsage: " << *argv << " <verse or verseRange> <moduleNameFrom> <moduleNameTo>\n" << endl;
 		exit(-1);
 	}
 
+	const char *verseReference = argv[1];
 	const char *modNameFrom = argv[2];
 	const char *modNameTo = argv[3];
 
@@ -54,14 +55,32 @@ int main(int argc, char **argv) {
                 return -1;
         }
 
-	modFrom->setKey(argv[1]);
-	modTo->setKey(modFrom->getKey());
+	// this is the simple case.  Set source module with key
+	// set destination module with key from source module
+	// modFrom->setKey(verseReference);
+	// modTo->setKey(modFrom->getKey());
 
-	cout	<< "\n"
-		<< modFrom->getKeyText()
-		<< " (" << modFrom->getName() << ") => "
-		<< modTo->getKey()->getRangeText()
-		<< " (" << modTo->getName() << ")\n" << endl;
+	// but we want to support conversion of a range, so we'll
+	// create a VerseKey from our source module and use it
+	// to parse our verse reference and tell it to expand ranges
+	// Then iterate through the result and convert each one.
+	VerseKey *parser = (VerseKey *)modFrom->createKey();
+	ListKey verses = parser->parseVerseList(verseReference, verseReference, true);
+
+	cout << "\n";
+	for (verses = TOP; !verses.popError(); verses++) {
+
+		modTo->setKey(verses);
+
+		cout	<< verses
+			<< " (" << modFrom->getName() << ") => "
+			<< modTo->getKey()->getRangeText()
+			<< " (" << modTo->getName() << ")" << endl;
+	}
+	cout << "\n";
+
+	delete parser;
 
         return 0;
+
 }
