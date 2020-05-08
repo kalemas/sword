@@ -29,6 +29,7 @@
 #include "diathekemgr.h"
 #include "diafiltmgr.h"
 #include <utilstr.h>
+#include <swversion.h>
 
 using std::cout;
 
@@ -37,7 +38,7 @@ using std::cout;
 
 void printsyntax() { 
 	//if we got this far without exiting, something went wrong, so print syntax
-	fprintf (stderr, "Diatheke command-line SWORD frontend Version 4.8\n");
+	fprintf (stderr, "Diatheke command-line SWORD frontend Version 4.8 (with SWORD: %s)\n", SWVersion::currentVersion.getText());
 	fprintf (stderr, "Copyright 1999-2018 by the CrossWire Bible Society\n");
 	fprintf (stderr, "http://www.crosswire.org/sword/diatheke/\n");
 	fprintf (stderr, "\n");

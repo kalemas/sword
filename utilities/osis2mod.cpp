@@ -42,6 +42,7 @@
 #include <utilxml.h>
 #include <listkey.h>
 #include <versekey.h>
+#include <swversion.h>
 
 #include <ztext.h>
 #include <ztext4.h>
@@ -482,7 +483,7 @@ void makeValidRef(VerseKey &key) {
 void writeEntry(SWBuf &text, bool force = false) {
 	char keyOsisID[255];
 
-	static const char* revision = "<milestone type=\"x-importer\" subType=\"x-osis2mod\" n=\"$Rev$\"/>";
+	static SWBuf revision; revision.setFormatted("<milestone type=\"x-importer\" subType=\"x-osis2mod\" n=\"$Rev$ (SWORD: %s)\"/>", SWVersion::currentVersion.getText());
 	static bool firstOT = true;
 	static bool firstNT = true;
 
@@ -1846,7 +1847,7 @@ void processOSIS(istream& infile) {
 
 int main(int argc, char **argv) {
 
-	fprintf(stderr, "You are running osis2mod: $Rev$\n");
+	fprintf(stderr, "You are running osis2mod: $Rev$ (with SWORD: %s)\n", SWVersion::currentVersion.getText());
 	
 	if (argc > 1) {
 		for (int i = 1; i < argc; i++) {
