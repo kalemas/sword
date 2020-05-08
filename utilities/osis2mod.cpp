@@ -1847,7 +1847,7 @@ void processOSIS(istream& infile) {
 
 int main(int argc, char **argv) {
 
-	fprintf(stderr, "You are running osis2mod: $Rev$ (with SWORD: %s)\n", SWVersion::currentVersion.getText());
+	fprintf(stderr, "You are running osis2mod: $Rev$ (SWORD: %s)\n", SWVersion::currentVersion.getText());
 	
 	if (argc > 1) {
 		for (int i = 1; i < argc; i++) {
