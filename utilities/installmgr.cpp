@@ -34,6 +34,7 @@
 #include <swoptfilter.h>
 #include <stdio.h>
 #include <swlog.h>
+#include <swversion.h>
 
 using namespace sword;
 using std::cout;
@@ -387,31 +388,32 @@ void usage(const char *progName, const char *error) {
 	if (error) fprintf(stderr, "\n%s: %s\n", (progName ? progName : "installmgr"), error);
 
 	fprintf(stderr, "\nusage: %s [--allow...] <command> [command ...]\n"
-		"\n\t --allow-internet-access-and-risk-tracing-and-jail-or-martyrdom \n"
-		"\n  This aptly named option will allow the program to connect to the internet without asking for user confirmation\n"
-		"  In many places this may well be a risky or even foolish undertaking.\n"
-		"  Please take special care before you use this option in scripts, particularly in scripts you want to offer for public download.\n" 
-		"  What may appear to be safe for you, may well not be safe for someone else, who uses your scripts. \n"
-		"\n\t --allow-unverified-tls-peer \n"
-		"\n  This option will allow the program to connect to unverified peers\n"
-		"  (e.g., hosts using self-signed certificates) without asking for user confirmation.\n"
-		"\n  Commands (run in order they are passed):\n\n"
-		"\t-init\t\t\t\tcreate a basic user config file.\n"
+		"\t(SWORD: %s)\n"
+		"\n\t--allow-internet-access-and-risk-tracing-and-jail-or-martyrdom \n"
+		"\n\t  This aptly named option will allow the program to connect to the internet without asking for user confirmation\n"
+		"\t  In many places this may well be a risky or even foolish undertaking.\n"
+		"\t  Please take special care before you use this option in scripts, particularly in scripts you want to offer for public download.\n" 
+		"\t  What may appear to be safe for you, may well not be safe for someone else, who uses your scripts. \n"
+		"\n\t--allow-unverified-tls-peer \n"
+		"\n\t  This option will allow the program to connect to unverified peers\n"
+		"\t  (e.g., hosts using self-signed certificates) without asking for user confirmation.\n"
+		"\n\t  Commands (run in order they are passed):\n\n"
+		"\t -init\t\t\t\tcreate a basic user config file.\n"
 		"\t\t\t\t\t\tWARNING: overwrites existing.\n"
-		"\t-sc\t\t\t\tsync config with known remote repo list\n"
+		"\t -sc\t\t\t\tsync config with known remote repo list\n"
 		"\t\t\t\t\t\tNOTE: also creates if none exists\n"
-		"\t-s\t\t\t\tlist remote sources\n"
-		"\t-r  <remoteSrcName>\t\trefresh remote source\n"
-		"\t-rl <remoteSrcName>\t\tlist available modules from remote source\n"
-		"\t-rd <remoteSrcName>\t\tlist new/updated modules from remote source\n"
-		"\t-rdesc <remoteSrcName> <modName>\tdescribe module from remote source\n"
-		"\t-ri <remoteSrcName> <modName>\tinstall module from remote source\n"
-		"\t-l\t\t\t\tlist installed modules\n"
-		"\t-u <modName>\t\t\tuninstall module\n"
-		"\t-ll <path>\t\t\tlist available modules at local path\n"
-		"\t-li <path> <modName>\t\tinstall module from local path\n"
-		"\t-d\t\t\t\tturn debug output on\n"
-		, (progName ? progName : "installmgr"));
+		"\t -s\t\t\t\tlist remote sources\n"
+		"\t -r  <remoteSrcName>\t\trefresh remote source\n"
+		"\t -rl <remoteSrcName>\t\tlist available modules from remote source\n"
+		"\t -rd <remoteSrcName>\t\tlist new/updated modules from remote source\n"
+		"\t -rdesc <remoteSrcName> <modName>\tdescribe module from remote source\n"
+		"\t -ri <remoteSrcName> <modName>\tinstall module from remote source\n"
+		"\t -l\t\t\t\tlist installed modules\n"
+		"\t -u <modName>\t\t\tuninstall module\n"
+		"\t -ll <path>\t\t\tlist available modules at local path\n"
+		"\t -li <path> <modName>\t\tinstall module from local path\n"
+		"\t -d\t\t\t\tturn debug output on\n"
+		, (progName ? progName : "installmgr"), SWVersion::currentVersion.getText());
 	finish(-1);
 }
 
