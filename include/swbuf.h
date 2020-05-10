@@ -454,11 +454,25 @@ public:
 	/**
 	 * Replace with a new byte value all occurances in this buffer of any byte value specified in a set
 	 * @param targets a set of bytes, any of which will be replaced
-	 * @param newByte value to use as replacement.
+	 * @param newByte value to use as replacement or 0 to remove matching byte.
 	 *
 	 * Example: replaceBytes("abc", 'z');  // replaces all occurances of 'a', 'b', and 'c' with 'z'
 	 */
-	inline SWBuf &replaceBytes(const char *targets, char newByte) { for (unsigned int i = 0; (i < size()); i++) { if (strchr(targets, buf[i])) buf[i] = newByte; } return *this; }
+	inline SWBuf &replaceBytes(const char *targets, char newByte) {
+		for (unsigned int i = 0; (i < size()); i++) {
+			if (strchr(targets, buf[i])) {
+				if (newByte) buf[i] = newByte;
+				// delete byte
+				else {
+					if (i < (size()-1)) {
+						memmove(buf+i, buf+i+1, length()-i-1);
+					}
+					(*this)-=1;
+				}
+			}
+		}
+		return *this;
+	}
 
 	/**
 	 * @return returns true if this buffer starts with the specified prefix
