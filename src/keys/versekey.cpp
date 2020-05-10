@@ -137,7 +137,7 @@ void VerseKey::setFromOther(const VerseKey &ikey) {
 		int map_range = map_verse;
 
 		ikey.refSys->translateVerse(refSys, &map_book, &map_chapter, &map_verse, &map_range);
-		//printf("verse: %s.%i.%i-%i\n",map_book,map_chapter,map_verse,map_range);
+		//dbg_mapping SWLog::getSystemLog()->logDebug("verse: %s.%i.%i-%i\n", map_book, map_chapter, map_verse, map_range);
 		
 		book = refSys->getBookNumberByOSISName(map_book);
 
