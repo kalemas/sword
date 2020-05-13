@@ -318,6 +318,7 @@ void writeEntry(SWModule *module, const SWBuf &key, const SWBuf &entry, bool rep
 			if (first) {
 				*linkMaster = *vkey;
 				SWBuf text = (replace) ? "" : module->getRawEntry();
+				if (text.length()) text += " ";
 				text += entry;
 
 
@@ -364,3 +365,4 @@ void writeEntry(SWModule *module, const SWBuf &key, const SWBuf &entry, bool rep
 		delete linkMaster;
 	}
 }
+
