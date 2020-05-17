@@ -194,7 +194,7 @@ public:
 
 	/** clears the boundaries of this VerseKey
 	*/
-	void clearBounds();
+	void clearBounds() const;
 	SWDEPRECATED void ClearBounds() { clearBounds(); }
 
 	/** Creates a new SWKey based on the current VerseKey

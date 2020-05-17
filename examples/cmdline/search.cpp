@@ -51,7 +51,7 @@ int flags = 0
 // for case insensitivity
 | REG_ICASE
 // for enforcing strict verse boundaries
-| SEARCHFLAG_STRICTBOUNDARIES
+//| SEARCHFLAG_STRICTBOUNDARIES
 // for use with entryAttrib search type to match whole entry to value, e.g., G1234 and not G12345
 //| SEARCHFLAG_MATCHWHOLEENTRY
 ;
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 //	SWMgr manager(0, 0, true, new MarkupFilterMgr(FMT_RTF, ENC_RTF));
 	SWMgr manager;
 	SWModule *target;
-	ListKey listkey;
+	ListKey listKey;
 	ListKey *scope = 0;
 	ModMap::iterator it;
 
@@ -119,22 +119,23 @@ int main(int argc, char **argv)
 
 	std::cerr << "[0=================================50===============================100]\n ";
 	char lineLen = 70;
-	listkey = target->search(searchTerm.c_str(), SEARCH_TYPE, flags, scope, 0, &percentUpdate, &lineLen);
+	listKey = target->search(searchTerm.c_str(), SEARCH_TYPE, flags, scope, 0, &percentUpdate, &lineLen);
 	std::cerr << std::endl;
 	if (argc > 4) {			// example: if a second search term is supplied, search again for a second search term, limiting to previous results
-		scope = &listkey;
+		scope = &listKey;
 		printed = 0;
 		std::cerr << " ";
-		listkey = target->search(argv[4], SEARCH_TYPE, flags, scope, 0, &percentUpdate, &lineLen);
+		listKey = target->search(argv[4], SEARCH_TYPE, flags, scope, 0, &percentUpdate, &lineLen);
 		std::cerr << std::endl;
 	}
 // we don't want to sort by verse if we've been given scores
-//	listkey.sort();
-	while (!listkey.popError()) {
-		std::cout << (const char *)listkey;
-		if (listkey.getElement()->userData) std::cout << " : " << (__u64)listkey.getElement()->userData << "%";
+//	listKey.sort();
+	for (listKey = TOP; !listKey.popError(); listKey.nextElement()) {
+		SWKey *k = listKey.getElement();
+		std::cout << k->getRangeText();
+//		std::cout << (const char *)listKey;
+		if (k->userData) std::cout << " : " << (__u64)k->userData << "%";
 		std::cout << std::endl;
-		listkey++;
 	}
 
 	return 0;

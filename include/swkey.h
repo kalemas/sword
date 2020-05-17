@@ -180,7 +180,7 @@ public:
 	virtual const char *getRangeText() const;
 	virtual const char *getOSISRefRangeText() const;
 	virtual bool isBoundSet() const { return boundSet; }
-	virtual void clearBound() const { boundSet = false; }
+	virtual void clearBounds() const { boundSet = false; }
 
 	/** Compares this key object to another SWKey object
 	 * @param ikey key to compare with this one

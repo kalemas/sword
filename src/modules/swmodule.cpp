@@ -426,6 +426,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 	SWKey *searchKey = 0;
 	SWKey *resultKey = createKey();
 	SWKey *lastKey   = createKey();
+	VerseKey *vkCheck = SWDYNAMIC_CAST(VerseKey, resultKey);
 	SWBuf lastBuf = "";
 
 #ifdef USECXX11REGEX
@@ -680,7 +681,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 			if (!regexec(&preg, textBuf, 0, 0, 0)) {
 #endif
 				*resultKey = *getKey();
-				resultKey->clearBound();
+				resultKey->clearBounds();
 				listKey << *resultKey;
 				lastBuf = "";
 			}
@@ -695,8 +696,18 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 #else
 			else if (!regexec(&preg, lastBuf + ' ' + textBuf, 0, 0, 0)) {
 #endif
-				lastKey->clearBound();
-				listKey << *lastKey;
+				lastKey->clearBounds();
+				if (vkCheck) {
+					resultKey->clearBounds();
+					*resultKey = *getKey();
+					vkCheck->setUpperBound(resultKey);
+					vkCheck->setLowerBound(lastKey);
+				}
+				else {
+					*resultKey = *lastKey;
+					resultKey->clearBounds();
+				}
+				listKey << *resultKey;
 				lastBuf = (windowSize > 1) ? textBuf : "";
 			}
 			else {
@@ -718,7 +729,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 				sres = strstr(textBuf.c_str(), term.c_str());
 				if (sres) { //it's also in the stripText(), so we have a valid search result item now
 					*resultKey = *getKey();
-					resultKey->clearBound();
+					resultKey->clearBounds();
 					listKey << *resultKey;
 				}
 				break;
@@ -771,8 +782,16 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 				} while ((windowSize > 1) && (multiVerse < 2) && (stripped != 2 || foundWords != words.size()));
 
 				if ((stripped == 2) && (foundWords == words.size())) { //we found the right words in both raw and stripped text, which means it's a valid result item
-					*resultKey = (multiVerse == 1) ? *getKey() : *lastKey;
-					resultKey->clearBound();
+					lastKey->clearBounds();
+					resultKey->clearBounds();
+					*resultKey = (multiVerse > 1 && !vkCheck) ? *lastKey : *getKey();
+					if (multiVerse > 1 && vkCheck) {
+						vkCheck->setUpperBound(resultKey);
+						vkCheck->setLowerBound(lastKey);
+					}
+					else {
+						resultKey->clearBounds();
+					}
 					listKey << *resultKey;
 					lastBuf = "";
 					// if we're searching windowSize > 1 and we had a hit which required the current verse
@@ -850,7 +869,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 								}
 								if (sres) {
 									*resultKey = *getKey();
-									resultKey->clearBound();
+									resultKey->clearBounds();
 									listKey << *resultKey;
 									break;
 								}

@@ -1199,16 +1199,14 @@ VerseKey &VerseKey::getUpperBound() const
  * VerseKey::clearBounds	- clears bounds for this VerseKey
  */
 
-void VerseKey::clearBounds()
-{
+void VerseKey::clearBounds() const {
 	delete tmpClone;
 	tmpClone = 0;
 	boundSet = false;
 }
 
 
-void VerseKey::initBounds() const
-{
+void VerseKey::initBounds() const {
 	if (!tmpClone) {
 		tmpClone = (VerseKey *)this->clone();
 		tmpClone->setAutoNormalize(false);
