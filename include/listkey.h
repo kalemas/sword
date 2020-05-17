@@ -133,6 +133,8 @@ public:
 	 */
 	virtual void increment(int step = 1);
 
+	virtual void nextElement() { setToElement(arraypos + 1); }
+
 	virtual bool isTraversable() const { return true; }
 	virtual long getIndex() const { return arraypos; }
 	virtual const char *getRangeText() const;
