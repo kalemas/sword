@@ -111,7 +111,7 @@ cout << currentVerse << endl;
 
 	VerseKey *x = new VerseKey(); //(VerseKey *)mod->CreateKey();
 	*x = scope;
-	x->clearBound();
+	x->clearBounds();
 
 	std::cout << "x: " << x->getText() << "\n";
 
