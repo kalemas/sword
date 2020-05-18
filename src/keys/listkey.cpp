@@ -327,6 +327,22 @@ const char *ListKey::getOSISRefRangeText() const {
 
 
 /******************************************************************************
+ * ListKey::getShortRangeText - returns short parsable range text for this key
+ */
+
+const char *ListKey::getShortRangeText() const {
+	SWBuf buf;
+	for (int i = 0; i < arraycnt; i++) {
+		buf += array[i]->getShortRangeText();
+		if (i < arraycnt-1)
+			buf += "; ";
+	}
+	stdstr(&rangeText, buf.c_str());
+	return rangeText;
+}
+
+
+/******************************************************************************
  * ListKey::getText - returns text key if (const char *) cast is requested
  */
 

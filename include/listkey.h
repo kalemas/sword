@@ -139,6 +139,7 @@ public:
 	virtual long getIndex() const { return arraypos; }
 	virtual const char *getRangeText() const;
 	virtual const char *getOSISRefRangeText() const;
+	virtual const char *getShortRangeText() const;
 	virtual const char *getShortText() const;
 
 	/**

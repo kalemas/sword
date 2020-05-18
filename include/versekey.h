@@ -436,6 +436,7 @@ public:
 	virtual ListKey parseVerseList(const char *buf, const char *defaultKey = 0, bool expandRange = false, bool useChapterAsVerse = false);
 	SWDEPRECATED ListKey ParseVerseList(const char *buf, const char *defaultKey = 0, bool expandRange = false, bool useChapterAsVerse = false) { return parseVerseList(buf, defaultKey, expandRange, useChapterAsVerse); }
 	virtual const char *getRangeText() const;
+	virtual const char *getShortRangeText() const;
 	virtual const char *getOSISRefRangeText() const;
 	/** Compares another	SWKey object
 	*

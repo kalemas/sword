@@ -1842,6 +1842,31 @@ const char *VerseKey::getRangeText() const {
 
 
 /******************************************************************************
+ * VerseKey::getShortRangeText - returns short parsable range text for this key
+ */
+
+const char *VerseKey::getShortRangeText() const {
+	if (isBoundSet() && (lowerBound != upperBound)) {
+		SWBuf buf = getLowerBound().getShortText();
+		buf += "-";
+		if ( getUpperBound().getTestament() == getLowerBound().getTestament()
+		  && getUpperBound().getBook() == getLowerBound().getBook()
+		  && getUpperBound().getChapter() == getLowerBound().getChapter()) {
+			buf.appendFormatted("%d", getUpperBound().getVerse());
+		}
+		else if ( getUpperBound().getTestament() == getLowerBound().getTestament()
+		       && getUpperBound().getBook() == getLowerBound().getBook()) {
+			buf.appendFormatted("%d:%d", getUpperBound().getChapter(), getUpperBound().getVerse());
+		}
+		else buf += getUpperBound().getShortText();
+		stdstr(&rangeText, buf.c_str());
+	}
+	else stdstr(&rangeText, getShortText());
+	return rangeText;
+}
+
+
+/******************************************************************************
  * VerseKey::getOSISRefRangeText - returns parsable range text for this key
  */
 
