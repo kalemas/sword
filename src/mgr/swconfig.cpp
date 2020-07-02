@@ -145,18 +145,22 @@ void SWConfig::save() const {
 }
 
 
-void SWConfig::augment(SWConfig &addFrom) {
+void SWConfig::augment(const SWConfig &addFrom) {
 
-	SectionMap::iterator section;
-	ConfigEntMap::iterator entry, start, end;
+	SectionMap::const_iterator section;
+	ConfigEntMap::const_iterator entry, start, end;
 
 	for (section = addFrom.getSections().begin(); section != addFrom.getSections().end(); ++section) {
 		for (entry = (*section).second.begin(); entry != (*section).second.end(); ++entry) {
 			start = getSections()[section->first].lower_bound(entry->first);
 			end   = getSections()[section->first].upper_bound(entry->first);
+			// do we have multiple instances of the same key?
 			if (start != end) {
-				if (((++start) != end)
-						|| ((++(addFrom.getSections()[section->first].lower_bound(entry->first))) != addFrom.getSections()[section->first].upper_bound(entry->first))) {
+				// TODO: what is this?
+				ConfigEntMap::const_iterator x = addFrom.getSections().find(section->first)->second.lower_bound(entry->first);
+				ConfigEntMap::const_iterator y = addFrom.getSections().find(section->first)->second.upper_bound(entry->first);
+				++x;
+				if (((++start) != end) || (x != y)) {
 					for (--start; start != end; ++start) {
 						if (!strcmp(start->second.c_str(), entry->second.c_str()))
 							break;

@@ -67,7 +67,7 @@ public:
 	/** Merges into this config the values from addFrom
 	 * @param addFrom The config which values should be merged to this config object. Already existing values will be overwritten.
 	 */
-	virtual void augment(SWConfig &addFrom);
+	virtual void augment(const SWConfig &addFrom);
 
 	/** Get a specified section from config, creating the section if needed
 	 * There is no const version of this method because it returns a ConfigEntMap reference, creating the requested section if it doesn't exist.
@@ -92,7 +92,7 @@ public:
 
 	/** shorthand operator for augment
 	 */
-	SWConfig &operator +=(SWConfig &addFrom) { augment(addFrom); return *this; }
+	SWConfig &operator +=(const SWConfig &addFrom) { augment(addFrom); return *this; }
 
 	/** get a value from a [section] key=value
 	 * @param section  the section name containing the key
