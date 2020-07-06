@@ -42,12 +42,12 @@ class SWDLLEXPORT TreeKeyIdx : public TreeKey {
 		TreeNode();
 		~TreeNode();
 		void clear();
-		__s32 offset;
-		__s32 parent;
-		__s32 next;
-		__s32 firstChild;
+		SW_s32 offset;
+		SW_s32 parent;
+		SW_s32 next;
+		SW_s32 firstChild;
 		char *name;
-		__u16 dsize;
+		SW_u16 dsize;
 		char *userData;
 	} currentNode;
 

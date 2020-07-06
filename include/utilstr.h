@@ -85,8 +85,8 @@ extern const unsigned char SW_tolower_array[256];
  * 		unicode codepoint value (0 with buf incremented is invalid UTF8 byte
  */
 
-inline __u32 getUniCharFromUTF8(const unsigned char **buf, bool skipValidation = false) {
-	__u32 ch = 0;
+inline SW_u32 getUniCharFromUTF8(const unsigned char **buf, bool skipValidation = false) {
+	SW_u32 ch = 0;
 
 	//case: We're at the end
 	if (!(**buf)) {
@@ -162,7 +162,7 @@ inline __u32 getUniCharFromUTF8(const unsigned char **buf, bool skipValidation =
  * 		to work with
  */
 
-inline SWBuf *getUTF8FromUniChar(__u32 uchar, SWBuf *appendTo) {
+inline SWBuf *getUTF8FromUniChar(SW_u32 uchar, SWBuf *appendTo) {
 	unsigned long base = appendTo->size();
 
 	// This would be out of Unicode bounds

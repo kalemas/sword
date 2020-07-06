@@ -42,7 +42,7 @@ namespace {
 		return &oVals;
 	}
 
-	std::map<__u32, SWBuf> converters;
+	std::map<SW_u32, SWBuf> converters;
 	class converters_init {
 	public:
 		converters_init() {
@@ -350,9 +350,9 @@ char UTF8GreekAccents::processText(SWBuf &text, const SWKey *key, const SWModule
 		SWBuf orig = text;
 		const unsigned char* from = (unsigned char*)orig.c_str();
 		text = "";
-		map<__u32, SWBuf>::const_iterator it = converters.end();
+		map<SW_u32, SWBuf>::const_iterator it = converters.end();
 		while (*from) {		
-			__u32 ch = getUniCharFromUTF8(&from, true);
+			SW_u32 ch = getUniCharFromUTF8(&from, true);
 			// if ch is bad, then convert to replacement char
 			if (!ch) ch = 0xFFFD;
 

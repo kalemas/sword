@@ -187,7 +187,7 @@ void RawFiles::deleteEntry() {
 
 const char *RawFiles::getNextFilename() {
 	static SWBuf incfile;
-	__u32 number = 0;
+	SW_u32 number = 0;
 	FileDesc *datafile;
 
 	incfile.setFormatted("%s/incfile", path);
@@ -213,7 +213,7 @@ const char *RawFiles::getNextFilename() {
 char RawFiles::createModule(const char *path) {
 	char *incfile = new char [ strlen (path) + 16 ];
 
-	__u32 zero = 0;
+	SW_u32 zero = 0;
 	zero = archtosword32(zero);
 
 	FileDesc *datafile;

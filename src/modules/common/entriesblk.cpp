@@ -37,13 +37,13 @@ EntriesBlock::EntriesBlock(const char *iBlock, unsigned long size) {
 		memcpy(block, iBlock, size);
 	}
 	else {
-		block = (char *)calloc(1, sizeof(__u32));
+		block = (char *)calloc(1, sizeof(SW_u32));
 	}
 }
 
 
 EntriesBlock::EntriesBlock() {
-	block = (char *)calloc(1, sizeof(__u32));
+	block = (char *)calloc(1, sizeof(SW_u32));
 }
 
 
@@ -53,22 +53,22 @@ EntriesBlock::~EntriesBlock() {
 
 
 void EntriesBlock::setCount(int count) {
-	__u32 rawCount = archtosword32(count);
-	memcpy(block, &rawCount, sizeof(__u32));
+	SW_u32 rawCount = archtosword32(count);
+	memcpy(block, &rawCount, sizeof(SW_u32));
 }
 
 
 int EntriesBlock::getCount() {
-	__u32 count = 0;
-	memcpy(&count, block, sizeof(__u32));
+	SW_u32 count = 0;
+	memcpy(&count, block, sizeof(SW_u32));
 	count = swordtoarch32(count);
 	return count;
 }
 
 
 void EntriesBlock::getMetaEntry(int index, unsigned long *offset, unsigned long *size) {
-	__u32 rawOffset = 0;
-	__u32 rawSize = 0;
+	SW_u32 rawOffset = 0;
+	SW_u32 rawSize = 0;
 	*offset = 0;
 	*size = 0;
 	if (index >= getCount())	// assert index < count
@@ -84,8 +84,8 @@ void EntriesBlock::getMetaEntry(int index, unsigned long *offset, unsigned long 
 
 
 void EntriesBlock::setMetaEntry(int index, unsigned long offset, unsigned long size) {
-	__u32 rawOffset = (__u32)archtosword32(offset);
-	__u32 rawSize = (__u32)archtosword32(size);
+	SW_u32 rawOffset = (SW_u32)archtosword32(offset);
+	SW_u32 rawSize = (SW_u32)archtosword32(size);
 
 	if (index >= getCount())	// assert index < count
 		return;

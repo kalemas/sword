@@ -123,8 +123,8 @@ void RawVerse4::findOffset(char testmt, long idxoff, long *start, unsigned long 
 		
 	if (idxfp[testmt-1]->getFd() >= 0) {
 		idxfp[testmt-1]->seek(idxoff, SEEK_SET);
-		__u32 tmpStart;
-		__u32 tmpSize;
+		SW_u32 tmpStart;
+		SW_u32 tmpSize;
 		idxfp[testmt-1]->read(&tmpStart, 4);
 		long len = idxfp[testmt-1]->read(&tmpSize, 4); 		// read size
 
@@ -178,16 +178,16 @@ void RawVerse4::readText(char testmt, long start, unsigned long size, SWBuf &buf
 
 void RawVerse4::doSetText(char testmt, long idxoff, const char *buf, long len)
 {
-	__u32 start;
-	__u32 size;
+	SW_u32 start;
+	SW_u32 size;
 
 	idxoff *= 8;
 	if (!testmt)
 		testmt = ((idxfp[1]) ? 1:2);
 
-	size = (__u32)((len < 0) ? strlen(buf) : len);
+	size = (SW_u32)((len < 0) ? strlen(buf) : len);
 
-	start = (__u32)textfp[testmt-1]->seek(0, SEEK_END);
+	start = (SW_u32)textfp[testmt - 1]->seek(0, SEEK_END);
 	idxfp[testmt-1]->seek(idxoff, SEEK_SET);
 
 	if (size) {
@@ -218,8 +218,8 @@ void RawVerse4::doSetText(char testmt, long idxoff, const char *buf, long len)
  */
 
 void RawVerse4::doLinkEntry(char testmt, long destidxoff, long srcidxoff) {
-	__u32 start;
-	__u32 size;
+	SW_u32 start;
+	SW_u32 size;
 
 	destidxoff *= 8;
 	srcidxoff  *= 8;
@@ -282,8 +282,8 @@ char RawVerse4::createModule(const char *ipath, const char *v11n)
 	VerseKey vk;
 	vk.setVersificationSystem(v11n);
 	vk.setIntros(1);
-	__u32 offset = 0;
-	__u32 size = 0;
+	SW_u32 offset = 0;
+	SW_u32 size = 0;
 	offset = archtosword32(offset);
 	size   = archtosword32(size);
 

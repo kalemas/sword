@@ -556,7 +556,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 			Xapian::MSetIterator i;
 			for (i = h.begin(); i != h.end(); ++i) {
 //				cout << "Document ID " << *i << "\t";
-				__u64 score = i.get_percent();
+				SW_u64 score = i.get_percent();
 				Xapian::Document doc = i.get_document();
 				*resultKey = doc.get_data().c_str();
 #elif defined USELUCENE
@@ -564,7 +564,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 				Document &doc = h->doc(i);
 				// set a temporary verse key to this module position
 				*resultKey = wcharToUTF8(doc.get(_T("key"))); //TODO Does a key always accept utf8?
-				__u64 score = (__u64)((__u32)(h->score(i)*100));
+				SW_u64 score = (SW_u64)((SW_u32)(h->score(i) * 100));
 #endif
 
 				// check to see if it sets ok (within our bounds) and if not, skip

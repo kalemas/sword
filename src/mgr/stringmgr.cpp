@@ -145,10 +145,10 @@ class ICUStringMgr : public StringMgr {
 public:
 	virtual char *upperUTF8(char *, unsigned int maxlen = 0) const;
 	virtual char *lowerUTF8(char *, unsigned int maxlen = 0) const;
-	virtual bool isUpper(__u32 character) const;
-	virtual bool isLower(__u32 character) const;
-	virtual bool isDigit(__u32 character) const;
-	virtual bool isAlpha(__u32 character) const;
+	virtual bool isUpper(SW_u32 character) const;
+	virtual bool isLower(SW_u32 character) const;
+	virtual bool isDigit(SW_u32 character) const;
+	virtual bool isAlpha(SW_u32 character) const;
 	
 protected:
 	virtual bool supportsUnicode() const { return true; };
@@ -276,16 +276,16 @@ char *StringMgr::lowerUTF8(char *t, unsigned int maxlen) const {
 	return t;
 }
 
-bool StringMgr::isUpper(__u32 character) const {
+bool StringMgr::isUpper(SW_u32 character) const {
 	return isupper(character);
 }
-bool StringMgr::isLower(__u32 character) const {
+bool StringMgr::isLower(SW_u32 character) const {
 	return islower(character);
 }
-bool StringMgr::isDigit(__u32 character) const {
+bool StringMgr::isDigit(SW_u32 character) const {
 	return isdigit(character);
 }
-bool StringMgr::isAlpha(__u32 character) const {
+bool StringMgr::isAlpha(SW_u32 character) const {
 	return isalpha(character);
 }
 
@@ -389,16 +389,16 @@ char *ICUStringMgr::lowerUTF8(char *buf, unsigned int maxlen) const {
 	return ret;
 }
 
-bool ICUStringMgr::isUpper(__u32 character) const {
+bool ICUStringMgr::isUpper(SW_u32 character) const {
 	return u_isupper(character);
 }
-bool ICUStringMgr::isLower(__u32 character) const {
+bool ICUStringMgr::isLower(SW_u32 character) const {
 	return u_islower(character);
 }
-bool ICUStringMgr::isDigit(__u32 character) const {
+bool ICUStringMgr::isDigit(SW_u32 character) const {
 	return u_isdigit(character);
 }
-bool ICUStringMgr::isAlpha(__u32 character) const {
+bool ICUStringMgr::isAlpha(SW_u32 character) const {
 	return u_isalpha(character);
 }
 	

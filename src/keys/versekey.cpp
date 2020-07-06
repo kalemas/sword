@@ -776,7 +776,7 @@ terminate_range:
 					lastKey->setPosition(TOP);
 					tmpListKey << *lastKey;
 					((VerseKey *)tmpListKey.getElement())->setAutoNormalize(isAutoNormalize());
-					tmpListKey.getElement()->userData = (__u64)(bufStart+(buf-iBuf.c_str()));
+					tmpListKey.getElement()->userData = (SW_u64)(bufStart + (buf - iBuf.c_str()));
 				}
 				else {
 					if (!dash) { 	// if last separator was not a dash just add
@@ -790,7 +790,7 @@ terminate_range:
 							*lastKey = TOP;
 							tmpListKey << *lastKey;
 							((VerseKey *)tmpListKey.getElement())->setAutoNormalize(isAutoNormalize());
-							tmpListKey.getElement()->userData = (__u64)(bufStart+(buf-iBuf.c_str()));
+							tmpListKey.getElement()->userData = (SW_u64)(bufStart + (buf - iBuf.c_str()));
 						}
 						else {
 							bool f = false;
@@ -805,7 +805,7 @@ terminate_range:
 							*lastKey = TOP;
 							tmpListKey << *lastKey;
 							((VerseKey *)tmpListKey.getElement())->setAutoNormalize(isAutoNormalize());
-							tmpListKey.getElement()->userData = (__u64)(bufStart+(buf-iBuf.c_str()));
+							tmpListKey.getElement()->userData = (SW_u64)(bufStart + (buf - iBuf.c_str()));
 						}
 					}
 					else	if (expandRange) {
@@ -818,7 +818,7 @@ terminate_range:
 							newElement->setUpperBound(*curKey);
 							*lastKey = *curKey;
 							*newElement = TOP;
-							tmpListKey.getElement()->userData = (__u64)(bufStart+(buf-iBuf.c_str()));
+							tmpListKey.getElement()->userData = (SW_u64)(bufStart + (buf - iBuf.c_str()));
 						}
 					}
 				}
@@ -1049,7 +1049,7 @@ terminate_range:
 			lastKey->setLowerBound(*curKey);
 			*lastKey = TOP;
 			tmpListKey << *lastKey;
-			tmpListKey.getElement()->userData = (__u64)(bufStart+(buf-iBuf.c_str()));
+			tmpListKey.getElement()->userData = (SW_u64)(bufStart + (buf - iBuf.c_str()));
 		}
 		else {
 			if (!dash) { 	// if last separator was not a dash just add
@@ -1062,7 +1062,7 @@ terminate_range:
 					lastKey->setUpperBound(*curKey);
 					*lastKey = TOP;
 					tmpListKey << *lastKey;
-					tmpListKey.getElement()->userData = (__u64)(bufStart+(buf-iBuf.c_str()));
+					tmpListKey.getElement()->userData = (SW_u64)(bufStart + (buf - iBuf.c_str()));
 				}
 				else {
 					bool f = false;
@@ -1076,7 +1076,7 @@ terminate_range:
 					lastKey->setUpperBound(*curKey);
 					*lastKey = TOP;
 					tmpListKey << *lastKey;
-					tmpListKey.getElement()->userData = (__u64)(bufStart+(buf-iBuf.c_str()));
+					tmpListKey.getElement()->userData = (SW_u64)(bufStart + (buf - iBuf.c_str()));
 				}
 			}
 			else if (expandRange) {
@@ -1088,7 +1088,7 @@ terminate_range:
 						*curKey = MAXVERSE;
 					newElement->setUpperBound(*curKey);
 					*newElement = TOP;
-					tmpListKey.getElement()->userData = (__u64)(bufStart+(buf-iBuf.c_str()));
+					tmpListKey.getElement()->userData = (SW_u64)(bufStart + (buf - iBuf.c_str()));
 				}
 			}
 		}

@@ -73,8 +73,8 @@ bool RawLD::isWritable() const {
 
 char RawLD::getEntry(long away) const
 {
-	__u32 start = 0;
-	__u16 size = 0;
+	SW_u32 start = 0;
+	SW_u16 size = 0;
 	char *idxbuf = 0;
 	char retval = 0;
 
@@ -195,8 +195,8 @@ long RawLD::getEntryCount() const {
 
 
 long RawLD::getEntryForKey(const char *key) const {
-	__u32 start, offset;
-	__u16 size;
+	SW_u32 start, offset;
+	SW_u16 size;
 	
 	char *buf = new char [ strlen(key) + 6 ];
 	strcpy(buf, key);

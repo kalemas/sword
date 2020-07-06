@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
 		}
 		const unsigned char *c = (const unsigned char *)filteredContents.getRawData();
 		// UTF-32 BOM
-		__u32 ch = 0xfeff;
+		SW_u32 ch = 0xfeff;
 //		write(STDOUT_FILENO, &ch, 4);
 		while (c && *c) {
 			ch = getUniCharFromUTF8(&c);

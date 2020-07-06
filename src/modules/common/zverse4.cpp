@@ -147,9 +147,9 @@ zVerse4::~zVerse4()
 
 void zVerse4::findOffset(char testmt, long idxoff, long *start, unsigned long *size, unsigned long *buffnum) const
 {
-	__u32 ulBuffNum    = 0;	          // buffer number
-	__u32 ulVerseStart = 0;	       // verse offset within buffer
-	__u32 usVerseSize  = 0;	       // verse size
+	SW_u32 ulBuffNum    = 0;	          // buffer number
+	SW_u32 ulVerseStart = 0;	       // verse offset within buffer
+	SW_u32 usVerseSize  = 0;	       // verse size
 	// set start to offset in
 	// set size to
 	// set
@@ -202,9 +202,9 @@ void zVerse4::findOffset(char testmt, long idxoff, long *start, unsigned long *s
  */
 
 void zVerse4::zReadText(char testmt, long start, unsigned long size, unsigned long ulBuffNum, SWBuf &inBuf) const {
-	__u32 ulCompOffset = 0;	       // compressed buffer start
-	__u32 ulCompSize   = 0;	             // buffer size compressed
-	__u32 ulUnCompSize = 0;	          // buffer size uncompressed
+	SW_u32 ulCompOffset = 0;	       // compressed buffer start
+	SW_u32 ulCompSize   = 0;	             // buffer size compressed
+	SW_u32 ulUnCompSize = 0;	          // buffer size uncompressed
 
 	if (!testmt) {
 		testmt = ((idxfp[0]) ? 1:2);
@@ -310,14 +310,14 @@ void zVerse4::doSetText(char testmt, long idxoff, const char *buf, long len) {
 
 	dirtyCache = true;
 
-	__u32 start;
-	__u32 size;
-	__u32 outBufIdx = (__u32)cacheBufIdx;
+	SW_u32 start;
+	SW_u32 size;
+	SW_u32 outBufIdx = (SW_u32)cacheBufIdx;
 
 	idxoff *= 12;
-	size = (__u32)len;
+	size = (SW_u32)len;
 
-	start = (__u32)strlen(cacheBuf);
+	start = (SW_u32)strlen(cacheBuf);
 
 	if (!size)
 		start = outBufIdx = 0;
@@ -336,28 +336,28 @@ void zVerse4::doSetText(char testmt, long idxoff, const char *buf, long len) {
 
 void zVerse4::flushCache() const {
 	if (dirtyCache) {
-		__u32 idxoff;
-		__u32 start, outstart;
-		__u32 size, outsize;
-		__u32 zsize, outzsize;
+		SW_u32 idxoff;
+		SW_u32 start, outstart;
+		SW_u32 size, outsize;
+		SW_u32 zsize, outzsize;
 
-		idxoff = (__u32)cacheBufIdx * 12;
+		idxoff = (SW_u32)cacheBufIdx * 12;
 		if (cacheBuf) {
-			size = outsize = zsize = outzsize = (__u32)strlen(cacheBuf);
+			size = outsize = zsize = outzsize = (SW_u32)strlen(cacheBuf);
 			if (size) {
 				compressor->Buf(cacheBuf);
 				unsigned long tmpSize;
 				compressor->zBuf(&tmpSize);
-				outzsize = zsize = (__u32)tmpSize;
+				outzsize = zsize = (SW_u32)tmpSize;
 
 				SWBuf buf;
 				buf.setSize(zsize + 5);
 				memcpy(buf.getRawData(), compressor->zBuf(&tmpSize), tmpSize);
-				outzsize = zsize = (__u32)tmpSize;
+				outzsize = zsize = (SW_u32)tmpSize;
 				buf.setSize(zsize);
 				rawZFilter(buf, 1); // 1 = encipher
 
-				start = outstart = (__u32)textfp[cacheTestament-1]->seek(0, SEEK_END);
+				start = outstart = (SW_u32)textfp[cacheTestament - 1]->seek(0, SEEK_END);
 
 				outstart  = archtosword32(start);
 				outsize   = archtosword32(size);
@@ -386,9 +386,9 @@ void zVerse4::flushCache() const {
  */
 
 void zVerse4::doLinkEntry(char testmt, long destidxoff, long srcidxoff) {
-	__s32 bufidx;
-	__s32 start;
-	__u32 size;
+	SW_s32 bufidx;
+	SW_s32 start;
+	SW_u32 size;
 
 	destidxoff *= 12;
 	srcidxoff  *= 12;
@@ -423,8 +423,8 @@ char zVerse4::createModule(const char *ipath, int blockBound, const char *v11n)
 	char *buf = new char [ strlen (ipath) + 20 ];
 	char retVal = 0;
 	FileDesc *fd, *fd2;
-	__s32 offset = 0;
-	__s32 size = 0;
+	SW_s32 offset = 0;
+	SW_s32 size = 0;
 	VerseKey vk;
 
 	stdstr(&path, ipath);

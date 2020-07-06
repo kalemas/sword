@@ -114,7 +114,7 @@ protected:
 public:
 
 	// misc storage for whatever
-	__u64 userData;
+	SW_u64 userData;
 
 	/** initializes instance of SWKey from a string
 	 * All keys can be reduced to a string representation which should be able

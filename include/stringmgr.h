@@ -70,10 +70,10 @@ public:
 	*/	
 	virtual char *lowerUTF8(char *text, unsigned int max = 0) const;
 
-	virtual bool isUpper(__u32 character) const;
-	virtual bool isLower(__u32 character) const;
-	virtual bool isDigit(__u32 character) const;
-	virtual bool isAlpha(__u32 character) const;
+	virtual bool isUpper(SW_u32 character) const;
+	virtual bool isLower(SW_u32 character) const;
+	virtual bool isDigit(SW_u32 character) const;
+	virtual bool isAlpha(SW_u32 character) const;
    
 	/** Converts the param to an uppercase latin1 string
 	* @param text The text encoded in latin1 which should be turned into an upper case string

@@ -42,7 +42,7 @@ public:
 	virtual void Decode(void);
 	virtual void setLevel(int l);
 private:
-	__u64 memlimit; // memory usage limit during decompression
+	SW_u64 memlimit; // memory usage limit during decompression
 };
 
 SWORD_NAMESPACE_END

@@ -167,7 +167,7 @@ void zStr::getKeyFromDatOffset(long ioffset, char **buf) const
 
 void zStr::getKeyFromIdxOffset(long ioffset, char **buf) const
 {
-	__u32 offset;
+	SW_u32 offset;
 	
 	if (idxfd && idxfd->getFd() >= 0) {
 		idxfd->seek(ioffset, SEEK_SET);
@@ -194,13 +194,13 @@ signed char zStr::findKeyIndex(const char *ikey, long *idxoff, long away) const
 {
 	char *maxbuf = 0, *trybuf = 0, *key = 0, quitflag = 0;
 	signed char retval = 0;
-	__s32 headoff, tailoff, tryoff = 0, maxoff = 0;
-	__u32 start, size;
+	SW_s32 headoff, tailoff, tryoff = 0, maxoff = 0;
+	SW_u32 start, size;
 	int diff = 0;
 	bool awayFromSubstrCheck = false;
 
 	if (idxfd->getFd() >= 0) {
-		tailoff = maxoff = (__s32)idxfd->seek(0, SEEK_END) - IDXENTRYSIZE;
+		tailoff = maxoff = (SW_s32)idxfd->seek(0, SEEK_END) - IDXENTRYSIZE;
 		if (*ikey) {
 			headoff = 0;
 			stdstr(&key, ikey, 3);
@@ -212,7 +212,7 @@ signed char zStr::findKeyIndex(const char *ikey, long *idxoff, long away) const
 			getKeyFromIdxOffset(maxoff, &maxbuf);
 
 			while (headoff < tailoff) {
-				tryoff = ((__s32)lastoff == -1) ? headoff + (((((tailoff / IDXENTRYSIZE) - (headoff / IDXENTRYSIZE))) / 2) * IDXENTRYSIZE) : (__s32)lastoff;
+				tryoff = ((SW_s32)lastoff == -1) ? headoff + (((((tailoff / IDXENTRYSIZE) - (headoff / IDXENTRYSIZE))) / 2) * IDXENTRYSIZE) : (SW_s32)lastoff;
 				lastoff = -1;
 
 				getKeyFromIdxOffset(tryoff, &trybuf);
@@ -268,9 +268,9 @@ signed char zStr::findKeyIndex(const char *ikey, long *idxoff, long away) const
 			*idxoff = tryoff;
 
 		while (away) {
-			__u32 laststart = start;
-			__u32 lastsize = size;
-			__s32 lasttry = tryoff;
+			SW_u32 laststart = start;
+			SW_u32 lastsize = size;
+			SW_s32 lasttry = tryoff;
 			tryoff += (away > 0) ? IDXENTRYSIZE : -IDXENTRYSIZE;
 
 			bool bad = false;
@@ -328,8 +328,8 @@ void zStr::getText(long offset, char **idxbuf, char **buf) const {
 	char *ch;
 	char *idxbuflocal = 0;
 	getKeyFromIdxOffset(offset, &idxbuflocal);
-	__u32 start;
-	__u32 size;
+	SW_u32 start;
+	SW_u32 size;
 
 	do {
 		idxfd->seek(offset, SEEK_SET);
@@ -368,16 +368,16 @@ void zStr::getText(long offset, char **idxbuf, char **buf) const {
 	while (true);	// while we're resolving links
 
 	if (idxbuflocal) {
-		__u32 localsize = (__u32)strlen(idxbuflocal);
+		SW_u32 localsize = (SW_u32)strlen(idxbuflocal);
 		localsize = (localsize < (size - 1)) ? localsize : (size - 1);
 		strncpy(*idxbuf, idxbuflocal, localsize);
 		(*idxbuf)[localsize] = 0;
 		free(idxbuflocal);
 	}
-	__u32 block = 0;
-	__u32 entry = 0;
-	memmove(&block, *buf, sizeof(__u32));
-	memmove(&entry, *buf + sizeof(__u32), sizeof(__u32));
+	SW_u32 block = 0;
+	SW_u32 entry = 0;
+	memmove(&block, *buf, sizeof(SW_u32));
+	memmove(&entry, *buf + sizeof(SW_u32), sizeof(SW_u32));
 	block = swordtoarch32(block);
 	entry = swordtoarch32(entry);
 	getCompressedText(block, entry, buf);
@@ -391,10 +391,10 @@ void zStr::getText(long offset, char **idxbuf, char **buf) const {
 
 void zStr::getCompressedText(long block, long entry, char **buf) const {
 
-	__u32 size = 0;
+	SW_u32 size = 0;
 
 	if (cacheBlockIndex != block) {
-		__u32 start = 0;
+		SW_u32 start = 0;
 
 		zdxfd->seek(block * ZDXENTRYSIZE, SEEK_SET);
 		zdxfd->read(&start, 4);
@@ -418,7 +418,7 @@ void zStr::getCompressedText(long block, long entry, char **buf) const {
 		cacheBlock = new EntriesBlock(rawBuf, len);
 		cacheBlockIndex = block;
 	}
-	size = (__u32)cacheBlock->getEntrySize(entry);
+	size = (SW_u32)cacheBlock->getEntrySize(entry);
 	*buf = (*buf) ? (char *)realloc(*buf, size*2 + 1) : (char *)malloc(size*2 + 1);
 	strcpy(*buf, cacheBlock->getEntry(entry));
 }
@@ -436,11 +436,11 @@ void zStr::setText(const char *ikey, const char *buf, long len) {
 
 	static const char nl[] = {13, 10};
 
-	__u32 start, outstart;
-	__u32 size, outsize;
-	__s32 endoff;
+	SW_u32 start, outstart;
+	SW_u32 size, outsize;
+	SW_s32 endoff;
 	long idxoff = 0;
-	__s32 shiftSize;
+	SW_s32 shiftSize;
 	char *tmpbuf = 0;
 	char *key = 0;
 	char *dbKey = 0;
@@ -499,9 +499,9 @@ void zStr::setText(const char *ikey, const char *buf, long len) {
 		}
 	}
 
-	endoff = (__s32)idxfd->seek(0, SEEK_END);
+	endoff = (SW_s32)idxfd->seek(0, SEEK_END);
 
-	shiftSize = endoff - (__s32)idxoff;
+	shiftSize = endoff - (SW_s32)idxoff;
 
 	if (shiftSize > 0) {
 	        idxBytes = new char [ shiftSize ];
@@ -511,7 +511,7 @@ void zStr::setText(const char *ikey, const char *buf, long len) {
 
 	outbuf = new char [ len + strlen(key) + 5 ];
 	sprintf(outbuf, "%s%c%c", key, 13, 10);
-	size = (__u32)strlen(outbuf);
+	size = (SW_u32)strlen(outbuf);
 	if (len > 0) {	// NOT a link
 		if (!cacheBlock) {
 			flushCache();
@@ -523,20 +523,20 @@ void zStr::setText(const char *ikey, const char *buf, long len) {
 			cacheBlock = new EntriesBlock();
 			cacheBlockIndex = (zdxfd->seek(0, SEEK_END) / ZDXENTRYSIZE);
 		}
-		__u32 entry = cacheBlock->addEntry(buf);
+		SW_u32 entry = cacheBlock->addEntry(buf);
 		cacheDirty = true;
-		outstart = (__u32)archtosword32(cacheBlockIndex);
+		outstart = (SW_u32)archtosword32(cacheBlockIndex);
 		outsize = archtosword32(entry);
-		memcpy (outbuf + size, &outstart, sizeof(__u32));
-		memcpy (outbuf + size + sizeof(__u32), &outsize, sizeof(__u32));
-		size += (sizeof(__u32) * 2);
+		memcpy (outbuf + size, &outstart, sizeof(SW_u32));
+		memcpy (outbuf + size + sizeof(SW_u32), &outsize, sizeof(SW_u32));
+		size += (sizeof(SW_u32) * 2);
 	}
 	else {	// link
 		memcpy(outbuf + size, buf, len);
 		size += len;
 	}
 
-	start = (__u32)datfd->seek(0, SEEK_END);
+	start = (SW_u32)datfd->seek(0, SEEK_END);
 
 	outstart = archtosword32(start);
 	outsize  = archtosword32(size);
@@ -593,9 +593,9 @@ void zStr::flushCache() const {
 
 	if (cacheBlock) {
 		if (cacheDirty) {
-			__u32 start = 0;
+			SW_u32 start = 0;
 			unsigned long size = 0;
-			__u32 outstart = 0, outsize = 0;
+			SW_u32 outstart = 0, outsize = 0;
 
 			const char *rawBuf = cacheBlock->getRawData(&size);
 			compressor->Buf(rawBuf, &size);
@@ -611,7 +611,7 @@ void zStr::flushCache() const {
 			unsigned long zdtSize = zdtfd->seek(0, SEEK_END);
 
 			if ((cacheBlockIndex * ZDXENTRYSIZE) > (zdxSize - ZDXENTRYSIZE)) {	// New Block
-				start = (__u32)zdtSize;
+				start = (SW_u32)zdtSize;
 			}
 			else {
 				zdxfd->seek(cacheBlockIndex * ZDXENTRYSIZE, SEEK_SET);
@@ -626,14 +626,14 @@ void zStr::flushCache() const {
 					size = outsize;
 				}
 				else {	// middle and bigger-- we have serious problems, for now let's put it at the end = lots of wasted space
-					start = (__u32)zdtSize;
+					start = (SW_u32)zdtSize;
 				}
 			}
 
 
 
 			outstart = archtosword32(start);
-			outsize  = archtosword32((__u32)size);
+			outsize  = archtosword32((SW_u32)size);
 
 			zdxfd->seek(cacheBlockIndex * ZDXENTRYSIZE, SEEK_SET);
 			zdtfd->seek(start, SEEK_SET);

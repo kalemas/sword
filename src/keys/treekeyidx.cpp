@@ -177,7 +177,7 @@ bool TreeKeyIdx::nextSibling() {
 
 bool TreeKeyIdx::previousSibling() {
 	TreeNode iterator;
-	__s32 target = currentNode.offset;
+	SW_s32 target = currentNode.offset;
 	if (currentNode.parent > -1) {
 		getTreeNodeFromIdxOffset(currentNode.parent, &iterator);
 		getTreeNodeFromIdxOffset(iterator.firstChild, &iterator);
@@ -207,10 +207,10 @@ void TreeKeyIdx::append() {
 		while (lastSib.next > -1) {
 			getTreeNodeFromIdxOffset(lastSib.next, &lastSib);
 		}
-		__u32 idxOffset = (__u32)idxfd->seek(0, SEEK_END);
+		SW_u32 idxOffset = (SW_u32)idxfd->seek(0, SEEK_END);
 		lastSib.next = idxOffset;
 		saveTreeNodeOffsets(&lastSib);
-		__u32 parent = currentNode.parent;
+		SW_u32 parent = currentNode.parent;
 		currentNode.clear();
 		currentNode.offset = idxOffset;
 		currentNode.parent = parent;
@@ -224,10 +224,10 @@ void TreeKeyIdx::appendChild() {
 		append();
 	}
 	else {
-		__u32 idxOffset = (__u32)idxfd->seek(0, SEEK_END);
+		SW_u32 idxOffset = (SW_u32)idxfd->seek(0, SEEK_END);
 		currentNode.firstChild = idxOffset;
 		saveTreeNodeOffsets(&currentNode);
-		__u32 parent = currentNode.offset;
+		SW_u32 parent = currentNode.offset;
 		currentNode.clear();
 		currentNode.offset = idxOffset;
 		currentNode.parent = parent;
@@ -257,7 +257,7 @@ void TreeKeyIdx::remove() {
 		}
 		if (!done) {
 			TreeNode iterator;
-			__s32 target = currentNode.offset;
+			SW_s32 target = currentNode.offset;
 			if (currentNode.parent > -1) {
 				getTreeNodeFromIdxOffset(currentNode.parent, &iterator);
 				getTreeNodeFromIdxOffset(iterator.firstChild, &iterator);
@@ -331,8 +331,8 @@ signed char TreeKeyIdx::create(const char *ipath) {
 void TreeKeyIdx::getTreeNodeFromDatOffset(long ioffset, TreeNode *node) const {
 	unsnappedKeyText = "";
 	char ch;
-	__s32  tmp;
-	__u16  tmp2;
+	SW_s32  tmp;
+	SW_u16  tmp2;
 
 	if (datfd && datfd->getFd() >= 0) {
 
@@ -379,7 +379,7 @@ void TreeKeyIdx::getTreeNodeFromDatOffset(long ioffset, TreeNode *node) const {
 
 char TreeKeyIdx::getTreeNodeFromIdxOffset(long ioffset, TreeNode *node) const {
 	unsnappedKeyText = "";
-	__u32 offset;
+	SW_u32 offset;
 	char error = KEYERR_OUTOFBOUNDS;
 	
 	if (ioffset < 0) {
@@ -387,7 +387,7 @@ char TreeKeyIdx::getTreeNodeFromIdxOffset(long ioffset, TreeNode *node) const {
 		error = 77;	// out of bounds but still position to 0;
 	}
 
-	node->offset = (__s32)ioffset;
+	node->offset = (SW_s32)ioffset;
 	if (idxfd && idxfd->getFd() >= 0) {
 		idxfd->seek(ioffset, SEEK_SET);
 		if (idxfd->read(&offset, 4) == 4) {
@@ -421,13 +421,13 @@ void TreeKeyIdx::setOffset(unsigned long offset) {
 void TreeKeyIdx::saveTreeNodeOffsets(TreeNode *node) {
 	unsnappedKeyText = "";
 	long datOffset = 0;
-	__s32 tmp;
+	SW_s32 tmp;
 
 	if (idxfd && idxfd->getFd() >= 0) {
 		idxfd->seek(node->offset, SEEK_SET);
 		if (idxfd->read(&tmp, 4) != 4) {
 			datOffset = datfd->seek(0, SEEK_END);
-			tmp = (__s32)archtosword32(datOffset);
+			tmp = (SW_s32)archtosword32(datOffset);
 			idxfd->write(&tmp, 4);
 		}
 		else {
@@ -435,13 +435,13 @@ void TreeKeyIdx::saveTreeNodeOffsets(TreeNode *node) {
 			datfd->seek(datOffset, SEEK_SET);
 		}
 
-		tmp = (__s32)archtosword32(node->parent);
+		tmp = (SW_s32)archtosword32(node->parent);
 		datfd->write(&tmp, 4);
 
-		tmp = (__s32)archtosword32(node->next);
+		tmp = (SW_s32)archtosword32(node->next);
 		datfd->write(&tmp, 4);
 
-		tmp = (__s32)archtosword32(node->firstChild);
+		tmp = (SW_s32)archtosword32(node->firstChild);
 		datfd->write(&tmp, 4);
 	}
 }
@@ -488,12 +488,12 @@ void TreeKeyIdx::copyFrom(const TreeKeyIdx &ikey) {
 
 void TreeKeyIdx::saveTreeNode(TreeNode *node) {
 	long datOffset = 0;
-	__s32 tmp;
+	SW_s32 tmp;
 	if (idxfd && idxfd->getFd() >= 0) {
 
 		idxfd->seek(node->offset, SEEK_SET);
 		datOffset = datfd->seek(0, SEEK_END);
-		tmp = (__s32)archtosword32(datOffset);
+		tmp = (SW_s32)archtosword32(datOffset);
 		idxfd->write(&tmp, 4);
 
 		saveTreeNodeOffsets(node);
@@ -502,7 +502,7 @@ void TreeKeyIdx::saveTreeNode(TreeNode *node) {
 		char null = 0;
 		datfd->write(&null, 1);
 
-		__u16 tmp2 = archtosword16(node->dsize);
+		SW_u16 tmp2 = archtosword16(node->dsize);
 		datfd->write(&tmp2, 2);
 
 		if (node->dsize) {
