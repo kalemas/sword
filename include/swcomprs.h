@@ -41,8 +41,8 @@ public:
   virtual ~ SWCompress ();
   virtual char *Buf (const char *buf = 0, unsigned long *len = 0);
   virtual char *zBuf (unsigned long *len, char *buf = 0);
-  virtual unsigned long GetChars (char *buf, unsigned long len);	// override for other than buffer compression
-  virtual unsigned long SendChars (char *buf, unsigned long len);	// override for other than buffer compression
+  virtual unsigned long getChars (char *buf, unsigned long len);	// override for other than buffer compression
+  virtual unsigned long sendChars (char *buf, unsigned long len);	// override for other than buffer compression
   virtual void encode (void);	// override to provide compression algorythm
   virtual void decode (void);	// override to provide compression algorythm
   virtual void setLevel(int l) {level = l;};

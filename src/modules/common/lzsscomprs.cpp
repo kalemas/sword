@@ -421,7 +421,7 @@ void LZSSCompress::encode(void)
 	// This function loads the buffer with X characters and returns
 	// the actual amount loaded.
 
-	len = GetChars((char *) &(p->m_ring_buffer[r]), F);
+	len = getChars((char *) &(p->m_ring_buffer[r]), F);
 
 	// Make sure there is something to be compressed.
 
@@ -491,7 +491,7 @@ void LZSSCompress::encode(void)
 			// code_buf is the buffer of characters to be output.
 			// code_buf_pos is the number of characters it contains.
 
-			SendChars((char *) code_buf, code_buf_pos);
+			sendChars((char *) code_buf, code_buf_pos);
 
 			// Reset for next buffer...
 
@@ -507,7 +507,7 @@ void LZSSCompress::encode(void)
 		for (i = 0; i < last_match_length; i++) {
 			// Get next character...
 
-			if (GetChars((char *) &c, 1) != 1)
+			if (getChars((char *) &c, 1) != 1)
 				break;
 
 			// Delete "old strings"
@@ -591,7 +591,7 @@ void LZSSCompress::encode(void)
 		// code_buf is the encoded string to send.
 		// code_buf_ptr is the number of characters.
 
-		SendChars((char *) code_buf, code_buf_pos);
+		sendChars((char *) code_buf, code_buf_pos);
 	}
 
 
@@ -647,7 +647,7 @@ void LZSSCompress::decode(void)
 		else {
 			// Next byte must be a flag.
 
-			if (GetChars((char *) &flags, 1) != 1)
+			if (getChars((char *) &flags, 1) != 1)
 				break;
 
 			// Set the flag counter.  While at first it might appear
@@ -662,10 +662,10 @@ void LZSSCompress::decode(void)
 		// that the next byte is a single, unencoded character.
 
 		if (flags & 1) {
-			if (GetChars((char *) c, 1) != 1)
+			if (getChars((char *) c, 1) != 1)
 				break;
 
-			if (SendChars((char *) c, 1) != 1) {
+			if (sendChars((char *) c, 1) != 1) {
 				break;
 			}
 			totalLen++;
@@ -693,7 +693,7 @@ void LZSSCompress::decode(void)
 			// have changed the variable names to something more
 			// obvious.
 
-			if (GetChars((char *) c, 2) != 2)
+			if (getChars((char *) c, 2) != 2)
 				break;
 
 			// Convert these two characters into the position and
@@ -720,7 +720,7 @@ void LZSSCompress::decode(void)
 
 			// Add the "len" :characters to the output stream.
 
-			if (SendChars((char *) c, len) != (unsigned int)len) {
+			if (sendChars((char *) c, len) != (unsigned int)len) {
 				break;
 			}
 			totalLen += len;
