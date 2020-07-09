@@ -38,8 +38,8 @@ public:
 	XzCompress();
 	virtual ~XzCompress();
 
-	virtual void Encode(void);
-	virtual void Decode(void);
+	virtual void encode(void);
+	virtual void decode(void);
 	virtual void setLevel(int l);
 private:
 	SW_u64 memlimit; // memory usage limit during decompression

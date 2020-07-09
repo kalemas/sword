@@ -47,8 +47,8 @@ public:
     virtual ~ SWCipher ();
   virtual char *Buf (const char *buf = 0, unsigned long len = 0);
   virtual char *cipherBuf (unsigned long *len, const char *buf = 0);
-  virtual void Encode (void);
-  virtual void Decode (void);
+  virtual void encode (void);
+  virtual void decode (void);
   static SWBuf personalize(const SWBuf &buf, bool encode);
 };
 

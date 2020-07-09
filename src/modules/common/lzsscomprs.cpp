@@ -355,7 +355,7 @@ void LZSSCompress::Private::DeleteNode(short int Node)
 
 
 /******************************************************************************
- * LZSSCompress::Encode	- This function "encodes" the input stream into the
+ * LZSSCompress::encode	- This function "encodes" the input stream into the
  *						output stream.
  *						The GetChars() and SendChars() functions are
  *						used to separate this method from the actual
@@ -364,7 +364,7 @@ void LZSSCompress::Private::DeleteNode(short int Node)
  * 						compressed buffer.
  */
 
-void LZSSCompress::Encode(void)
+void LZSSCompress::encode(void)
 {
 	short int i;						// an iterator
 	short int r;						// node number in the binary tree
@@ -601,14 +601,14 @@ void LZSSCompress::Encode(void)
 
 
 /******************************************************************************
- * LZSSCompress::Decode	- This function "decodes" the input stream into the
+ * LZSSCompress::decode	- This function "decodes" the input stream into the
  *						output stream.
  *						The GetChars() and SendChars() functions are
  *						used to separate this method from the actual
  *						i/o.
  */
 
-void LZSSCompress::Decode(void)
+void LZSSCompress::decode(void)
 {
 	int k;
 	int r;							  // node number

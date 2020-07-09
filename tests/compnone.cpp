@@ -52,8 +52,8 @@ public:
 	~FileCompress();
 	unsigned long GetChars(char *, unsigned long len);
 	unsigned long SendChars(char *, unsigned long len);
-	void Encode();
-	void Decode();
+	void encode();
+	void decode();
 };
 
 
@@ -87,21 +87,21 @@ unsigned long FileCompress::SendChars(char *buf, unsigned long len)
 }
 
 
-void FileCompress::Encode() 
+void FileCompress::encode() 
 {
 	ifd = ufd;
 	ofd = zfd;
 
-	SWCompress::Encode();
+	SWCompress::encode();
 }
 
 
-void FileCompress::Decode() 
+void FileCompress::decode() 
 {
 	ifd = zfd;
 	ofd = ufd;
 
-	SWCompress::Decode();
+	SWCompress::decode();
 }
 
 
@@ -125,8 +125,8 @@ int main(int argc, char **argv)
 	fobj = new FileCompress(argv[1]);
 	
 	if (decomp)
-		fobj->Decode();
-	else fobj->Encode();
+		fobj->decode();
+	else fobj->encode();
 
 	delete fobj;
 }

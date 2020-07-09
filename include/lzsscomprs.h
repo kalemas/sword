@@ -37,8 +37,8 @@ class Private;
 public:
 	LZSSCompress ();
 	virtual ~LZSSCompress();
-	virtual void Encode(void);
-	virtual void Decode(void);
+	virtual void encode(void);
+	virtual void decode(void);
 };
 
 SWORD_NAMESPACE_END

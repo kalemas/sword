@@ -82,7 +82,7 @@ char *SWCipher::Buf(const char *ibuf, unsigned long ilen)
 		cipher = false;
 	}
 
-	Decode();
+	decode();
 
 	return buf;
 }
@@ -101,7 +101,7 @@ char *SWCipher::cipherBuf(unsigned long *ilen, const char *ibuf)
 		cipher = true;
 	}
 
-	Encode();
+	encode();
 
 	*ilen = len;
 	return buf;
@@ -109,14 +109,14 @@ char *SWCipher::cipherBuf(unsigned long *ilen, const char *ibuf)
 
 
 /******************************************************************************
- * SWCipher::Encode	- This function "encodes" the input stream into the
+ * SWCipher::encode	- This function "encodes" the input stream into the
  *						output stream.
  *						The GetChars() and SendChars() functions are
  *						used to separate this method from the actual
  *						i/o.
  */
 
-void SWCipher::Encode(void)
+void SWCipher::encode(void)
 {
 	if (!cipher) {
 		work = master;
@@ -128,14 +128,14 @@ void SWCipher::Encode(void)
 
 
 /******************************************************************************
- * SWCipher::Decode	- This function "decodes" the input stream into the
+ * SWCipher::decode	- This function "decodes" the input stream into the
  *						output stream.
  *						The GetChars() and SendChars() functions are
  *						used to separate this method from the actual
  *						i/o.
  */
 
-void SWCipher::Decode(void)
+void SWCipher::decode(void)
 {
 	if (cipher) {
 		work = master;

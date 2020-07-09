@@ -43,8 +43,8 @@ public:
   virtual char *zBuf (unsigned long *len, char *buf = 0);
   virtual unsigned long GetChars (char *buf, unsigned long len);	// override for other than buffer compression
   virtual unsigned long SendChars (char *buf, unsigned long len);	// override for other than buffer compression
-  virtual void Encode (void);	// override to provide compression algorythm
-  virtual void Decode (void);	// override to provide compression algorythm
+  virtual void encode (void);	// override to provide compression algorythm
+  virtual void decode (void);	// override to provide compression algorythm
   virtual void setLevel(int l) {level = l;};
   virtual int getLevel() {return level;};
 };

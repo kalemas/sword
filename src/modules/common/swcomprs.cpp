@@ -85,7 +85,7 @@ char *SWCompress::Buf(const char *ibuf, unsigned long *len) {
 	if (!buf) {
 		buf = (char *)calloc(1,1); // be sure we at least allocate an empty buf for return;
 		direct = 1;
-		Decode();
+		decode();
 //		slen = strlen(buf);
 		if (len)
 			*len = slen;
@@ -107,7 +107,7 @@ char *SWCompress::zBuf(unsigned long *len, char *ibuf)
 	// getting a compressed buffer
 	if (!zbuf) {
 		direct = 0;
-		Encode();
+		encode();
 	}
 
 	*len = zlen;
@@ -176,21 +176,21 @@ unsigned long SWCompress::SendChars(char *ibuf, unsigned long len)
  *						i/o.
  */
 
-void SWCompress::Encode(void)
+void SWCompress::encode(void)
 {
 	cycleStream();
 }
 
 
 /******************************************************************************
- * SWCompress::Decode	- This function "decodes" the input stream into the
+ * SWCompress::decode	- This function "decodes" the input stream into the
  *						output stream.
  *						The GetChars() and SendChars() functions are
  *						used to separate this method from the actual
  *						i/o.
  */
 
-void SWCompress::Decode(void)
+void SWCompress::decode(void)
 {
 	cycleStream();
 }

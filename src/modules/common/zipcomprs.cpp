@@ -51,7 +51,7 @@ ZipCompress::~ZipCompress() {
 
 
 /******************************************************************************
- * ZipCompress::Encode	- This function "encodes" the input stream into the
+ * ZipCompress::encode	- This function "encodes" the input stream into the
  *						output stream.
  *						The GetChars() and SendChars() functions are
  *						used to separate this method from the actual
@@ -60,7 +60,7 @@ ZipCompress::~ZipCompress() {
  * 						compressed buffer.
  */
 
-void ZipCompress::Encode(void)
+void ZipCompress::encode(void)
 {
 /*
 ZEXTERN int ZEXPORT compress2 OF((Bytef *dest,   uLongf *destLen,
@@ -119,14 +119,14 @@ ZEXTERN int ZEXPORT compress2 OF((Bytef *dest,   uLongf *destLen,
 
 
 /******************************************************************************
- * ZipCompress::Decode	- This function "decodes" the input stream into the
+ * ZipCompress::decode	- This function "decodes" the input stream into the
  *						output stream.
  *						The GetChars() and SendChars() functions are
  *						used to separate this method from the actual
  *						i/o.
  */
 
-void ZipCompress::Decode(void)
+void ZipCompress::decode(void)
 {
 /*
 ZEXTERN int ZEXPORT uncompress OF((Bytef *dest,   uLongf *destLen,
