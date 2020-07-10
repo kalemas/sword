@@ -134,7 +134,7 @@ int main(int argc, char **argv)
 		SWKey *k = listKey.getElement();
 		std::cout << k->getRangeText();
 //		std::cout << (const char *)listKey;
-		if (k->userData) std::cout << " : " << (__u64)k->userData << "%";
+		if (k->userData) std::cout << " : " << (SW_u64)k->userData << "%";
 		std::cout << std::endl;
 	}
 
