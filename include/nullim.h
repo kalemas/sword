@@ -31,7 +31,7 @@ class SWDLLEXPORT NullIM : public SWInputMethod {
 
 public:
 	NullIM();
-	int * translate(char ch);
+	int *translate(char ch);
 };
 
 SWORD_NAMESPACE_END

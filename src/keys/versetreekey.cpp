@@ -261,7 +261,7 @@ void VerseTreeKey::Normalize(char autocheck) {
 	error = 0;
 }
 
-long VerseTreeKey::NewIndex() const {
+long VerseTreeKey::newIndex() const {
 	return treeKey->getOffset();
 }
 

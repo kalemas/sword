@@ -116,12 +116,6 @@ protected:
 	*/
 	virtual char parse(bool checkNormalize = true);
 public:
-#if 0
-	static long otbks[];
-	static long otcps[];
-	static long ntbks[];
-	static long ntcps[];
-#endif
 	int BMAX[2];
 
 	/**

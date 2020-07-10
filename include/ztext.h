@@ -29,13 +29,6 @@
 
 #include <defs.h>
 
-namespace lucene { namespace index {
-class IndexReader;
-}}
-
-namespace lucene { namespace search {
-class IndexSearcher;
-}}
 
 SWORD_NAMESPACE_START
 

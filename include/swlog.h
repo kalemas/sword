@@ -53,11 +53,13 @@ public:
 	void logWarning(const char *fmt, ...) const;
 	void logError(const char *fmt, ...) const;
 	void logInformation(const char *fmt, ...) const;
-	virtual void logTimedInformation(const char *fmt, ...) const;
 	void logDebug(const char *fmt, ...) const;
 
 	// Override this method if you want to have a custom logger
 	virtual void logMessage(const char *message, int level) const;
+
+	// Override if you need to use a special OS clock for timing
+	virtual void logTimedInformation(const char *fmt, ...) const;
 };
 
 SWORD_NAMESPACE_END

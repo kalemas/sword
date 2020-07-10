@@ -140,14 +140,17 @@ public:
          */
 	virtual int installModule(SWMgr *destMgr, const char *fromLocation, const char *modName, InstallSource *is = 0);
 
+
         /** call to obtain and locally cache the available content list of the remote source
          */
 	virtual int refreshRemoteSource(InstallSource *is);
+
 
         /** call to populate installmgr configuration with all known
          *  remote sources from the master list at CrossWire
          */
 	virtual int refreshRemoteSourceConfiguration();
+
 
 	/** Override this and provide an input mechanism to allow your users
 	 *  to confirm that they understand this important disclaimer.
@@ -161,39 +164,45 @@ public:
          *
 	 *  User disclaimer should ask user for confirmation of 2 critical items:
 	 *  and the default answer should be NO
-	 *  (possibly the wrong language for the disclaimer)
+	 *  (due to possibly the wrong language for the disclaimer)
 	 *
-
-A sample impl:
-
-	static bool confirmed = false;
-        if (!confirmed) {
-		cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-		cout << "                -=+* WARNING *+=- -=+* WARNING *+=-\n\n\n";
-		cout << "Although Install Manager provides a convenient way for installing\n";
-		cout << "and upgrading SWORD components, it also uses a systematic method\n";
-		cout << "for accessing sites which gives packet sniffers a target to lock\n";
-		cout << "into for singling out users. \n\n\n";
-		cout << "IF YOU LIVE IN A PERSECUTED COUNTRY AND DO NOT WISH TO RISK DETECTION,\n";
-		cout << "YOU SHOULD *NOT* USE INSTALL MANAGER'S REMOTE SOURCE FEATURES.\n\n\n";
-		cout << "Also, Remote Sources other than CrossWire may contain less than\n";
-		cout << "quality modules, modules with unorthodox content, or even modules\n";
-		cout << "which are not legitimately distributable.  Many repositories\n";
-		cout << "contain wonderfully useful content.  These repositories simply\n";
-		cout << "are not reviewed or maintained by CrossWire and CrossWire\n";
-		cout << "cannot be held responsible for their content. CAVEAT EMPTOR.\n\n\n";
-		cout << "If you understand this and are willing to enable remote source features\n";
-		cout << "then type yes at the prompt\n\n";
-		cout << "enable? [no] ";
-
-		char prompt[10];
-		fgets(prompt, 9, stdin);
-		confirmed = (!strcmp(prompt, "yes\n"));
-        }
-        return confirmed;
-
+	 *  1) detection OK (Not in persecuted country)
+	 *  2) repos other than CrossWire may have questionable content
+	 *
+	 *  A sample default impl is provided below:
+	 *
          */
-	virtual bool isUserDisclaimerConfirmed() const { return userDisclaimerConfirmed; }
+	virtual bool isUserDisclaimerConfirmed() const; /* {
+
+		bool confirmed = userDisclaimerConfirmed;
+		
+		if (!confirmed) {
+			cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+			cout << "                -=+* WARNING *+=- -=+* WARNING *+=-\n\n\n";
+			cout << "Although Install Manager provides a convenient way for installing\n";
+			cout << "and upgrading SWORD components, it also uses a systematic method\n";
+			cout << "for accessing sites which gives packet sniffers a target to lock\n";
+			cout << "into for singling out users. \n\n\n";
+			cout << "IF YOU LIVE IN A PERSECUTED COUNTRY AND DO NOT WISH TO RISK DETECTION,\n";
+			cout << "YOU SHOULD *NOT* USE INSTALL MANAGER'S REMOTE SOURCE FEATURES.\n\n\n";
+			cout << "Also, Remote Sources other than CrossWire may contain less than\n";
+			cout << "quality modules, modules with unorthodox content, or even modules\n";
+			cout << "which are not legitimately distributable.  Many repositories\n";
+			cout << "contain wonderfully useful content.  These repositories simply\n";
+			cout << "are not reviewed or maintained by CrossWire and CrossWire\n";
+			cout << "cannot be held responsible for their content. CAVEAT EMPTOR.\n\n\n";
+			cout << "If you understand this and are willing to enable remote source features\n";
+			cout << "then type yes at the prompt\n\n";
+			cout << "enable? [no] ";
+
+			char prompt[10];
+			fgets(prompt, 9, stdin);
+			confirmed = (!strcmp(prompt, "yes\n"));
+			cout << "\n";
+		}
+		return confirmed;
+	} */
+
 
 	/** Preferred method of reporting user disclaimer confirmation is to override the above method
 	 * instead of using the setter below. This is provided for clients who don't wish to inherit
@@ -206,39 +215,46 @@ A sample impl:
 	 * to enter the decipher code for a module.
 	 * return true you added the cipher code to the config.
 	 * default to return 'aborted'
+	 */
+	virtual bool getCipherCode(const char *modName, SWConfig *config) {
+		(void) modName; (void) config;	// to avoid "unused variable" warnings
+		return false;
 
-A sample implementation, roughly taken from the windows installmgr:
+		/*
+		A sample implementation, roughly taken from the windows installmgr:
 
-	SectionMap::iterator section;
-	ConfigEntMap::iterator entry;
-	SWBuf tmpBuf;
-	section = config->Sections.find(modName);
-	if (section != config->Sections.end()) {
-		entry = section->second.find("CipherKey");
-		if (entry != section->second.end()) {
-			entry->second = GET_USER_INPUT();
-			config->Save();
+		SectionMap::iterator section;
+		ConfigEntMap::iterator entry;
+		SWBuf tmpBuf;
+		section = config->Sections.find(modName);
+		if (section != config->Sections.end()) {
+			entry = section->second.find("CipherKey");
+			if (entry != section->second.end()) {
+				entry->second = ASK_USER_FOR_CIPHER_CODE();
+				config->Save();
 
-			// LET'S SHOW THE USER SOME SAMPLE TEXT FROM THE MODULE
-			SWMgr *mgr = new SWMgr();
-			SWModule *mod = mgr->getModule(modName);
-			mod->setKey("Ipet 2:12");
-			tmpBuf = mod->StripText();
-			mod->setKey("gen 1:10");
-			tmpBuf += "\n\n";
-			tmpBuf += mod->StripText();
-			SOME_DIALOG_CONTROL->SETTEXT(tmpBuf.c_str());
-			delete mgr;
+				// LET'S SHOW THE USER SOME SAMPLE TEXT FROM THE MODULE
+				SWMgr *mgr = new SWMgr();
+				SWModule *mod = mgr->getModule(modName);
+				mod->setKey("Ipet 2:12");
+				tmpBuf = mod->StripText();
+				mod->setKey("gen 1:10");
+				tmpBuf += "\n\n";
+				tmpBuf += mod->StripText();
+				if (SOME_DIALOG_CONFIRMATION(SWBuf(
+							"Using your provided cipher code,	\
+							here is the data from the module.	\
+							Does this look good?\n\n") + tmpBuf.c_str())) {
 
-			// if USER CLICKS OK means we should return true
-			return true;
+					// if USER CLICKS OK means we should return true
+					return true;
+				}
+				delete mgr;
+			}
 		}
+		return false;
+		*/
 	}
-	return false;
-}
-	*/
-
-	virtual bool getCipherCode(const char *modName, SWConfig *config) { (void) modName; (void) config; return false; }
 
 
 

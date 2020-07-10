@@ -36,7 +36,7 @@ SWCompress::SWCompress()
 {
 	buf = zbuf = 0;
 	level = 6;
-	Init();
+	init();
 }
 
 
@@ -54,7 +54,7 @@ SWCompress::~SWCompress()
 }
 
 
-void SWCompress::Init()
+void SWCompress::init()
 {
 		if (buf)
 			free(buf);
@@ -72,51 +72,53 @@ void SWCompress::Init()
 }
 
 
-char *SWCompress::Buf(const char *ibuf, unsigned long *len) {
-	// setting an uncompressed buffer
+void SWCompress::setUncompressedBuf(const char *ibuf, unsigned long *len) {
 	if (ibuf) {
-		Init();
+		init();
 		slen = (len) ? *len : strlen(ibuf);
 		buf = (char *) calloc(slen + 1, 1);
 		memcpy(buf, ibuf, slen);
 	}
-
-	// getting an uncompressed buffer
 	if (!buf) {
 		buf = (char *)calloc(1,1); // be sure we at least allocate an empty buf for return;
 		direct = 1;
 		decode();
-//		slen = strlen(buf);
-		if (len)
-			*len = slen;
+		*len = slen;
 	}
+}
+
+char *SWCompress::getUncompressedBuf(unsigned long *len) {
+	if (!buf) {
+		buf = (char *)calloc(1,1); // be sure we at least allocate an empty buf for return;
+		direct = 1;
+		decode();
+	}
+	if (len) *len = slen;
 	return buf;
 }
 
 
-char *SWCompress::zBuf(unsigned long *len, char *ibuf)
-{
-	// setting a compressed buffer
+void SWCompress::setCompressedBuf(unsigned long *len, char *ibuf) {
 	if (ibuf) {
-		Init();
+		init();
 		zbuf = (char *) malloc(*len);
 		memcpy(zbuf, ibuf, *len);
 		zlen = *len;
 	}
+	*len = zlen;
+}
 
-	// getting a compressed buffer
+char *SWCompress::getCompressedBuf(unsigned long *len) {
 	if (!zbuf) {
 		direct = 0;
 		encode();
 	}
-
-	*len = zlen;
+	if (len) *len = zlen;
 	return zbuf;
 }
 
 
-unsigned long SWCompress::getChars(char *ibuf, unsigned long len)
-{
+unsigned long SWCompress::getChars(char *ibuf, unsigned long len) {
 	if (direct) {
 		len = (((zlen - zpos) > (unsigned)len) ? len : zlen - zpos);
 		if (len > 0) {
@@ -136,8 +138,7 @@ unsigned long SWCompress::getChars(char *ibuf, unsigned long len)
 }
 	
 
-unsigned long SWCompress::sendChars(char *ibuf, unsigned long len)
-{
+unsigned long SWCompress::sendChars(char *ibuf, unsigned long len) {
 	if (direct) {
 		if (buf) {
 //			slen = strlen(buf);
@@ -176,8 +177,7 @@ unsigned long SWCompress::sendChars(char *ibuf, unsigned long len)
  *						i/o.
  */
 
-void SWCompress::encode(void)
-{
+void SWCompress::encode(void) {
 	cycleStream();
 }
 
@@ -190,8 +190,7 @@ void SWCompress::encode(void)
  *						i/o.
  */
 
-void SWCompress::decode(void)
-{
+void SWCompress::decode(void) {
 	cycleStream();
 }
 

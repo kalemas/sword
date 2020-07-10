@@ -261,7 +261,7 @@ void zVerse::zReadText(char testmt, long start, unsigned short size, unsigned lo
 		rawZFilter(pcCompText, 0); // 0 = decipher
 		
 		unsigned long bufSize = ulCompSize;
-		compressor->zBuf(&bufSize, pcCompText.getRawData());
+		compressor->setCompressedBuf(&bufSize, pcCompText.getRawData());
 
 		if (cacheBuf) {
 			flushCache();
@@ -269,9 +269,9 @@ void zVerse::zReadText(char testmt, long start, unsigned short size, unsigned lo
 		}
 		
 		unsigned long len = 0;
-		compressor->Buf(0, &len);
+		compressor->setUncompressedBuf(0, &len);
 		cacheBuf = (char *)calloc(len + 1, 1);
-		memcpy(cacheBuf, compressor->Buf(), len);
+		memcpy(cacheBuf, compressor->getUncompressedBuf(), len);
 		cacheBufSize = (int)strlen(cacheBuf);  // TODO: can we just use len?
 		cacheTestament = testmt;
 		cacheBufIdx = ulBuffNum;
@@ -351,14 +351,14 @@ void zVerse::flushCache() const {
 	//				delete compressor;
 	//				compressor = new LZSSCompress();
 	//			}
-				compressor->Buf(cacheBuf);
+				compressor->setUncompressedBuf(cacheBuf);
 				unsigned long tmpSize;
-				compressor->zBuf(&tmpSize);
+				compressor->getCompressedBuf(&tmpSize);
 				outzsize = zsize = (SW_u32)tmpSize;
 
 				SWBuf buf;
 				buf.setSize(zsize + 5);
-				memcpy(buf.getRawData(), compressor->zBuf(&tmpSize), tmpSize);
+				memcpy(buf.getRawData(), compressor->getCompressedBuf(&tmpSize), tmpSize);
 				outzsize = zsize = (SW_u32)tmpSize;
 				buf.setSize(zsize);
 				rawZFilter(buf, 1); // 1 = encipher

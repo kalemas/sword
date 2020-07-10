@@ -46,8 +46,9 @@ public:
 	bool shape;
 	bool bidi;
 
-	unsigned char Markup(unsigned char m = FMT_UNKNOWN) {return ((DiathekeFilterMgr*)filterMgr)->Markup(m);};
-	unsigned char Encoding(unsigned char e = ENC_UNKNOWN) {return ((EncodingFilterMgr*)filterMgr)->Encoding(e);};
+	unsigned char Markup(unsigned char m = FMT_UNKNOWN) { return ((DiathekeFilterMgr*)filterMgr)->Markup(m); }
+	void setEncoding(unsigned char e = ENC_UNKNOWN) { ((EncodingFilterMgr*)filterMgr)->setEncoding(e); }
+	unsigned char getEncoding() { return ((EncodingFilterMgr*)filterMgr)->getEncoding(); }
 
 	DiathekeMgr(SWConfig * iconf = NULL, SWConfig * isysconfig = NULL, bool autoload = false, char enc = ENC_UTF8, char mark = FMT_PLAIN, bool bidi = false, bool shape = false);
 	virtual ~DiathekeMgr();

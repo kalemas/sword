@@ -116,8 +116,7 @@ void EncodingFilterMgr::addEncodingFilters(SWModule *module, ConfigEntMap &secti
  *
  * RET: encoding
  */
-char EncodingFilterMgr::Encoding(char enc) {
-	if (enc && enc != encoding) {
+void EncodingFilterMgr::setEncoding(char enc) {
 		encoding = enc;
 		SWFilter *oldfilter = targetenc;
 
@@ -152,8 +151,6 @@ char EncodingFilterMgr::Encoding(char enc) {
 					module->second->addRenderFilter(targetenc);
 			}
 		}
-	}
-	return encoding;
 }
 
 

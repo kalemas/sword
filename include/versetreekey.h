@@ -112,7 +112,7 @@ public:
 	virtual void Normalize(char autocheck = 0);
 
 	virtual void setPosition(SW_POSITION newpos);
-	virtual long NewIndex() const;
+	virtual long newIndex() const;
 	// OPERATORS --------------------------------------------------------------------
 
 

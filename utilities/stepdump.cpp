@@ -244,8 +244,8 @@ void readViewableBlockText(int fd, ViewableBlock *vb, char **buf) {
 	lseek(fd, vb->offset, SEEK_SET);
 	read(fd, *buf, vb->size);
 
-	compress->zBuf(&size, *buf);
-	strcpy(*buf, compress->Buf());
+	compress->setCompressedBuf(&size, *buf);
+	strcpy(*buf, compress->getUncompressedBuf());
 	cout << "Viewable Block Text:\n";
 	cout << *buf << "\n\n";
 }

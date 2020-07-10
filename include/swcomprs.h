@@ -30,17 +30,20 @@ SWORD_NAMESPACE_START
 
 class SWDLLEXPORT SWCompress
 {
-  void Init ();
-  void cycleStream ();
+private:
+  void init();
+  void cycleStream();
 protected:
-  char *buf, *zbuf, direct;	// 0 - encode; 1 - decode
+  mutable char *buf, *zbuf, direct;	// 0 - encode; 1 - decode
   unsigned long zlen, zpos, pos, slen;
   int level;
 public:
   SWCompress ();
   virtual ~ SWCompress ();
-  virtual char *Buf (const char *buf = 0, unsigned long *len = 0);
-  virtual char *zBuf (unsigned long *len, char *buf = 0);
+  virtual void setUncompressedBuf(const char *buf = 0, unsigned long *len = 0);
+  virtual char *getUncompressedBuf(unsigned long *len = 0);
+  virtual void setCompressedBuf(unsigned long *len, char *buf = 0);
+  virtual char *getCompressedBuf(unsigned long *len = 0);
   virtual unsigned long getChars (char *buf, unsigned long len);	// override for other than buffer compression
   virtual unsigned long sendChars (char *buf, unsigned long len);	// override for other than buffer compression
   virtual void encode (void);	// override to provide compression algorythm

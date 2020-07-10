@@ -45,8 +45,10 @@ public:
     SWCipher (unsigned char *key);
   virtual void setCipherKey (const char *key);
     virtual ~ SWCipher ();
-  virtual char *Buf (const char *buf = 0, unsigned long len = 0);
-  virtual char *cipherBuf (unsigned long *len, const char *buf = 0);
+  virtual void setUncipheredBuf(const char *buf = 0, unsigned long len = 0);
+  virtual char *getUncipheredBuf();
+  virtual void setCipheredBuf(unsigned long *len, const char *buf = 0);
+  virtual char *getCipheredBuf(unsigned long *len = 0);
   virtual void encode (void);
   virtual void decode (void);
   static SWBuf personalize(const SWBuf &buf, bool encode);

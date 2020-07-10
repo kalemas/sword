@@ -76,7 +76,7 @@ private:
 	static SWTransMap transMap;
 	UErrorCode utf8status;
 
-	void Load(UErrorCode &status);
+	void load(UErrorCode &status);
 	void registerTrans(const UnicodeString& ID, const UnicodeString& resource, UTransDirection dir, UErrorCode &status);	
 	bool checkTrans(const UnicodeString& ID, UErrorCode &status);
 #endif

@@ -39,12 +39,12 @@ protected:
         SWFilter* fromosis;
         SWFilter* fromtei;
 
-				/**
-	 			* current markup value
-	 			*/
+	/**
+	 * current markup value
+	 */
         char markup;
 
-        void CreateFilters(char markup);
+        void createFilters(char markup);
 public:
 	/** Constructor of SWMarkupMgr.
 	 *
@@ -63,7 +63,8 @@ public:
 	 * @param m The new markup or FMT_UNKNOWN if you just want to get the current markup.
 	 * @return The current (possibly changed) markup format.
 	 */
-        char Markup(char m = FMT_UNKNOWN);
+        void setMarkup(char m = FMT_UNKNOWN);
+        char getMarkup() const { return markup; }
 
 	/**
 	 * Adds the render filters which are defined in "section" to the SWModule object "module".

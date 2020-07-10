@@ -50,14 +50,17 @@ char CipherFilter::processText(SWBuf &text, const SWKey *key, const SWModule *mo
 	if (text.length() > 2) { //check if it's large enough to substract 2 in the next step.
 		unsigned long len = text.length();
 		if (!key) {	// hack, using key to determine encipher, or decipher
-			cipher->cipherBuf(&len, text.getRawData()); //set buffer to enciphered text
-			memcpy(text.getRawData(), cipher->Buf(), len);
-//			text = cipher->Buf(); //get the deciphered buffer
+			cipher->setCipheredBuf(&len, text.getRawData()); //set buffer to enciphered text
+			cipher->getUncipheredBuf();
+			// don't just assign text because we might be compressing binary data
+			text.setSize(len + 5);
+			memcpy(text.getRawData(), cipher->getUncipheredBuf(), len);
 		}
 		else if ((unsigned long)key == 1) {
-			cipher->Buf(text.getRawData(), len);
-			memcpy(text.getRawData(), cipher->cipherBuf(&len), len);
-//			text = cipher->cipherBuf(&len);
+			cipher->setUncipheredBuf(text.getRawData(), len);
+			cipher->getCipheredBuf(&len);
+			text.setSize(len + 5);
+			memcpy(text.getRawData(), cipher->getCipheredBuf(&len), len);
 		}
 	}
 	return 0;

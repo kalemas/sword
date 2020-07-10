@@ -28,7 +28,7 @@
 SWORD_NAMESPACE_START
 
 
-char isroman (const char *str, int maxchars) {
+char isRoman(const char *str, int maxchars) {
 	char *ch = (char*)str;
 	for (; *ch && (!maxchars || (ch-str) <= maxchars); ch++)
 		if (!strchr("IVXLCDMivxlcdm ", *ch))
@@ -36,7 +36,7 @@ char isroman (const char *str, int maxchars) {
 	return 1;
 }
 
-int from_rom(const char* str) {
+int fromRoman(const char* str) {
 	int i, n = (int)strlen(str);
 	short * num= (short *) calloc(n, sizeof(short));
 	for (i = 0; str[i]; i++) {
@@ -83,7 +83,9 @@ int from_rom(const char* str) {
 	for (i = 0; str[i]; i++) {
 		n += num[i];
 	}
-     free(num);
+
+	free(num);
+
 	return n;
 }
 

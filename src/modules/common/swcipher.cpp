@@ -64,8 +64,7 @@ SWCipher::~SWCipher()
 }
 
 
-char *SWCipher::Buf(const char *ibuf, unsigned long ilen)
-{
+void SWCipher::setUncipheredBuf(const char *ibuf, unsigned long ilen) {
 	if (ibuf) {
 	
 		if (buf)
@@ -83,13 +82,17 @@ char *SWCipher::Buf(const char *ibuf, unsigned long ilen)
 	}
 
 	decode();
+}
+
+char *SWCipher::getUncipheredBuf() {
+
+	decode();
 
 	return buf;
 }
 
 
-char *SWCipher::cipherBuf(unsigned long *ilen, const char *ibuf)
-{
+void SWCipher::setCipheredBuf(unsigned long *ilen, const char *ibuf) {
 	if (ibuf) {
 	
 		if (buf)
@@ -104,6 +107,14 @@ char *SWCipher::cipherBuf(unsigned long *ilen, const char *ibuf)
 	encode();
 
 	*ilen = len;
+}
+
+char *SWCipher::getCipheredBuf(unsigned long *ilen) {
+
+	encode();
+
+	if (ilen) *ilen = len;
+
 	return buf;
 }
 

@@ -27,13 +27,12 @@ SWORD_NAMESPACE_START
 
 /** Checks if a string is a roman numeral.
 */
-char isroman(const char *, int maxchars = 0);
-/* char* to_rom(int num, char *p); */
+char isRoman(const char *, int maxchars = 0);
 
-/** Converts a roman numeral to a string.
+/** Converts a roman numeral to a value.
 * @param s Roman numeral to convert.
 */
-int from_rom(const char *s);
+int fromRoman(const char *s);
 
 SWORD_NAMESPACE_END
 #endif

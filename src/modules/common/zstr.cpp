@@ -413,8 +413,8 @@ void zStr::getCompressedText(long block, long entry, char **buf) const {
 		buf.setSize(size);
 		rawZFilter(buf, 0); // 0 = decipher
 
-		compressor->zBuf(&len, buf.getRawData());
-		char *rawBuf = compressor->Buf(0, &len);
+		compressor->setCompressedBuf(&len, buf.getRawData());
+		char *rawBuf = compressor->getUncompressedBuf(&len);
 		cacheBlock = new EntriesBlock(rawBuf, len);
 		cacheBlockIndex = block;
 	}
@@ -598,12 +598,12 @@ void zStr::flushCache() const {
 			SW_u32 outstart = 0, outsize = 0;
 
 			const char *rawBuf = cacheBlock->getRawData(&size);
-			compressor->Buf(rawBuf, &size);
-			compressor->zBuf(&size);
+			compressor->setUncompressedBuf(rawBuf, &size);
+			compressor->getCompressedBuf(&size);
 
 			SWBuf buf;
 			buf.setSize(size + 5);
-			memcpy(buf.getRawData(), compressor->zBuf(&size), size); // 1 = encipher
+			memcpy(buf.getRawData(), compressor->getCompressedBuf(&size), size); // 1 = encipher
 			buf.setSize(size);
 			rawZFilter(buf, 1); // 1 = encipher
 

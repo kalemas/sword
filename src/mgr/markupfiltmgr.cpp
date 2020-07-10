@@ -75,7 +75,7 @@ MarkupFilterMgr::MarkupFilterMgr(char mark, char enc)
 
 	markup = mark;
 
-	CreateFilters(markup);
+	createFilters(markup);
 }
 
 
@@ -99,8 +99,7 @@ MarkupFilterMgr::~MarkupFilterMgr() {
  *
  * RET: markup
  */
-char MarkupFilterMgr::Markup(char mark) {
-	if (mark && mark != markup) {
+void MarkupFilterMgr::setMarkup(char mark) {
 		markup = mark;
 		ModMap::const_iterator module;
 
@@ -110,7 +109,7 @@ char MarkupFilterMgr::Markup(char mark) {
 		SWFilter *oldosis  = fromosis;
 		SWFilter *oldtei   = fromtei;
 
-		CreateFilters(markup);
+		createFilters(markup);
 
 		for (module = getParentMgr()->Modules.begin(); module != getParentMgr()->Modules.end(); ++module) {
 			switch (module->second->getMarkup()) {
@@ -201,8 +200,6 @@ char MarkupFilterMgr::Markup(char mark) {
 		delete oldplain;
 		delete oldosis;
 		delete oldtei;
-	}
-	return markup;
 }
 
 
@@ -232,7 +229,7 @@ void MarkupFilterMgr::addRenderFilters(SWModule *module, ConfigEntMap &section) 
 }
 
 
-void MarkupFilterMgr::CreateFilters(char markup) {
+void MarkupFilterMgr::createFilters(char markup) {
 
 	switch (markup) {
 	case FMT_PLAIN:

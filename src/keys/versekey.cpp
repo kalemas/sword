@@ -670,10 +670,10 @@ terminate_range:
 				for (loop = (int)strlen(book) - 1; loop+1; loop--) {
 					if (book[loop] == ' ') {
 						// "PS C" is ok, but "II C" is not ok
-						if (isroman(&book[loop+1]) && !isroman(book,loop)) {
+						if (isRoman(&book[loop+1]) && !isRoman(book,loop)) {
 							if (verse == -1) {
 								verse = chap;
-								chap = from_rom(&book[loop+1]);
+								chap = fromRoman(&book[loop+1]);
 								book[loop] = 0;
 							}
 						}
@@ -947,10 +947,10 @@ terminate_range:
 		for (loop = (int)strlen(book) - 1; loop+1; loop--) {
 			if (book[loop] == ' ') {
 				// "PS C" is ok, but "II C" is not ok
-				if (isroman(&book[loop+1]) && !isroman(book,loop)) {
+				if (isRoman(&book[loop+1]) && !isRoman(book,loop)) {
 					if (verse == -1) {
 						verse = chap;
-						chap = from_rom(&book[loop+1]);
+						chap = fromRoman(&book[loop+1]);
 						book[loop] = 0;
 					}
 				}

@@ -64,12 +64,17 @@ public:
 	 */
 	~EncodingFilterMgr();
 
-	/** Markup sets/gets the encoding after initialization
+	/** getEncoding gets the encoding after initialization
+	 * 
+	 * @return The current encoding format.
+	 */
+	char getEncoding() const { return encoding; }
+
+	/** setEncoding sets the encoding after initialization
 	 * 
 	 * @param enc The new encoding or ENC_UNKNOWN if you just want to get the current markup.
-	 * @return The current (possibly changed) encoding format.
 	 */
-	char Encoding(char enc);
+	void setEncoding(char enc);
 
 	/**
 	 * Adds the raw filters which are defined in "section" to the SWModule object "module".

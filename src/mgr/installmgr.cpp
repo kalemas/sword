@@ -766,5 +766,57 @@ SWMgr *InstallSource::getMgr() {
 }
 
 
+/** Override this and provide an input mechanism to allow your users
+ *  to confirm that they understand this important disclaimer.
+ *  This method will be called immediately before attempting to perform
+ *  any network function.
+ *  If you would like your confirmation to always show at a predefined
+ *  time before attempting network operations, then you can call this
+ *  method yourself at the desired time.
+ *
+ *  Return true if your user confirms.
+ *
+ *  User disclaimer should ask user for confirmation of 2 critical items:
+ *  and the default answer should be NO
+ *  (due to possibly the wrong language for the disclaimer)
+ *
+ *  1) detection OK (Not in persecuted country)
+ *  2) repos other than CrossWire may have questionable content
+ *
+ *  A sample default impl is provided below:
+ *
+ */
+bool InstallMgr::isUserDisclaimerConfirmed() const {
+
+	bool confirmed = userDisclaimerConfirmed;
+	
+	if (!confirmed) {
+		std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+		std::cout << "                -=+* WARNING *+=- -=+* WARNING *+=-\n\n\n";
+		std::cout << "Although Install Manager provides a convenient way for installing\n";
+		std::cout << "and upgrading SWORD components, it also uses a systematic method\n";
+		std::cout << "for accessing sites which gives packet sniffers a target to lock\n";
+		std::cout << "into for singling out users. \n\n\n";
+		std::cout << "IF YOU LIVE IN A PERSECUTED COUNTRY AND DO NOT WISH TO RISK DETECTION,\n";
+		std::cout << "YOU SHOULD *NOT* USE INSTALL MANAGER'S REMOTE SOURCE FEATURES.\n\n\n";
+		std::cout << "Also, Remote Sources other than CrossWire may contain less than\n";
+		std::cout << "quality modules, modules with unorthodox content, or even modules\n";
+		std::cout << "which are not legitimately distributable.  Many repositories\n";
+		std::cout << "contain wonderfully useful content.  These repositories simply\n";
+		std::cout << "are not reviewed or maintained by CrossWire and CrossWire\n";
+		std::cout << "cannot be held responsible for their content. CAVEAT EMPTOR.\n\n\n";
+		std::cout << "If you understand this and are willing to enable remote source features\n";
+		std::cout << "then type yes at the prompt\n\n";
+		std::cout << "enable? [no] ";
+
+		char prompt[10];
+		fgets(prompt, 9, stdin);
+		confirmed = (!strcmp(prompt, "yes\n"));
+		std::cout << "\n";
+	}
+	return confirmed;
+}
+
+
 SWORD_NAMESPACE_END
 

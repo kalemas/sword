@@ -49,49 +49,65 @@ StatusReporter *statusReporter = 0;
 SWBuf baseDir;
 SWBuf confPath;
 
-bool isConfirmed;
+bool isConfirmedByForce;
 bool isUnvPeerAllowed;
+
 
 void usage(const char *progName = 0, const char *error = 0);
 
+
 class MyInstallMgr : public InstallMgr {
+
 public:
 	MyInstallMgr(const char *privatePath = "./", StatusReporter *sr = 0) : InstallMgr(privatePath, sr) {}
 
-virtual bool isUserDisclaimerConfirmed() const {
-	static bool confirmed = false;
-	
-	if (isConfirmed) { 
-		confirmed = true;
-	}
-        if (!confirmed) {
-		cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-		cout << "                -=+* WARNING *+=- -=+* WARNING *+=-\n\n\n";
-		cout << "Although Install Manager provides a convenient way for installing\n";
-		cout << "and upgrading SWORD components, it also uses a systematic method\n";
-		cout << "for accessing sites which gives packet sniffers a target to lock\n";
-		cout << "into for singling out users. \n\n\n";
-		cout << "IF YOU LIVE IN A PERSECUTED COUNTRY AND DO NOT WISH TO RISK DETECTION,\n";
-		cout << "YOU SHOULD *NOT* USE INSTALL MANAGER'S REMOTE SOURCE FEATURES.\n\n\n";
-		cout << "Also, Remote Sources other than CrossWire may contain less than\n";
-		cout << "quality modules, modules with unorthodox content, or even modules\n";
-		cout << "which are not legitimately distributable.  Many repositories\n";
-		cout << "contain wonderfully useful content.  These repositories simply\n";
-		cout << "are not reviewed or maintained by CrossWire and CrossWire\n";
-		cout << "cannot be held responsible for their content. CAVEAT EMPTOR.\n\n\n";
-		cout << "If you understand this and are willing to enable remote source features\n";
-		cout << "then type yes at the prompt\n\n";
-		cout << "enable? [no] ";
 
-		char prompt[10];
-		fgets(prompt, 9, stdin);
-		confirmed = (!strcmp(prompt, "yes\n"));
-		cout << "\n";
+	/*************************************************************
+	 * Provide the necessary user disclaimer.  This is CrossWire
+	 * policy to show this disclaimer before enabling Internet
+	 * features.  Please follow this policy.
+	 */
+	virtual bool isUserDisclaimerConfirmed() const {
+		// override this and show user disclaimer in whatever
+		// display your UI prefers.  Here, we just use the
+		// InstallMgr-provided default which sends the disclaimer
+		// to std::cout and asks for confirmation with fgets
+		//
+		// This is unnecessarily duplicated here for your
+		// convenience as an example.
+		// you can copy and adjust for your frontend
+
+		bool confirmed = userDisclaimerConfirmed;
+	
+		if (!confirmed) {
+			std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+			std::cout << "                -=+* WARNING *+=- -=+* WARNING *+=-\n\n\n";
+			std::cout << "Although Install Manager provides a convenient way for installing\n";
+			std::cout << "and upgrading SWORD components, it also uses a systematic method\n";
+			std::cout << "for accessing sites which gives packet sniffers a target to lock\n";
+			std::cout << "into for singling out users. \n\n\n";
+			std::cout << "IF YOU LIVE IN A PERSECUTED COUNTRY AND DO NOT WISH TO RISK DETECTION,\n";
+			std::cout << "YOU SHOULD *NOT* USE INSTALL MANAGER'S REMOTE SOURCE FEATURES.\n\n\n";
+			std::cout << "Also, Remote Sources other than CrossWire may contain less than\n";
+			std::cout << "quality modules, modules with unorthodox content, or even modules\n";
+			std::cout << "which are not legitimately distributable.  Many repositories\n";
+			std::cout << "contain wonderfully useful content.  These repositories simply\n";
+			std::cout << "are not reviewed or maintained by CrossWire and CrossWire\n";
+			std::cout << "cannot be held responsible for their content. CAVEAT EMPTOR.\n\n\n";
+			std::cout << "If you understand this and are willing to enable remote source features\n";
+			std::cout << "then type yes at the prompt\n\n";
+			std::cout << "enable? [no] ";
+
+			char prompt[10];
+			fgets(prompt, 9, stdin);
+			confirmed = (!strcmp(prompt, "yes\n"));
+			std::cout << "\n";
+		}
+		return confirmed;
 	}
-	return confirmed;
-}
 
 };
+
 
 bool isUnverifiedPeerAllowed() {
 	static bool allowed = false;
@@ -160,6 +176,9 @@ void init() {
 		confPath = baseDir + "/InstallMgr.conf";
 		statusReporter = new MyStatusReporter();
 		installMgr = new MyInstallMgr(baseDir, statusReporter);
+		if (isConfirmedByForce) { 
+			installMgr->setUserDisclaimerConfirmed(true);
+		}
 	}
 }
 
@@ -420,7 +439,7 @@ void usage(const char *progName, const char *error) {
 
 int main(int argc, char **argv) {
 	
-	isConfirmed = false;
+	isConfirmedByForce = false;
 	isUnvPeerAllowed = false;
 	
 	if (argc < 2) usage(*argv);
@@ -430,7 +449,7 @@ int main(int argc, char **argv) {
 			SWLog::getSystemLog()->setLogLevel(SWLog::LOG_DEBUG);
 		}
 		else if (!strcmp(argv[i], "--allow-internet-access-and-risk-tracing-and-jail-or-martyrdom")) {
-			isConfirmed = true;
+			isConfirmedByForce = true;
 		}
 		else if (!strcmp(argv[i], "--allow-unverified-tls-peer")) {
 			isUnvPeerAllowed = true;

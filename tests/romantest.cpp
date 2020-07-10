@@ -27,7 +27,7 @@
 #include <roman.h>
 
 #ifndef NO_SWORD_NAMESPACE
-using sword::from_rom;
+using sword::fromRoman;
 #endif
 
 int main(int argc, char **argv) {
@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
 		std::cout << buf << std::endl;
 	}
 	*/
-	else std::cout << from_rom(argv[1]) << std::endl;
+	else std::cout << fromRoman(argv[1]) << std::endl;
 	return 0;
 }
 
