@@ -76,14 +76,14 @@ public:
 	 * @param module To this module the raw filter(s) are added
 	 * @param section We use this section to get a list of filters we should apply to the module
 	 */
-	virtual void AddRawFilters(SWModule *module, ConfigEntMap &section);
+	virtual void addRawFilters(SWModule *module, ConfigEntMap &section);
 
 	/**
 	 * Adds the encoding filters which are defined in "section" to the SWModule object "module".
 	 * @param module To this module the encoding filter(s) are added
 	 * @param section We use this section to get a list of filters we should apply to the module
 	 */
-	virtual void AddEncodingFilters(SWModule *module, ConfigEntMap &section);
+	virtual void addEncodingFilters(SWModule *module, ConfigEntMap &section);
 };
 
 SWORD_NAMESPACE_END

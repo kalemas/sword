@@ -46,9 +46,9 @@ public:
   virtual void setParentMgr(SWMgr *parentMgr);
   virtual SWMgr *getParentMgr();
 
-  virtual void AddGlobalOptions(SWModule *module, ConfigEntMap &section, ConfigEntMap::iterator start,
+  virtual void addGlobalOptions(SWModule *module, ConfigEntMap &section, ConfigEntMap::iterator start,
 				 ConfigEntMap::iterator end);
-  virtual void AddLocalOptions(SWModule *module, ConfigEntMap &section, ConfigEntMap::iterator start,
+  virtual void addLocalOptions(SWModule *module, ConfigEntMap &section, ConfigEntMap::iterator start,
 				ConfigEntMap::iterator end);
 
 
@@ -57,7 +57,7 @@ public:
     * @param module To this module the encoding filter(s) are added
     * @param section We use this section to get a list of filters we should apply to the module
     */
-  virtual void AddEncodingFilters(SWModule *module, ConfigEntMap &section);
+  virtual void addEncodingFilters(SWModule *module, ConfigEntMap &section);
 
 
     /**
@@ -65,7 +65,7 @@ public:
     * @param module To this module the render filter(s) are added
     * @param section We use this section to get a list of filters we should apply to the module
     */
-  virtual void AddRenderFilters(SWModule *module, ConfigEntMap &section);
+  virtual void addRenderFilters(SWModule *module, ConfigEntMap &section);
 
 
   /**
@@ -73,7 +73,7 @@ public:
     * @param module To this module the strip filter(s) are added
     * @param section We use this section to get a list of filters we should apply to the module
     */
-  virtual void AddStripFilters(SWModule *module, ConfigEntMap &section);
+  virtual void addStripFilters(SWModule *module, ConfigEntMap &section);
 
 
   /**
@@ -81,7 +81,7 @@ public:
     * @param module To this module the raw filter(s) are added
     * @param section We use this section to get a list of filters we should apply to the module
     */
-  virtual void AddRawFilters(SWModule *module, ConfigEntMap &section);
+  virtual void addRawFilters(SWModule *module, ConfigEntMap &section);
 
 };
 SWORD_NAMESPACE_END

@@ -70,7 +70,7 @@ public:
 	 * @param module To this module the render filter(s) are added
 	 * @param section We use this section to get a list of filters we should apply to the module
 	 */	
-        virtual void AddRenderFilters(SWModule *module, ConfigEntMap &section);
+        virtual void addRenderFilters(SWModule *module, ConfigEntMap &section);
 };
 
 SWORD_NAMESPACE_END

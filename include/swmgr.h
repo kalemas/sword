@@ -260,7 +260,7 @@ protected:
 	// still to be normalized below ...
 	//
 	StringList augPaths;
-	virtual char AddModToConfig(FileDesc *conffd, const char *fname);
+	virtual char addModToConfig(FileDesc *conffd, const char *fname);
 	virtual void loadConfigDir(const char *ipath);
 
 public:

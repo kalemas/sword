@@ -1182,7 +1182,7 @@ void SWMgr::addGlobalOptionFilters(SWModule *module, ConfigEntMap &section) {
 		}
 	}
 	if (filterMgr)
-		filterMgr->AddGlobalOptions(module, section, start, end);
+		filterMgr->addGlobalOptions(module, section, start, end);
 #ifdef _ICU_
 	   module->addOptionFilter(transliterator);
 #endif
@@ -1226,7 +1226,7 @@ void SWMgr::addLocalOptionFilters(SWModule *module, ConfigEntMap &section) {
 	}
 
 	if (filterMgr)
-		filterMgr->AddLocalOptions(module, section, start, end);
+		filterMgr->addLocalOptions(module, section, start, end);
 }
 
 
@@ -1259,13 +1259,13 @@ void SWMgr::addRawFilters(SWModule *module, ConfigEntMap &section) {
 	}
 
 	if (filterMgr)
-		filterMgr->AddRawFilters(module, section);
+		filterMgr->addRawFilters(module, section);
 }
 
 
 void SWMgr::addEncodingFilters(SWModule *module, ConfigEntMap &section) {
 	if (filterMgr)
-		filterMgr->AddEncodingFilters(module, section);
+		filterMgr->addEncodingFilters(module, section);
 }
 
 
@@ -1290,7 +1290,7 @@ void SWMgr::addRenderFilters(SWModule *module, ConfigEntMap &section) {
 //	}
 
 	if (filterMgr)
-		filterMgr->AddRenderFilters(module, section);
+		filterMgr->addRenderFilters(module, section);
 
 }
 
@@ -1323,7 +1323,7 @@ void SWMgr::addStripFilters(SWModule *module, ConfigEntMap &section)
 	}
 
 	if (filterMgr)
-		filterMgr->AddStripFilters(module, section);
+		filterMgr->addStripFilters(module, section);
 
 }
 
@@ -1369,7 +1369,7 @@ void SWMgr::InstallScan(const char *dirname)
 							}
 						}
 					}
-					AddModToConfig(conffd, newmodfile.c_str());
+					addModToConfig(conffd, newmodfile.c_str());
 					FileMgr::removeFile(newmodfile.c_str());
 				}
 			}
@@ -1381,7 +1381,7 @@ void SWMgr::InstallScan(const char *dirname)
 }
 
 
-char SWMgr::AddModToConfig(FileDesc *conffd, const char *fname)
+char SWMgr::addModToConfig(FileDesc *conffd, const char *fname)
 {
 	FileDesc *modfd;
 	char ch;

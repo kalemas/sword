@@ -86,7 +86,7 @@ EncodingFilterMgr::~EncodingFilterMgr() {
 }
 
 
-void EncodingFilterMgr::AddRawFilters(SWModule *module, ConfigEntMap &section) {
+void EncodingFilterMgr::addRawFilters(SWModule *module, ConfigEntMap &section) {
 
 	ConfigEntMap::iterator entry;
 
@@ -103,7 +103,7 @@ void EncodingFilterMgr::AddRawFilters(SWModule *module, ConfigEntMap &section) {
 }
 
 
-void EncodingFilterMgr::AddEncodingFilters(SWModule *module, ConfigEntMap &section) {
+void EncodingFilterMgr::addEncodingFilters(SWModule *module, ConfigEntMap &section) {
 	if (targetenc)
 		module->addEncodingFilter(targetenc);
 }

@@ -83,7 +83,7 @@ DiathekeFilterMgr::~DiathekeFilterMgr() {
                 delete (fromtei);
 }
 
-void DiathekeFilterMgr::AddRenderFilters(SWModule *module, ConfigEntMap &section) {
+void DiathekeFilterMgr::addRenderFilters(SWModule *module, ConfigEntMap &section) {
         switch (module->getMarkup()) {
         case FMT_THML:
                 if (fromthml)
@@ -106,7 +106,7 @@ void DiathekeFilterMgr::AddRenderFilters(SWModule *module, ConfigEntMap &section
                         module->addRenderFilter(fromtei);
                 break;
         }
-	EncodingFilterMgr::AddRenderFilters(module, section);
+	EncodingFilterMgr::addRenderFilters(module, section);
 }
 
 

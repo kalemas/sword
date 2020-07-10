@@ -47,7 +47,7 @@ public:
         DiathekeFilterMgr(char markup = FMT_THML, char encoding = ENC_UTF8);
         ~DiathekeFilterMgr();
         char Markup(char m = FMT_UNKNOWN);
-        virtual void AddRenderFilters(SWModule *module, ConfigEntMap &section);
+        virtual void addRenderFilters(SWModule *module, ConfigEntMap &section);
 };
 
 #endif
