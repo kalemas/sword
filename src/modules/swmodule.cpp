@@ -708,10 +708,10 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 					resultKey->clearBounds();
 				}
 				listKey << *resultKey;
-				lastBuf = (windowSize > 1) ? textBuf : "";
+				lastBuf = (windowSize > 1) ? textBuf.c_str() : "";
 			}
 			else {
-				lastBuf = (windowSize > 1) ? textBuf : "";
+				lastBuf = (windowSize > 1) ? textBuf.c_str() : "";
 			}
 #if defined(USEICUREGEX)
 			}
@@ -801,7 +801,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 					}
 				}
 				else {
-					lastBuf = (windowSize > 1) ? textBuf : "";
+					lastBuf = (windowSize > 1) ? textBuf.c_str() : "";
 				}
 			}
 			break;

@@ -208,7 +208,7 @@ SWBuf SWCipher::personalize(const SWBuf &buf, bool encode) {
 		}
 		segs[4][i] = lats[csum%62];
 		if (result.size()) result += "-";
-		result += (!encode && !i ? "" : segs[i]);
+		result += (!encode && !i ? "" : segs[i].c_str());
 	}
 	if (encode) {
 		result += "-";

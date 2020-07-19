@@ -133,7 +133,14 @@ SWORD_NAMESPACE_START
 
 #define COMMENT SLASH(/)
 #define SLASH(s) /##s
-#  define SWDEPRECATED COMMENT
+/* Use the following line to comment out all deprecation declarations so you
+ * get "no such method" errors in your code when you want to find them.
+ * Use the next line to put them back in.
+ */
+//#  define SWDEPRECATED COMMENT
+#  define SWDEPRECATED
+#define va_copy(dest, src) (dest = src)
+#define unorm2_getNFKDInstance(x) unorm2_getInstance(NULL, "nfkc", UNORM2_DECOMPOSE, x)
 
 
 #elif defined(__GNUC__)
