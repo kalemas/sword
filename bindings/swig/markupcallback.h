@@ -13,34 +13,34 @@ class MyMarkup : public MarkupFilterMgr {
 private:
 	MarkupCallback* _callback;
 
-public:		
-	MyMarkup(MarkupCallback* callback, char markup = FMT_THML, char encoding = ENC_UTF8) : 
+public:
+	MyMarkup(MarkupCallback* callback, char markup = FMT_THML, char encoding = ENC_UTF8) :
 		MarkupFilterMgr(markup, encoding), _callback(callback) {}
 
-	virtual ~MyMarkup() { 
-		delCallback(); 
+	virtual ~MyMarkup() {
+		delCallback();
 	}
 
-	void delCallback() { 
-		delete _callback; _callback = 0; 
+	void delCallback() {
+		delete _callback; _callback = 0;
 	}
 
-	void setCallback(MarkupCallback *cb) { 
-		delCallback(); 
-		_callback = cb; 
+	void setCallback(MarkupCallback *cb) {
+		delCallback();
+		_callback = cb;
 	}
 
-	bool call(SWModule* x) { 
-		if (_callback) 
-			return _callback->run(x);					 
+	bool call(SWModule* x) {
+		if (_callback)
+			return _callback->run(x);
 		return false;
 	}
 
 protected:
-	virtual void AddRenderFilters(SWModule *module, 
-			ConfigEntMap &section) { 
+	virtual void addRenderFilters(SWModule *module,
+			ConfigEntMap &section) {
 		if(!call(module)) {
-			MarkupFilterMgr::AddRenderFilters(module, section);
-		}	   
+			MarkupFilterMgr::addRenderFilters(module, section);
+		}
 	}
 };
