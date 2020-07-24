@@ -381,6 +381,10 @@ public:
 	inline char &operator[](long pos) { return charAt((unsigned long)pos); }
 	inline char &operator[](unsigned int pos) { return charAt((unsigned long)pos); }
 	inline char &operator[](int pos) { return charAt((unsigned long)pos); }
+	inline const char &operator[](unsigned long pos) const { return charAt(pos); }
+	inline const char &operator[](long pos) const { return charAt((unsigned long)pos); }
+	inline const char &operator[](unsigned int pos) const { return charAt((unsigned long)pos); }
+	inline const char &operator[](int pos) const { return charAt((unsigned long)pos); }
 	inline SWBuf &operator =(const char *newVal) { set(newVal); return *this; }
 	inline SWBuf &operator =(const SWBuf &other) { set(other); return *this; }
 	inline SWBuf &operator +=(const char *str) { return append(str); }
