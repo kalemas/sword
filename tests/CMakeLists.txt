@@ -1,16 +1,5 @@
 #########################################################################################
 # A test suite - that is awesome.
-#
-# I should probably learn the proper usage of such things as CTest for this, but for the
-# time being, I'll see what I can do.
-# 
-#
-# I need some help deciphering tests/cppunit/Makefile.am.  I'm not quite sure what it is
-# trying to do in there.
-# Also, the contents of the tests/testsuite directory are slightly beyond my knowledge
-# level.  It looks like I can do a very simple interface to this all, but I need to know
-# more about how these tests work.
-# 
 
 MESSAGE(STATUS "\n-- CONFIGURING LIBRARY TESTS")
 
@@ -53,7 +42,7 @@ IF(WITH_ICU)
 	SET(test_PROGRAMS
 		${test_PROGRAMS}
 		icutest
-#		tlitmgrtest
+		tlitmgrtest
 		translittest
 	)
 ENDIF(WITH_ICU)
@@ -66,7 +55,7 @@ IF(WITH_ZLIB OR WITH_INTERNAL_ZLIB)
 ENDIF(WITH_ZLIB OR WITH_INTERNAL_ZLIB)
 
 FOREACH(TEST ${test_PROGRAMS})
-	ADD_EXECUTABLE(${TEST} EXCLUDE_FROM_ALL	${TEST}.cpp)
+	ADD_EXECUTABLE(${TEST} ${TEST}.cpp)
 	IF(BUILDING_SHARED)
 		TARGET_LINK_LIBRARIES(${TEST}	sword)
 	ELSE(BUILDING_SHARED)
@@ -78,8 +67,8 @@ ENDFOREACH(TEST ${test_PROGRAMS})
 # The following tests require extra libraries to run
 #
 IF(WITH_ICU)
-	FOREACH(ICUTEST icutest translittest)
-		TARGET_LINK_LIBRARIES(${ICUTEST} ${ICU_LIBRARIES} ${ICU_I18N_LIBRARIES})
+	FOREACH(ICUTEST icutest translittest tlitmgrtest)
+        TARGET_LINK_LIBRARIES(${ICUTEST} ${ICU_LIBRARY})
 	ENDFOREACH(ICUTEST icutest translittest)
 ENDIF(WITH_ICU)
 
