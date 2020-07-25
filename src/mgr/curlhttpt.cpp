@@ -20,8 +20,6 @@
  *
  */
 
-#include <fcntl.h>
-
 #include <vector>
 #include <cctype>
 
@@ -41,7 +39,7 @@ namespace {
 
 	struct FtpFile {
 		const char *filename;
-		FILE *stream;
+		FileDesc *stream;
 		SWBuf *destBuf;
 	};
 
@@ -50,8 +48,8 @@ namespace {
 		struct FtpFile *out=(struct FtpFile *)stream;
 		if (out && !out->stream && !out->destBuf) {
 			/* open file for writing */
-			out->stream=fopen(out->filename, "wb");
-			if (!out->stream)
+			out->stream=FileMgr::getSystemFileMgr()->open(out->filename, FileMgr::CREAT|FileMgr::WRONLY);
+			if (!out->stream || out->stream->getFd() < 0)
 				return -1; /* failure, can't open file to write */
 		}
 		if (out->destBuf) {
@@ -60,7 +58,7 @@ namespace {
 			memcpy(out->destBuf->getRawData()+s, buffer, size*nmemb);
 			return (int)nmemb;
 		}
-		return (int)fwrite(buffer, size, nmemb, out->stream);
+		return (int)out->stream->write(buffer, size *nmemb);
 	}
 
 
@@ -171,7 +169,7 @@ char CURLHTTPTransport::getURL(const char *destPath, const char *sourceURL, SWBu
 	}
 
 	if (ftpfile.stream)
-		fclose(ftpfile.stream); /* close the local file */
+		FileMgr::getSystemFileMgr()->close(ftpfile.stream); /* close the local file */
 
 	return retVal;
 }

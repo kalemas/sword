@@ -199,12 +199,10 @@ public:
 	* @param newVal the value to set this buffer to. 
 	*/
 	inline void set(const SWBuf &newVal) {
-		unsigned long len = newVal.length() + 1;
+		unsigned long len = newVal.allocSize;
 		assureSize(len);
-//		const char *n = newVal.c_str();
-//		for (end = buf;len;len--) *end++ = *n++;
 		memcpy(buf, newVal.c_str(), len);
-		end = buf + (len - 1);
+		end = buf + (newVal.length());
 	}
 
 	/**
@@ -309,7 +307,7 @@ public:
 	}
 
 	/**
-	* SWBuf::append - appends a wide charachter value to the current value of this SWBuf
+	* SWBuf::append - appends a wide character value to the current value of this SWBuf
 	* If the allocated memory is not enough, it will be resized accordingly.
 	* NOTE: This is dangerous, as wchar_t is currently different sizes on different
 	* platforms (stupid windoze; stupid c++ spec for not mandating 4byte).

@@ -22,7 +22,7 @@
 
 #include <curlftpt.h>
 
-#include <fcntl.h>
+#include <filemgr.h>
 
 #include <curl/curl.h>
 #include <curl/easy.h>
@@ -36,7 +36,7 @@ namespace {
 
 	struct FtpFile {
 		const char *filename;
-		FILE *stream;
+		FileDesc *stream;
 		SWBuf *destBuf;
 	};
 
@@ -58,8 +58,8 @@ namespace {
 		struct FtpFile *out=(struct FtpFile *)stream;
 		if (out && !out->stream && !out->destBuf) {
 			/* open file for writing */
-			out->stream=fopen(out->filename, "wb");
-			if (!out->stream)
+			out->stream=FileMgr::getSystemFileMgr()->open(out->filename, FileMgr::CREAT|FileMgr::WRONLY);
+			if (!out->stream || out->stream->getFd() < 0)
 				return -1; /* failure, can't open file to write */
 		}
 		if (out->destBuf) {
@@ -68,7 +68,7 @@ namespace {
 			memcpy(out->destBuf->getRawData()+s, buffer, size*nmemb);
 			return (int)nmemb;
 		}
-		return (int)fwrite(buffer, size, nmemb, out->stream);
+		return (int)out->stream->write(buffer, size *nmemb);
 	}
 
 
@@ -162,7 +162,7 @@ char CURLFTPTransport::getURL(const char *destPath, const char *sourceURL, SWBuf
 		/* Switch on full protocol/debug output */
 		curl_easy_setopt(session, CURLOPT_VERBOSE, true);
 		curl_easy_setopt(session, CURLOPT_CONNECTTIMEOUT, 45);
-		
+
 		/* FTP connection settings */
 
 #if (LIBCURL_VERSION_MAJOR > 7) || \
@@ -176,7 +176,7 @@ char CURLFTPTransport::getURL(const char *destPath, const char *sourceURL, SWBuf
 		SWLog::getSystemLog()->logDebug("***** using CURLOPT_FTP_USE_EPRT\n");
 #endif
 
-		
+
 		SWLog::getSystemLog()->logDebug("***** About to perform curl easy action. \n");
 		SWLog::getSystemLog()->logDebug("***** destPath: %s \n", destPath);
 		SWLog::getSystemLog()->logDebug("***** sourceURL: %s \n", sourceURL);
@@ -192,7 +192,7 @@ char CURLFTPTransport::getURL(const char *destPath, const char *sourceURL, SWBuf
 	}
 
 	if (ftpfile.stream)
-		fclose(ftpfile.stream); /* close the local file */
+		FileMgr::getSystemFileMgr()->close(ftpfile.stream); /* close the local file */
 
 	return retVal;
 }

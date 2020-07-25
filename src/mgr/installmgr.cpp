@@ -273,30 +273,22 @@ int InstallMgr::removeModule(SWMgr *manager, const char *moduleName) {
 			}
 		}
 		else {	//remove all files in DataPath directory
-
-			DIR *dir;
-			struct dirent *ent;
 			ConfigEntMap::iterator entry;
-
 			FileMgr::removeDir(modDir.c_str());
-
-			if ((dir = opendir(manager->configPath))) {	// find and remove .conf file
-				rewinddir(dir);
-				while ((ent = readdir(dir))) {
-					if ((strcmp(ent->d_name, ".")) && (strcmp(ent->d_name, ".."))) {
-						modFile = manager->configPath;
-						removeTrailingSlash(modFile);
-						modFile += "/";
-						modFile += ent->d_name;
-						SWConfig *config = new SWConfig(modFile.c_str());
-						if (config->getSections().find(modName) != config->getSections().end()) {
-							delete config;
-							FileMgr::removeFile(modFile.c_str());
-						}
-						else	delete config;
+			std::vector<DirEntry> dirList = FileMgr::getDirList(manager->configPath);
+			for (int i = 0; i < dirList.size(); ++i) {
+               	if (dirList[i].name.endsWith(".conf")) {
+					modFile = manager->configPath;
+					removeTrailingSlash(modFile);
+					modFile += "/";
+					modFile += dirList[i].name;
+					SWConfig *config = new SWConfig(modFile.c_str());
+					if (config->getSections().find(modName) != config->getSections().end()) {
+						delete config;
+						FileMgr::removeFile(modFile.c_str());
 					}
+					else	delete config;
 				}
-				closedir(dir);
 			}
 		}
 		return 0;
@@ -522,35 +514,32 @@ int InstallMgr::installModule(SWMgr *destMgr, const char *fromLocation, const ch
 		}
 		if (!aborted) {
 			SWBuf confDir = sourceDir + "mods.d/";
-			if ((dir = opendir(confDir.c_str()))) {	// find and copy .conf file
-				rewinddir(dir);
-				while ((ent = readdir(dir)) && !retVal) {
-					if ((strcmp(ent->d_name, ".")) && (strcmp(ent->d_name, ".."))) {
-						modFile = confDir;
-						modFile += ent->d_name;
-						SWConfig *config = new SWConfig(modFile.c_str());
-						if (config->getSections().find(modName) != config->getSections().end()) {
-							SWBuf targetFile = destMgr->configPath; //"./mods.d/";
-							removeTrailingSlash(targetFile);
-							targetFile += "/";
-							targetFile += ent->d_name;
-							retVal = FileMgr::copyFile(modFile.c_str(), targetFile.c_str());
-							if (cipher) {
-								if (getCipherCode(modName, config)) {
-									SWMgr newDest(destMgr->prefixPath);
-									removeModule(&newDest, modName);
-									aborted = true;
-								}
-								else {
-									config->save();
-									retVal = FileMgr::copyFile(modFile.c_str(), targetFile.c_str());
-								}
+			std::vector<DirEntry> dirList = FileMgr::getDirList(confDir);
+               for (int i = 0; i < dirList.size() && !retVal; ++i) {
+               	if (dirList[i].name.endsWith(".conf")) {
+					modFile = confDir;
+					modFile += dirList[i].name;
+					SWConfig *config = new SWConfig(modFile);
+					if (config->getSections().find(modName) != config->getSections().end()) {
+						SWBuf targetFile = destMgr->configPath; //"./mods.d/";
+						removeTrailingSlash(targetFile);
+						targetFile += "/";
+						targetFile += dirList[i].name;
+						retVal = FileMgr::copyFile(modFile.c_str(), targetFile.c_str());
+						if (cipher) {
+							if (getCipherCode(modName, config)) {
+								SWMgr newDest(destMgr->prefixPath);
+								removeModule(&newDest, modName);
+								aborted = true;
+							}
+							else {
+								config->save();
+								retVal = FileMgr::copyFile(modFile.c_str(), targetFile.c_str());
 							}
 						}
-						delete config;
 					}
+					delete config;
 				}
-				closedir(dir);
 			}
 		}
 		return (aborted) ? -9 : retVal;

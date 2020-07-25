@@ -125,8 +125,8 @@ FileDesc::FileDesc(FileMgr *parent, const char *path, int mode, int perms, bool 
 
 FileDesc::~FileDesc() {
 	if (fd > 0)
-		close(fd);
-		
+		::close(fd);
+
 	if (path)
 		delete [] path;
 }
@@ -155,7 +155,7 @@ FileMgr::FileMgr(int maxFiles) {
 
 FileMgr::~FileMgr() {
 	FileDesc *tmp;
-	
+
 	while(files) {
 		tmp = files->next;
 		delete files;
@@ -171,7 +171,7 @@ FileDesc *FileMgr::open(const char *path, int mode, bool tryDowngrade) {
 
 FileDesc *FileMgr::open(const char *path, int mode, int perms, bool tryDowngrade) {
 	FileDesc **tmp, *tmp2;
-	
+
 	for (tmp = &files; *tmp; tmp = &((*tmp)->next)) {
 		if ((*tmp)->fd < 0)		// insert as first non-system_open file
 			break;
@@ -180,14 +180,14 @@ FileDesc *FileMgr::open(const char *path, int mode, int perms, bool tryDowngrade
 	tmp2 = new FileDesc(this, path, mode, perms, tryDowngrade);
 	tmp2->next = *tmp;
 	*tmp = tmp2;
-	
+
 	return tmp2;
 }
 
 
 void FileMgr::close(FileDesc *file) {
 	FileDesc **loop;
-	
+
 	for (loop = &files; *loop; loop = &((*loop)->next)) {
 		if (*loop == file) {
 			*loop = (*loop)->next;
@@ -201,7 +201,7 @@ void FileMgr::close(FileDesc *file) {
 int FileMgr::sysOpen(FileDesc *file) {
 	FileDesc **loop;
 	int openCount = 1;		// because we are presently opening 1 file, and we need to be sure to close files to accomodate, if necessary
-	
+
 	for (loop = &files; *loop; loop = &((*loop)->next)) {
 
 		if ((*loop)->fd > 0) {
@@ -218,15 +218,14 @@ int FileMgr::sysOpen(FileDesc *file) {
 				file->next = files;
 				files = file;
 			}
-			if ((!access(file->path, 04)) || ((file->mode & O_CREAT) == O_CREAT)) {	// check for at least file exists / read access before we try to open
+			if ((hasAccess(file->path, 04)) || ((file->mode & O_CREAT) == O_CREAT)) {	// check for at least file exists / read access before we try to open
 				char tries = (((file->mode & O_RDWR) == O_RDWR) && (file->tryDowngrade)) ? 2 : 1;  // try read/write if possible
 				for (int i = 0; i < tries; i++) {
 					if (i > 0) {
 						file->mode = (file->mode & ~O_RDWR);	// remove write access
 						file->mode = (file->mode | O_RDONLY);// add read access
 					}
-					file->fd = ::open(file->path, file->mode|O_BINARY, file->perms);
-
+					file->fd = openFile(file->path, file->mode|O_BINARY, file->perms);
 					if (file->fd >= 0)
 						break;
 				}
@@ -268,32 +267,32 @@ signed char FileMgr::trunc(FileDesc *file) {
 		if (i == 9999)
 			return -2;
 
-		int fd = ::open(buf, O_CREAT|O_RDWR, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH);
-		if (fd < 0)
+          FileDesc *fd = open(buf, CREAT|RDWR);
+		if (!fd || fd->getFd() < 0)
 			return -3;
-	
+
 		file->seek(0, SEEK_SET);
-		while (size > 0) {	 
+		while (size > 0) {
 			bytes = (int)file->read(nibble, 32767);
 			bytes = (bytes < size)?bytes:(int)size;
-			if (write(fd, nibble, bytes) != bytes) { break; }
+			if (fd->write(nibble, bytes) != bytes) { break; }
 			size -= bytes;
 		}
 		if (size < 1) {
 			// zero out the file
 			::close(file->fd);
-			file->fd = ::open(file->path, O_TRUNC, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH);
+			file->fd = openFile(file->path, O_TRUNC, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH);
 			::close(file->fd);
 			file->fd = -77;	// force file open by filemgr
 			// copy tmp file back (dumb, but must preserve file permissions)
-			lseek(fd, 0, SEEK_SET);
+			fd->seek(0, SEEK_SET);
 			do {
-				bytes = (int)read(fd, nibble, 32767);
+				bytes = fd->read(nibble, 32767);
 				file->write(nibble, bytes);
 			} while (bytes == 32767);
 		}
-		
-		::close(fd);
+
+		close(fd);
 		::close(file->fd);
 		removeFile(buf);		// remove our tmp file
 		file->fd = -77;	// causes file to be swapped out forcing open on next call to getFd()
@@ -306,21 +305,42 @@ signed char FileMgr::trunc(FileDesc *file) {
 }
 
 
+SWBuf FileMgr::getEnvValue(const char *variableName) {
+	return
+#ifdef WIN32
+		wcharToUTF8(_wgetenv((const wchar_t *)utf8ToWChar(variableName).getRawData()));
+#else
+		getenv(variableName);
+#endif
+
+}
+
+
+bool FileMgr::hasAccess(const char *path, int mode) {
+	return
+#ifdef WIN32
+		!_waccess((const wchar_t *)utf8ToWChar(path).getRawData(), 04);
+#else
+		!access(path, 04);
+#endif
+}
+
+
 signed char FileMgr::existsFile(const char *ipath, const char *ifileName)
 {
 	int len = (int)strlen(ipath) + ((ifileName)?strlen(ifileName):0) + 3;
 	char *ch;
 	char *path = new char [ len ];
 	strcpy(path, ipath);
-	
+
 	if ((path[strlen(path)-1] == '\\') || (path[strlen(path)-1] == '/'))
 		path[strlen(path)-1] = 0;
-	
+
 	if (ifileName) {
 		ch = path + strlen(path);
 		sprintf(ch, "/%s", ifileName);
 	}
-	signed char retVal = !access(path, 04);
+	signed char retVal = hasAccess(path, 04) ? 1 : 0;
 	delete [] path;
 	return retVal;
 }
@@ -334,24 +354,68 @@ signed char FileMgr::existsDir(const char *ipath, const char *idirName)
 		len +=  strlen(idirName);
 	char *path = new char [ len ];
 	strcpy(path, ipath);
-	
+
 	if ((path[strlen(path)-1] == '\\') || (path[strlen(path)-1] == '/'))
 		path[strlen(path)-1] = 0;
-	
+
 	if (idirName) {
 		ch = path + strlen(path);
 		sprintf(ch, "/%s", idirName);
 	}
-	signed char retVal = !access(path, 04);
+	signed char retVal = hasAccess(path, 04) ? 1 : 0;
 	delete [] path;
 	return retVal;
+}
+
+
+std::vector<struct DirEntry> FileMgr::getDirList(const char *dirPath, bool includeSize, bool includeIsDirectory) {
+	std::vector<struct DirEntry> dirList;
+	SWBuf basePath = dirPath;
+	if (!basePath.endsWith("/") && !basePath.endsWith("\\")) basePath += "/";
+
+#ifndef WIN32
+	DIR *dir;
+	struct dirent *ent;
+	if ((dir = opendir(dirPath))) {
+		rewinddir(dir);
+		while ((ent = readdir(dir))) {
+			if ((strcmp(ent->d_name, ".")) && (strcmp(ent->d_name, ".."))) {
+				struct DirEntry i;
+				i.name = ent->d_name;
+				if (includeIsDirectory || includeSize) i.isDirectory = FileMgr::isDirectory(basePath + ent->d_name);
+				if (!i.isDirectory && includeSize) i.size = FileMgr::getFileSize(basePath + ent->d_name);
+				dirList.push_back(i);
+			}
+		}
+		closedir(dir);
+	}
+
+#else
+	// Crappy Windows-specific code because well... They can't be conformant
+	WIN32_FIND_DATAW fileData;
+     SWBuf wcharBuf = utf8ToWChar(basePath+"*");
+     const wchar_t *wcharPath = (const wchar_t *)wcharBuf.getRawData();
+	HANDLE findIterator = FindFirstFileW(wcharPath, &fileData);
+	if (findIterator != INVALID_HANDLE_VALUE) {
+		do {
+			struct DirEntry i;
+			i.name = wcharToUTF8(fileData.cFileName);
+			i.isDirectory = fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
+			i.size = FileMgr::getFileSize(basePath + i.name);
+			dirList.push_back(i);
+		} while (FindNextFile(findIterator, &fileData) != 0);
+		FindClose(findIterator);
+	}
+#endif
+
+	return dirList;
 }
 
 
 int FileMgr::createParent(const char *pName) {
 	char *buf = new char [ strlen(pName) + 1 ];
 	int retCode = 0;
-	
+
 	strcpy(buf, pName);
 	int end = (int)strlen(buf) - 1;
 	while (end) {
@@ -361,18 +425,21 @@ int FileMgr::createParent(const char *pName) {
 	}
 	buf[end] = 0;
 	if (strlen(buf)>0) {
-		if (access(buf, 02)) {  // not exists with write access?
-			if ((retCode = mkdir(buf
+		if (!hasAccess(buf, 02)) {  // not exists with write access?
+			retCode =
 #ifndef WIN32
-					, 0755
+				mkdir(buf, 0755);
+#else
+				_wmkdir((const wchar_t *)utf8ToWChar(buf).getRawData());
 #endif
-					))) {
+			if (retCode) {
 				createParent(buf);
-				retCode = mkdir(buf
+				retCode =
 #ifndef WIN32
-					, 0755
+					mkdir(buf, 0755);
+#else
+					_wmkdir((const wchar_t *)utf8ToWChar(buf).getRawData());
 #endif
-					);
 			}
 		}
 	}
@@ -380,21 +447,31 @@ int FileMgr::createParent(const char *pName) {
 	delete [] buf;
 	return retCode;
 }
-	
+
+
+int FileMgr::openFile(const char *fName, int mode, int perms) {
+	int fd =
+#ifndef WIN32
+	     ::open(fName, mode, perms);
+#else
+		::_wopen((const wchar_t *)utf8ToWChar(fName).getRawData(), mode, perms);
+#endif
+	return fd;
+}
+
 
 int FileMgr::openFileReadOnly(const char *fName) {
-	int fd = ::open(fName, O_RDONLY|O_BINARY, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH);
-	return fd;
+	return openFile(fName, O_RDONLY|O_BINARY, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH);
 }
 
 
 int FileMgr::createPathAndFile(const char *fName) {
 	int fd;
-	
-	fd = ::open(fName, O_CREAT|O_WRONLY|O_BINARY, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH);
+
+	fd = openFile(fName, O_CREAT|O_WRONLY|O_BINARY, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH);
 	if (fd < 1) {
 		createParent(fName);
-		fd = ::open(fName, O_CREAT|O_WRONLY|O_BINARY, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH);
+		fd = openFile(fName, O_CREAT|O_WRONLY|O_BINARY, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH);
 	}
 	return fd;
 }
@@ -404,7 +481,7 @@ int FileMgr::copyFile(const char *sourceFile, const char *targetFile) {
 	int sfd, dfd, len;
 	char buf[4096];
 
-	if ((sfd = ::open(sourceFile, O_RDONLY|O_BINARY, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH)) < 1)
+	if ((sfd = openFile(sourceFile, O_RDONLY|O_BINARY, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH)) < 1)
 		return -1;
 	if ((dfd = createPathAndFile(targetFile)) < 1)
 		return -1;
@@ -413,17 +490,23 @@ int FileMgr::copyFile(const char *sourceFile, const char *targetFile) {
 		len = (int)read(sfd, buf, 4096);
 		if (write(dfd, buf, len) != len) break;
 	}
-	while(len == 4096);	
+	while(len == 4096);
 	::close(dfd);
 	::close(sfd);
-	
+
 	return 0;
 }
 
 
 int FileMgr::removeFile(const char *fName) {
-	return ::remove(fName);
+	return
+#ifndef WIN32
+     ::remove(fName);
+#else
+	::_wremove((const wchar_t *)utf8ToWChar(fName).getRawData());
+#endif
 }
+
 
 char FileMgr::getLine(FileDesc *fDesc, SWBuf &line) {
 	int len;
@@ -457,7 +540,7 @@ char FileMgr::getLine(FileDesc *fDesc, SWBuf &line) {
 		// find the end
 		int end;
 		for (end = start; ((end < (len-1)) && (chunk[end] != 10)); end++);
-	
+
 		if ((chunk[end] != 10) && (len == 254)) {
 			more = true;
 		}
@@ -478,7 +561,7 @@ char FileMgr::getLine(FileDesc *fDesc, SWBuf &line) {
 				}
 			}
 		}
-		
+
 		int size = (end - start) + 1;
 
 		if (size > 0) {
@@ -491,69 +574,73 @@ char FileMgr::getLine(FileDesc *fDesc, SWBuf &line) {
 
 
 char FileMgr::isDirectory(const char *path) {
+#ifndef WIN32
 	struct stat stats;
-	if (stat(path, &stats))
-		return 0;
+	int error = stat(path, &stats);
+#else
+	struct _stat stats;
+	int error = _wstat((const wchar_t *)utf8ToWChar(path).getRawData(), &stats);
+#endif
+     if (error) return 0;
 	return ((stats.st_mode & S_IFDIR) == S_IFDIR);
 }
 
 
+long FileMgr::getFileSize(const char *path) {
+#ifndef WIN32
+	struct stat stats;
+	int error = stat(path, &stats);
+#else
+	struct _stat stats;
+	int error = _wstat((const wchar_t *)utf8ToWChar(path).getRawData(), &stats);
+#endif
+     if (error) return 0;
+	return stats.st_size;
+}
+
+
 int FileMgr::copyDir(const char *srcDir, const char *destDir) {
-	DIR *dir;
-	struct dirent *ent;
+	SWBuf baseSrcPath = srcDir;
+	if (!baseSrcPath.endsWith("/") && !baseSrcPath.endsWith("\\")) baseSrcPath += "/";
+	SWBuf baseDestPath = destDir;
+	if (!baseDestPath.endsWith("/") && !baseDestPath.endsWith("\\")) baseDestPath += "/";
 	int retVal = 0;
-	if ((dir = opendir(srcDir))) {
-		rewinddir(dir);
-		while ((ent = readdir(dir)) && !retVal) {
-			if ((strcmp(ent->d_name, ".")) && (strcmp(ent->d_name, ".."))) {
-				SWBuf srcPath  = (SWBuf)srcDir  + (SWBuf)"/" + ent->d_name;
-				SWBuf destPath = (SWBuf)destDir + (SWBuf)"/" + ent->d_name;
-				if (!isDirectory(srcPath.c_str())) {
-					retVal = copyFile(srcPath.c_str(), destPath.c_str());
-				}
-				else {
-					retVal = copyDir(srcPath.c_str(), destPath.c_str());
-				}
-			}
+	std::vector<DirEntry> dirList = getDirList(srcDir);
+	for (unsigned int i = 0; i < dirList.size() && !retVal; ++i) {
+		SWBuf srcPath  = baseSrcPath  + dirList[i].name;
+		SWBuf destPath = baseDestPath + dirList[i].name;
+		if (!dirList[i].isDirectory) {
+			retVal = copyFile(srcPath.c_str(), destPath.c_str());
 		}
-		closedir(dir);
+		else {
+			retVal = copyDir(srcPath.c_str(), destPath.c_str());
+		}
 	}
 	return retVal;
 }
 
 
 int FileMgr::removeDir(const char *targetDir) {
-	DIR *dir = opendir(targetDir);
-	struct dirent *ent;
-	if (dir) {
-		rewinddir(dir);
-		while ((ent = readdir(dir))) {
-			if ((strcmp(ent->d_name, ".")) && (strcmp(ent->d_name, ".."))) {
-				SWBuf targetPath = (SWBuf)targetDir + (SWBuf)"/" + ent->d_name;
-				if (!isDirectory(targetPath.c_str())) {
-					FileMgr::removeFile(targetPath.c_str());
-				}
-				else {
-					FileMgr::removeDir(targetPath.c_str());
-				}
-			}
+	SWBuf basePath = targetDir;
+	if (!basePath.endsWith("/") && !basePath.endsWith("\\")) basePath += "/";
+	std::vector<DirEntry> dirList = getDirList(targetDir);
+	for (unsigned int i = 0; i < dirList.size(); ++i) {
+		SWBuf targetPath = basePath + dirList[i].name;
+		if (!dirList[i].isDirectory) {
+			FileMgr::removeFile(targetPath.c_str());
 		}
-		closedir(dir);
-		FileMgr::removeFile(targetDir);
-/*
-		int status = FileMgr::removeFile(targetDir);
-          int stuff = errno;
-          char *err = strerror(errno);
-          int x = stuff;
-*/
+		else {
+			FileMgr::removeDir(targetPath.c_str());
+		}
 	}
+	FileMgr::removeFile(targetDir);
 	return 0;
 }
 
 
 void FileMgr::flush() {
 	FileDesc **loop;
-	
+
 	for (loop = &files; *loop; loop = &((*loop)->next)) {
 		if ((*loop)->fd > 0) {
 			(*loop)->offset = lseek((*loop)->fd, 0, SEEK_CUR);
@@ -578,10 +665,10 @@ long FileMgr::resourceConsumption() {
 SWBuf FileMgr::getHomeDir() {
 
 	// figure out 'home' directory for app data
-	SWBuf homeDir = getenv("HOME");
+	SWBuf homeDir = getEnvValue("HOME");
 	if (!homeDir.length()) {
 		// silly windows
-		homeDir = getenv("APPDATA");
+		homeDir = getEnvValue("APPDATA");
 	}
 	if (homeDir.length()) {
 		if ((homeDir[homeDir.length()-1] != '\\') && (homeDir[homeDir.length()-1] != '/')) {
@@ -594,3 +681,5 @@ SWBuf FileMgr::getHomeDir() {
 
 
 SWORD_NAMESPACE_END
+
+

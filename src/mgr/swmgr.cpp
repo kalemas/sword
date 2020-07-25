@@ -144,7 +144,8 @@ namespace {
 			}
 		}
 		if (logLevelString.length()) {
-			int logLevel =  logLevelString == "ERROR"     ? SWLog::LOG_ERROR:
+			int logLevel =
+					logLevelString == "ERROR"     ? SWLog::LOG_ERROR:
 					logLevelString == "WARN"      ? SWLog::LOG_WARN:
 					logLevelString == "INFO"      ? SWLog::LOG_INFO:
 					logLevelString == "TIMEDINFO" ? SWLog::LOG_TIMEDINFO:
@@ -451,7 +452,7 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 	ConfigEntMap::iterator lastEntry;
 
 	if (!setLogLevel) {
-		SWBuf envLogLevel = getenv("SWORD_LOGLEVEL");
+		SWBuf envLogLevel = FileMgr::getEnvValue("SWORD_LOGLEVEL");
 		if (envLogLevel.length()) {
 			setSystemLogLevel(0, envLogLevel);
 			setLogLevel = true;
@@ -524,7 +525,7 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 			// check environment variable SWORD_PATH
 			SWLog::getSystemLog()->logDebug("Checking $SWORD_PATH...");
 
-			SWBuf envsworddir = getenv("SWORD_PATH");
+			SWBuf envsworddir = FileMgr::getEnvValue("SWORD_PATH");
 			if (envsworddir.length()) {
 				
 				SWLog::getSystemLog()->logDebug("found (%s).", envsworddir.c_str());
@@ -657,7 +658,7 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 
 	SWLog::getSystemLog()->logDebug("Checking $ALLUSERSPROFILE/Application Data/sword/...");
 
-	SWBuf envallusersdir  = getenv("ALLUSERSPROFILE");
+	SWBuf envallusersdir = FileMgr::getEnvValue("ALLUSERSPROFILE");
 	if (envallusersdir.length()) {
 		SWLog::getSystemLog()->logDebug("found (%s).", envallusersdir.c_str());
 		path = envallusersdir;
@@ -743,45 +744,36 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 
 void SWMgr::loadConfigDir(const char *ipath)
 {
-	DIR *dir;
-	struct dirent *ent;
-	SWBuf newmodfile;
- 
-	if ((dir = opendir(ipath))) {
-		rewinddir(dir);
-		while ((ent = readdir(dir))) {
-			//check whether it ends with .conf, if it doesn't skip it!
-			if (!ent->d_name || (strlen(ent->d_name) <= 5) || strncmp(".conf", (ent->d_name + strlen(ent->d_name) - 5), 5 )) {
-				continue;
-			}
-			
-			newmodfile = ipath;
-			if ((ipath[strlen(ipath)-1] != '\\') && (ipath[strlen(ipath)-1] != '/'))
-				newmodfile += "/";
-			newmodfile += ent->d_name;
-			if (config) {
-				SWConfig tmpConfig(newmodfile.c_str());
-				*config += tmpConfig;
-			}
-			else	config = myconfig = new SWConfig(newmodfile.c_str());
+	SWBuf basePath = ipath;
+	if (!basePath.endsWith("/") && !basePath.endsWith("\\")) basePath += "/";
+
+	SWBuf newModFile;
+
+	std::vector<DirEntry> dirList = FileMgr::getDirList(ipath);
+	for (int i = 0; i < dirList.size(); ++i) {
+		//check whether it ends with .conf, if it doesn't skip it!
+		if (!dirList[i].name.endsWith(".conf")) {
+			continue;
 		}
-		closedir(dir);
-		
-		if (!config) {	// if no .conf file exist yet, create a default
-			newmodfile = ipath;
-			if ((ipath[strlen(ipath)-1] != '\\') && (ipath[strlen(ipath)-1] != '/'))
-				newmodfile += "/";
-			newmodfile += "globals.conf";
-			config = myconfig = new SWConfig(newmodfile.c_str());
+
+		newModFile = basePath + dirList[i].name;
+		if (config) {
+			SWConfig tmpConfig(newModFile);
+			config->augment(tmpConfig);
 		}
+		else	config = myconfig = new SWConfig(newModFile);
+	}
+
+	if (!config) {	// if no .conf file exist yet, create a default
+		newModFile = basePath + "globals.conf";
+		config = myconfig = new SWConfig(newModFile);
 	}
 }
 
 
 void SWMgr::augmentModules(const char *ipath, bool multiMod) {
 	SWBuf path = ipath;
-	if ((ipath[strlen(ipath)-1] != '\\') && (ipath[strlen(ipath)-1] != '/'))
-		path += "/";
+	if (!path.endsWith("/") && !path.endsWith("\\")) path += "/";
 	if (FileMgr::existsDir(path.c_str(), "mods.d")) {
 		char *savePrefixPath = 0;
 		char *saveConfigPath = 0;
@@ -1051,20 +1043,20 @@ SWModule *SWMgr::createModule(const char *name, const char *driver, ConfigEntMap
 		newmod = new HREFCom(datapath.c_str(), misc1.c_str(), name, description.c_str());
 	}
 
-        int pos = 0;  //used for position of final / in AbsoluteDataPath, but also set to 1 for modules types that need to strip module name
+	int pos = 0;  //used for position of final / in AbsoluteDataPath, but also set to 1 for modules types that need to strip module name
 	if (!stricmp(driver, "RawLD")) {
 		bool caseSensitive = ((entry = section.find("CaseSensitiveKeys")) != section.end()) ? (*entry).second == "true": false;
 		bool strongsPadding = ((entry = section.find("StrongsPadding")) != section.end()) ? (*entry).second == "true": true;
 		newmod = new RawLD(datapath.c_str(), name, description.c_str(), 0, enc, direction, markup, lang.c_str(), caseSensitive, strongsPadding);
-                pos = 1;
-        }
+		pos = 1;
+	}
 
 	if (!stricmp(driver, "RawLD4")) {
 		bool caseSensitive = ((entry = section.find("CaseSensitiveKeys")) != section.end()) ? (*entry).second == "true": false;
 		bool strongsPadding = ((entry = section.find("StrongsPadding")) != section.end()) ? (*entry).second == "true": true;
 		newmod = new RawLD4(datapath.c_str(), name, description.c_str(), 0, enc, direction, markup, lang.c_str(), caseSensitive, strongsPadding);
-                pos = 1;
-        }
+		pos = 1;
+	}
 
 	if (!stricmp(driver, "zLD")) {
 		SWCompress *compress = 0;
@@ -1330,54 +1322,44 @@ void SWMgr::addStripFilters(SWModule *module, ConfigEntMap &section)
 
 void SWMgr::InstallScan(const char *dirname)
 {
-   DIR *dir;
-   struct dirent *ent;
-   FileDesc *conffd = 0;
-   SWBuf newmodfile;
-   SWBuf targetName;
- 
-	if (FileMgr::existsDir(dirname)) {
-		if ((dir = opendir(dirname))) {
-			rewinddir(dir);
-			while ((ent = readdir(dir))) {
-				if ((strcmp(ent->d_name, ".")) && (strcmp(ent->d_name, ".."))) {
-					newmodfile = dirname;
-					if ((dirname[strlen(dirname)-1] != '\\') && (dirname[strlen(dirname)-1] != '/'))
-						newmodfile += "/";
-					newmodfile += ent->d_name;
+	FileDesc *conffd = 0;
+	SWBuf newModFile;
+	SWBuf targetName;
+	SWBuf basePath = dirname;
+	if (!basePath.endsWith("/") && !basePath.endsWith("\\")) basePath += "/";
 
-					// mods.d
-					if (configType) {
-						if (conffd)
-							FileMgr::getSystemFileMgr()->close(conffd);
-						targetName = configPath;
-						if ((configPath[strlen(configPath)-1] != '\\') && (configPath[strlen(configPath)-1] != '/'))
-							targetName += "/";
-						targetName += ent->d_name;
-						conffd = FileMgr::getSystemFileMgr()->open(targetName.c_str(), FileMgr::WRONLY|FileMgr::CREAT, FileMgr::IREAD|FileMgr::IWRITE);
-					}
+	std::vector<DirEntry> dirList = FileMgr::getDirList(dirname);
+	for (int i = 0; i < dirList.size(); ++i) {
+		newModFile = basePath + dirList[i].name;
 
-					// mods.conf
-					else {
-						if (!conffd) {
-							conffd = FileMgr::getSystemFileMgr()->open(config->getFileName().c_str(), FileMgr::WRONLY|FileMgr::APPEND);
-							if (conffd && conffd->getFd() >= 0)
-								conffd->seek(0L, SEEK_END);
-							else {
-								FileMgr::getSystemFileMgr()->close(conffd);
-								conffd = 0;
-							}
-						}
-					}
-					addModToConfig(conffd, newmodfile.c_str());
-					FileMgr::removeFile(newmodfile.c_str());
-				}
-			}
+		// mods.d
+		if (configType) {
 			if (conffd)
 				FileMgr::getSystemFileMgr()->close(conffd);
-			closedir(dir);
+			targetName = configPath;
+			if ((configPath[strlen(configPath)-1] != '\\') && (configPath[strlen(configPath)-1] != '/'))
+				targetName += "/";
+			targetName += dirList[i].name;
+			conffd = FileMgr::getSystemFileMgr()->open(targetName.c_str(), FileMgr::WRONLY|FileMgr::CREAT, FileMgr::IREAD|FileMgr::IWRITE);
 		}
+
+		// mods.conf
+		else {
+			if (!conffd) {
+				conffd = FileMgr::getSystemFileMgr()->open(config->getFileName().c_str(), FileMgr::WRONLY|FileMgr::APPEND);
+				if (conffd && conffd->getFd() >= 0)
+					conffd->seek(0L, SEEK_END);
+				else {
+					FileMgr::getSystemFileMgr()->close(conffd);
+					conffd = 0;
+				}
+			}
+		}
+		addModToConfig(conffd, newModFile.c_str());
+		FileMgr::removeFile(newModFile.c_str());
 	}
+	if (conffd)
+		FileMgr::getSystemFileMgr()->close(conffd);
 }
 
 

@@ -29,6 +29,7 @@
 #include <defs.h>
 #include <swcacher.h>
 #include <swbuf.h>
+#include <vector>
 
 SWORD_NAMESPACE_START
 
@@ -81,7 +82,7 @@ public:
 	* filemgr will open.  Adjust for tuning.
 	*/
 	int maxFiles;
-	
+
 	static FileMgr *getSystemFileMgr();
 	static void setSystemFileMgr(FileMgr *newFileMgr);
 
@@ -125,6 +126,22 @@ public:
 	virtual void flush();
 	virtual long resourceConsumption();
 
+     /** Get an environment variable from the OS
+     * @param variableName
+     *
+     * @return variable value from the OS
+     */
+     static SWBuf getEnvValue(const char *variableName);
+
+     /** Check if a path can be access with supplied permissions
+     * @param path Path to the resource
+     * @param mode Desired access mode
+     *
+     * @return whether or not the resource can be accessed with the requested
+     *	mode
+     */
+     static bool hasAccess(const char *path, int mode);
+
 	/** Checks for the existence and readability of a file.
 	* @param ipath Path to file.
 	* @param ifileName Name of file to check for.
@@ -137,6 +154,18 @@ public:
 	*/
 	static signed char existsDir(const char *ipath, const char *idirName = 0);
 
+     /** Given a directory path, returns contents of directory
+     * @param dirPath Path to directory
+     * @param includeSize Optimization flag to allow passing false
+     *	to skip file size lookup (true forces both size and directory lookup)
+     * @param includeIsDirectory Optimization flag to allow passing false
+     *	to skip isDirectory lookup
+     *
+     * @return a container of DirEntry records describing contents
+     */
+     static std::vector<struct DirEntry> getDirList(const char *dirPath, bool includeSize = false, bool includeIsDirectory = true);
+
+
 	/** Truncate a file at its current position
 	* leaving byte at current possition intact deleting everything afterward.
 	* @param file The file to operate on.
@@ -144,6 +173,7 @@ public:
 	signed char trunc(FileDesc *file);
 
 	static char isDirectory(const char *path);
+	static long getFileSize(const char *path);
 	static int createParent(const char *pName);
 	static int createPathAndFile(const char *fName);
 
@@ -151,7 +181,9 @@ public:
 	 * @param fName filename to open
 	 * @return fd; < 0 = error
 	 */
+	static int openFile(const char *fName, int mode, int perms);
 	static int openFileReadOnly(const char *fName);
+     
 	static int copyFile(const char *srcFile, const char *destFile);
 	static int copyDir(const char *srcDir, const char *destDir);
 	static int removeDir(const char *targetDir);
