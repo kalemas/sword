@@ -28,8 +28,11 @@
 #include <swlog.h>
 #include <zipcomprs.h>
 #include <zlib.h>
+#include <utilstr.h>
 #ifndef WIN32
 #include <utime.h>
+#else
+#include <time.h>
 #endif
 extern "C" {
 #include "zlib.h"
@@ -163,7 +166,7 @@ int untar (gzFile in, const char *dest) {
 			unsigned int bytes = (remaining > BLOCKSIZE) ? BLOCKSIZE : remaining;
 
 			if (outfile != NULL) {
-				if (outfile->write(&buffer,sizeof(char)*bytes) != bytes) {
+				if (outfile->write(&buffer,sizeof(char)*bytes) != (int) bytes) {
 					sword::SWLog::getSystemLog()->logError("error writing %s skipping...", fname.c_str());
 					sword::FileMgr::getSystemFileMgr()->close(outfile);
 					sword::FileMgr::removeFile(fname);
@@ -185,7 +188,7 @@ int untar (gzFile in, const char *dest) {
  
 					localt = *localtime(&tartime);
 
-					hFile = CreateFileW((const wchar_t *)utf8ToWChar(fname).getRawData(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+					hFile = CreateFileW((const wchar_t *)sword::utf8ToWChar(fname).getRawData(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 		  
 					st.wYear = (WORD)localt.tm_year+1900;
 					st.wMonth = (WORD)localt.tm_mon;
