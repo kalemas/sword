@@ -21,16 +21,12 @@
  */
 
 #ifndef EXCLUDEZLIB
-extern "C" {
-#include <untgz.h>
-}
+#include <zipcomprs.h>
 #endif
 
 #include <installmgr.h>
 #include <filemgr.h>
 #include <utilstr.h>
-
-#include <fcntl.h>
 
 #include <swmgr.h>
 #include <swmodule.h>
@@ -76,6 +72,7 @@ const int InstallMgr::MODSTAT_UPDATED          = 0x004;
 const int InstallMgr::MODSTAT_NEW              = 0x008;
 const int InstallMgr::MODSTAT_CIPHERED         = 0x010;
 const int InstallMgr::MODSTAT_CIPHERKEYPRESENT = 0x020;
+bool      InstallMgr::userDisclaimerConfirmed  = false;
 
 
 // override this method and provide your own custom RemoteTransport subclass
@@ -100,9 +97,8 @@ RemoteTransport *InstallMgr::createHTTPTransport(const char *host, StatusReporte
 
 
 InstallMgr::InstallMgr(const char *privatePath, StatusReporter *sr, SWBuf u, SWBuf p) {
-	userDisclaimerConfirmed = false;
-	passive=true;
-	unverifiedPeerAllowed=true;
+	passive = true;
+	unverifiedPeerAllowed = true;
 	statusReporter = sr;
 	this->u = u;
 	this->p = p;
@@ -276,7 +272,7 @@ int InstallMgr::removeModule(SWMgr *manager, const char *moduleName) {
 			ConfigEntMap::iterator entry;
 			FileMgr::removeDir(modDir.c_str());
 			std::vector<DirEntry> dirList = FileMgr::getDirList(manager->configPath);
-			for (int i = 0; i < dirList.size(); ++i) {
+			for (unsigned int i = 0; i < dirList.size(); ++i) {
                	if (dirList[i].name.endsWith(".conf")) {
 					modFile = manager->configPath;
 					removeTrailingSlash(modFile);
@@ -401,8 +397,6 @@ int InstallMgr::installModule(SWMgr *destMgr, const char *fromLocation, const ch
 	SWBuf buffer;
 	bool aborted = false;
 	bool cipher = false;
-	DIR *dir;
-	struct dirent *ent;
 	SWBuf modFile;
 
 	SWLog::getSystemLog()->logDebug("***** InstallMgr::installModule\n");
@@ -515,7 +509,7 @@ int InstallMgr::installModule(SWMgr *destMgr, const char *fromLocation, const ch
 		if (!aborted) {
 			SWBuf confDir = sourceDir + "mods.d/";
 			std::vector<DirEntry> dirList = FileMgr::getDirList(confDir);
-               for (int i = 0; i < dirList.size() && !retVal; ++i) {
+               for (unsigned int i = 0; i < dirList.size() && !retVal; ++i) {
                	if (dirList[i].name.endsWith(".conf")) {
 					modFile = confDir;
 					modFile += dirList[i].name;
@@ -569,7 +563,7 @@ int InstallMgr::refreshRemoteSource(InstallSource *is) {
 	errorCode = remoteCopy(is, "mods.d.tar.gz", archive.c_str(), false);
 	if (!errorCode) { //sucessfully downloaded the tar,gz of module configs
 		FileDesc *fd = FileMgr::getSystemFileMgr()->open(archive.c_str(), FileMgr::RDONLY);
-		untargz(fd->getFd(), root.c_str());
+		ZipCompress::unTarGZ(fd, root.c_str());
 		FileMgr::getSystemFileMgr()->close(fd);
 	}
 	else
@@ -777,9 +771,7 @@ SWMgr *InstallSource::getMgr() {
  */
 bool InstallMgr::isUserDisclaimerConfirmed() const {
 
-	bool confirmed = userDisclaimerConfirmed;
-	
-	if (!confirmed) {
+	if (!userDisclaimerConfirmed) {
 		std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 		std::cout << "                -=+* WARNING *+=- -=+* WARNING *+=-\n\n\n";
 		std::cout << "Although Install Manager provides a convenient way for installing\n";
@@ -800,10 +792,10 @@ bool InstallMgr::isUserDisclaimerConfirmed() const {
 
 		char prompt[10];
 		fgets(prompt, 9, stdin);
-		confirmed = (!strcmp(prompt, "yes\n"));
+		userDisclaimerConfirmed = (!strcmp(prompt, "yes\n"));
 		std::cout << "\n";
 	}
-	return confirmed;
+	return userDisclaimerConfirmed;
 }
 
 

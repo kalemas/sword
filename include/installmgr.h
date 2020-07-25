@@ -69,7 +69,6 @@ typedef std::map<SWBuf, InstallSource *> InstallSourceMap;
 class SWDLLEXPORT InstallMgr {
 
 protected:
-	bool userDisclaimerConfirmed;
 	std::set<SWBuf> defaultMods;
 	char *privatePath;
 	SWBuf confPath;
@@ -94,6 +93,7 @@ protected:
 
 public:
 
+	static bool userDisclaimerConfirmed;
 	static const int MODSTAT_OLDER;
 	static const int MODSTAT_SAMEVERSION;
 	static const int MODSTAT_UPDATED;
@@ -208,7 +208,7 @@ public:
 	 * instead of using the setter below. This is provided for clients who don't wish to inherit
 	 * InstallMgr and override method.
 	 */
-	void setUserDisclaimerConfirmed(bool val) { userDisclaimerConfirmed = val; }
+	void setUserDisclaimerConfirmed(bool val) { InstallMgr::userDisclaimerConfirmed = val; }
 
 
 	/** override this and provide an input mechanism to allow your users

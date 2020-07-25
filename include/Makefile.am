@@ -146,7 +146,6 @@ pkginclude_HEADERS += $(swincludedir)/treekey.h
 pkginclude_HEADERS += $(swincludedir)/treekeyidx.h
 pkginclude_HEADERS += $(swincludedir)/unicodertf.h
 pkginclude_HEADERS += $(swincludedir)/url.h
-pkginclude_HEADERS += $(swincludedir)/untgz.h
 pkginclude_HEADERS += $(swincludedir)/utf16utf8.h
 pkginclude_HEADERS += $(swincludedir)/utf8arshaping.h
 pkginclude_HEADERS += $(swincludedir)/utf8bidireorder.h

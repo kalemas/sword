@@ -30,6 +30,8 @@
 
 SWORD_NAMESPACE_START
 
+class FileDesc;
+
 class SWDLLEXPORT ZipCompress : public SWCompress {
 
 protected:
@@ -39,6 +41,8 @@ public:
 
 	virtual void encode(void);
 	virtual void decode(void);
+
+	static char unTarGZ(FileDesc *fd, const char *destPath);
 };
 
 SWORD_NAMESPACE_END

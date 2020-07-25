@@ -77,9 +77,7 @@ public:
 		// convenience as an example.
 		// you can copy and adjust for your frontend
 
-		bool confirmed = userDisclaimerConfirmed;
-	
-		if (!confirmed) {
+		if (!userDisclaimerConfirmed) {
 			std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 			std::cout << "                -=+* WARNING *+=- -=+* WARNING *+=-\n\n\n";
 			std::cout << "Although Install Manager provides a convenient way for installing\n";
@@ -100,10 +98,10 @@ public:
 
 			char prompt[10];
 			fgets(prompt, 9, stdin);
-			confirmed = (!strcmp(prompt, "yes\n"));
+			userDisclaimerConfirmed = (!strcmp(prompt, "yes\n"));
 			std::cout << "\n";
 		}
-		return confirmed;
+		return userDisclaimerConfirmed;
 	}
 
 };

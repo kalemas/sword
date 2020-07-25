@@ -24,9 +24,195 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
+#include <filemgr.h>
+#include <swlog.h>
 #include <zipcomprs.h>
 #include <zlib.h>
+#ifndef WIN32
+#include <utime.h>
+#endif
+extern "C" {
+#include "zlib.h"
+}
+
+/* This untar code is largely lifted from zlib untgz.c
+ * written by "Pedro A. Aranda Gutirrez" <paag@tid.es>
+ * adaptation to Unix by Jean-loup Gailly <jloup@gzip.org>
+ */
+namespace {
+
+#define BLOCKSIZE 512
+#define REGTYPE	 '0'		/* regular file */
+#define AREGTYPE '\0'		/* regular file */
+#define DIRTYPE  '5'		/* directory */
+
+struct tar_header {		/* byte offset */
+  char name[100];		/*   0 */
+  char mode[8];			/* 100 */
+  char uid[8];			/* 108 */
+  char gid[8];			/* 116 */
+  char size[12];		/* 124 */
+  char mtime[12];		/* 136 */
+  char chksum[8];		/* 148 */
+  char typeflag;		/* 156 */
+  char linkname[100];		/* 157 */
+  char magic[6];		/* 257 */
+  char version[2];		/* 263 */
+  char uname[32];		/* 265 */
+  char gname[32];		/* 297 */
+  char devmajor[8];		/* 329 */
+  char devminor[8];		/* 337 */
+  char prefix[155];		/* 345 */
+				/* 500 */
+};
+
+union tar_buffer {
+  char               buffer[BLOCKSIZE];
+  struct tar_header  header;
+};
+
+int getoct(char *p,int width)
+{
+  int result = 0;
+  char c;
+  
+  while (width --)
+    {
+      c = *p++;
+      if (c == ' ')
+	continue;
+      if (c == 0)
+	break;
+      result = result * 8 + (c - '0');
+    }
+  return result;
+}
+
+int untar (gzFile in, const char *dest) {
+	union  tar_buffer buffer;
+	int    len;
+	int    err;
+	int    getheader = 1;
+	int    remaining = 0;
+	sword::FileDesc   *outfile = NULL;
+	sword::SWBuf  fname;
+	time_t tartime;
+  
+	while (1) {
+		len = gzread(in, &buffer, BLOCKSIZE);
+		if (len < 0)
+			sword::SWLog::getSystemLog()->logError(gzerror(in, &err));
+		/*
+		* Always expect complete blocks to process
+		* the tar information.
+		*/
+		if (len != BLOCKSIZE)
+			sword::SWLog::getSystemLog()->logError("gzread: incomplete block read");
+	 
+		/*
+		* If we have to get a tar header
+		*/
+		if (getheader == 1) {
+			/*
+			* if we met the end of the tar
+			* or the end-of-tar block,
+			* we are done
+			*/
+			if ((len == 0)  || (buffer.header.name[0]== 0)) break;
+
+			tartime = (time_t)getoct(buffer.header.mtime,12);
+			fname = dest;
+			if (!fname.endsWith("/") && !fname.endsWith("\\")) fname += '/';
+			fname += buffer.header.name;
+	  
+			switch (buffer.header.typeflag) {
+			case DIRTYPE: {
+				sword::SWBuf dummyFile = fname + "dummyFile";
+				sword::FileMgr::createParent(dummyFile);
+				break;
+			}
+			case REGTYPE:
+			case AREGTYPE:
+				remaining = getoct(buffer.header.size,12);
+				if (remaining) {
+					outfile = sword::FileMgr::getSystemFileMgr()->open(fname, sword::FileMgr::WRONLY);
+					if (!outfile || outfile->getFd() < 0) {
+						// try creating directory
+						if (strrchr(fname.c_str(), '/')) {
+							sword::FileMgr::createParent(fname);
+							outfile = sword::FileMgr::getSystemFileMgr()->open(fname, sword::FileMgr::CREAT|sword::FileMgr::WRONLY);
+						}
+					}
+				}
+				else {
+					if (outfile) {
+						sword::FileMgr::getSystemFileMgr()->close(outfile);
+						outfile = NULL;
+					}
+				}
+				/*
+				* could have no contents
+				*/
+				getheader = (remaining) ? 0 : 1;
+				break;
+			default:
+				break;
+			}
+		}
+		else	{
+			unsigned int bytes = (remaining > BLOCKSIZE) ? BLOCKSIZE : remaining;
+
+			if (outfile != NULL) {
+				if (outfile->write(&buffer,sizeof(char)*bytes) != bytes) {
+					sword::SWLog::getSystemLog()->logError("error writing %s skipping...", fname.c_str());
+					sword::FileMgr::getSystemFileMgr()->close(outfile);
+					sword::FileMgr::removeFile(fname);
+				}
+			}
+			remaining -= bytes;
+			if (remaining == 0) {
+				getheader = 1;
+				if (outfile != NULL) {
+
+					// All this logic is simply the set the file timestamp
+					// ugh
+					sword::FileMgr::getSystemFileMgr()->close(outfile);
+#ifdef WIN32
+					HANDLE hFile;
+					FILETIME ftm,ftLocal;
+					SYSTEMTIME st;
+					struct tm localt;
+ 
+					localt = *localtime(&tartime);
+
+					hFile = CreateFileW((const wchar_t *)utf8ToWChar(fname).getRawData(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+		  
+					st.wYear = (WORD)localt.tm_year+1900;
+					st.wMonth = (WORD)localt.tm_mon;
+					st.wDayOfWeek = (WORD)localt.tm_wday;
+					st.wDay = (WORD)localt.tm_mday;
+					st.wHour = (WORD)localt.tm_hour;
+					st.wMinute = (WORD)localt.tm_min;
+					st.wSecond = (WORD)localt.tm_sec;
+					st.wMilliseconds = 0;
+					SystemTimeToFileTime(&st,&ftLocal);
+					LocalFileTimeToFileTime(&ftLocal,&ftm);
+					SetFileTime(hFile,&ftm,NULL,&ftm);
+					CloseHandle(hFile);
+#else
+					struct utimbuf settime;
+					settime.actime = settime.modtime = tartime;
+					utime(fname.c_str(), &settime);
+#endif
+					outfile = NULL;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+}  // end anon namespace
 
 SWORD_NAMESPACE_START
 
@@ -98,23 +284,20 @@ ZEXTERN int ZEXPORT compress2 OF((Bytef *dest,   uLongf *destLen,
 
 	zlen = (long) (len*1.001)+15;
 	char *zbuf = new char[zlen+1];
-	if (len)
-	{
+	if (len) {
 		//printf("Doing compress\n");
-		if (compress2((Bytef*)zbuf, &zlen, (const Bytef*)buf, len, level) != Z_OK)
-		{
-			printf("ERROR in compression\n");
+		if (compress2((Bytef*)zbuf, &zlen, (const Bytef*)buf, len, level) != Z_OK) {
+			SWLog::getSystemLog()->logError("ERROR in compression");
 		}
 		else {
 			sendChars(zbuf, zlen);
 		}
 	}
-	else
-	{
-		fprintf(stderr, "ERROR: no buffer to compress\n");
+	else {
+		SWLog::getSystemLog()->logError("ERROR: no buffer to compress");
 	}
 	delete [] zbuf;
-	free (buf);
+	free(buf);
 }
 
 
@@ -170,18 +353,32 @@ ZEXTERN int ZEXPORT uncompress OF((Bytef *dest,   uLongf *destLen,
 		slen = 0;
 		switch (uncompress((Bytef*)buf, &blen, (Bytef*)zbuf, zlen)){
 			case Z_OK: sendChars(buf, blen); slen = blen; break;
-			case Z_MEM_ERROR: fprintf(stderr, "ERROR: not enough memory during decompression.\n"); break;
-			case Z_BUF_ERROR: fprintf(stderr, "ERROR: not enough room in the out buffer during decompression.\n"); break;
-			case Z_DATA_ERROR: fprintf(stderr, "ERROR: corrupt data during decompression.\n"); break;
-			default: fprintf(stderr, "ERROR: an unknown error occurred during decompression.\n"); break;
+			case Z_MEM_ERROR: SWLog::getSystemLog()->logError("ERROR: not enough memory during decompression."); break;
+			case Z_BUF_ERROR: SWLog::getSystemLog()->logError("ERROR: not enough room in the out buffer during decompression."); break;
+			case Z_DATA_ERROR: SWLog::getSystemLog()->logError("ERROR: corrupt data during decompression."); break;
+			default: SWLog::getSystemLog()->logError("ERROR: an unknown error occurred during decompression."); break;
 		}
 		delete [] buf;
 	}
 	else {
-		fprintf(stderr, "ERROR: no buffer to decompress!\n");
+		SWLog::getSystemLog()->logError("ERROR: no buffer to decompress!");
 	}
 	//printf("Finished decoding\n");
 	free (zbuf);
 }
+
+
+char ZipCompress::unTarGZ(FileDesc *fd, const char *destPath) {
+	gzFile	f;
+
+	f = gzdopen(fd->getFd(), "rb");
+	if (f == NULL) {
+		SWLog::getSystemLog()->logError("Couldn't gzopen file");
+		return 1;
+	}
+
+	return untar(f, destPath);
+}
+
 
 SWORD_NAMESPACE_END

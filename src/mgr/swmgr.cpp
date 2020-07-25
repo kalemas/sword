@@ -750,7 +750,7 @@ void SWMgr::loadConfigDir(const char *ipath)
 	SWBuf newModFile;
 
 	std::vector<DirEntry> dirList = FileMgr::getDirList(ipath);
-	for (int i = 0; i < dirList.size(); ++i) {
+	for (unsigned int i = 0; i < dirList.size(); ++i) {
 		//check whether it ends with .conf, if it doesn't skip it!
 		if (!dirList[i].name.endsWith(".conf")) {
 			continue;
@@ -1329,7 +1329,7 @@ void SWMgr::InstallScan(const char *dirname)
 	if (!basePath.endsWith("/") && !basePath.endsWith("\\")) basePath += "/";
 
 	std::vector<DirEntry> dirList = FileMgr::getDirList(dirname);
-	for (int i = 0; i < dirList.size(); ++i) {
+	for (unsigned int i = 0; i < dirList.size(); ++i) {
 		newModFile = basePath + dirList[i].name;
 
 		// mods.d
