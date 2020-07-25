@@ -163,6 +163,7 @@ public:
 // unguarded impl. This is obviously much faster and is likely why std::string specifies references out of bounds have undefined
 // behavior.  This is the default impl for operator []
 	inline char &charAt(unsigned long pos) { return *(buf + pos); }
+	inline const char &charAt(unsigned long pos) const { return *(buf + pos); }
 
 /* these have all proven to be slower implementations */
 //	inline char &charAt(unsigned long pos) { return buf[pos]; }
