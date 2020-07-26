@@ -1,4 +1,6 @@
+DEBUG(LINK): Acts.2.21
 SUCCESS: ../../utilities/osis2mod: has finished its work and will now rest
+INFO(LINK): Linking Acts.2.22 to Acts.2.21
 Key:
 Psalms 3:1
 -------
@@ -184,9 +186,13 @@ Acts 2:19: ‘* And I will grant wonders in the sky above *
 Acts 2:20: ‘* The sun will be turned into darkness *
 * And the moon into blood *,
 * Before the great and glorious day of the Lord shall come *.
- 
+
+Acts 2:21: And it shall come to pass, that whosoever shall call on the name of the Lord shall be saved. (22) Ye men of Israel, hear these words; Jesus of Nazareth, a man approved of God among you by miracles and wonders and signs, which God did by him in the midst of you, as ye yourselves also know:   
+Acts 2:22: And it shall come to pass, that whosoever shall call on the name of the Lord shall be saved. (22) Ye men of Israel, hear these words; Jesus of Nazareth, a man approved of God among you by miracles and wonders and signs, which God did by him in the midst of you, as ye yourselves also know:   
 
 -- RTF output
 {\rtf1\ansi{\fonttbl{\f0\froman\fcharset0\fprq2 Times New Roman;}{\f1\fdecor\fprq2 Gentium;}{\f7\froman\fcharset2\fprq2 Symbol;}}Acts 2:19: {\f1 ‘{\i1 {And I will grant} {wonders} {in the sky} {above}}{\par} {\i1 {And signs} {on the earth} {below}},{\par} {\i1 {Blood}, {and fire}, {and vapor} {of smoke}}.{\par}}\par 
-Acts 2:20: {\f1 ‘{\i1 {The sun} {will be turned} {into darkness}}{\par} {\i1 {And the moon} {into blood}},{\par} {\i1 {Before} {the great} {and glorious} {day} {of the Lord} {shall come}}.{\par} }\par 
+Acts 2:20: {\f1 ‘{\i1 {The sun} {will be turned} {into darkness}}{\par} {\i1 {And the moon} {into blood}},{\par} {\i1 {Before} {the great} {and glorious} {day} {of the Lord} {shall come}}.{\par}}\par 
+Acts 2:21: {\f1 {And} {it shall come to pass}, {\i1 that} {whosoever} {shall call on} {the name} {of the Lord} {shall be saved}. (22) {Ye men} {of Israel}, {hear} {these} {words}; {Jesus} {of Nazareth}, {a man} {approved} {of} {God} {among} {you} {by} {miracles} {and} {wonders} {and} {signs}, {which} {God} {did} {by} {him} {in} {the midst} {of you}, {as} {ye yourselves} {also} {know}: }\par 
+Acts 2:22: {\f1 {And} {it shall come to pass}, {\i1 that} {whosoever} {shall call on} {the name} {of the Lord} {shall be saved}. (22) {Ye men} {of Israel}, {hear} {these} {words}; {Jesus} {of Nazareth}, {a man} {approved} {of} {God} {among} {you} {by} {miracles} {and} {wonders} {and} {signs}, {which} {God} {did} {by} {him} {in} {the midst} {of you}, {as} {ye yourselves} {also} {know}: }\par 
 }

@@ -29,7 +29,7 @@ cd tmp/osis_basic
 
 echo
 echo "-- Plain output"
-../../../../utilities/diatheke/diatheke -b OSISReference -f plain -k Acts 2:19-20 | grep -v OSISReference
+../../../../utilities/diatheke/diatheke -b OSISReference -f plain -k Acts 2:19-22 | grep -v OSISReference
 echo
 echo "-- RTF output"
-../../../../utilities/diatheke/diatheke -b OSISReference -f RTF -k Acts 2:19-20 | grep -v OSISReference
+../../../../utilities/diatheke/diatheke -b OSISReference -f RTF -k Acts 2:19-22 | grep -v OSISReference
