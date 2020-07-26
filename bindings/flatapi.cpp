@@ -369,8 +369,8 @@ public:
 		HandleSWMgr::availableLocales = 0;
 
 		HandleInstMgr::remoteSources = 0;
-		// add this stringmgr to allow you to supply a toUpperUTF8 method
-		// StringMgr::setSystemStringMgr(new FlatStringMgr());
+
+		if (!StringMgr::hasUTF8Support()) StringMgr::setSystemStringMgr(new FlatStringMgr());
 	}
 	~InitStatics() {
 
