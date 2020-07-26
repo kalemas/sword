@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  teilatex.h -	Implementation of TEILaTeX
+ * teilatex.h -	Definition of TEILaTeX
  *
  * $Id$
  *

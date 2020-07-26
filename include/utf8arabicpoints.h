@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf8arabicpoints.h -	SWFilter descendant to remove UTF-8 Arabic
+ * utf8arabicpoints.h -		SWFilter descendant to remove UTF-8 Arabic
  *				vowel points
  *
  * $Id$

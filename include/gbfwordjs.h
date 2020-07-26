@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  gbfwordjs.h -	Implementation of GBFWordJS
+ * gbfwordjs.h -	Definition of GBFWordJS
  *
  * $Id$
  *
@@ -28,14 +28,14 @@
 SWORD_NAMESPACE_START
 
 class SWMgr;
-  /** This Filter shows/hides strong's numbers in a GBF text
-  */
+/** This Filter shows/hides strong's numbers in a GBF text
+ */
 class SWDLLEXPORT GBFWordJS : public SWOptionFilter {
-     SWModule *defaultGreekLex;
-     SWModule *defaultHebLex;
-     SWModule *defaultGreekParse;
-     SWModule *defaultHebParse;
-     SWMgr *mgr;
+	SWModule *defaultGreekLex;
+	SWModule *defaultHebLex;
+	SWModule *defaultGreekParse;
+	SWModule *defaultHebParse;
+	SWMgr *mgr;
 
 public:
 	GBFWordJS();

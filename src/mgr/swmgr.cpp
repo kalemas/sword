@@ -1176,7 +1176,7 @@ void SWMgr::addGlobalOptionFilters(SWModule *module, ConfigEntMap &section) {
 	if (filterMgr)
 		filterMgr->addGlobalOptions(module, section, start, end);
 #ifdef _ICU_
-	   module->addOptionFilter(transliterator);
+	module->addOptionFilter(transliterator);
 #endif
 }
 

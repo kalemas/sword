@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  gbfhtmlhref.h -	Implementation of GBFHTMLHREF
+ * gbfhtmlhref.h -	Definition of GBFHTMLHREF
  *
  * $Id$
  *
@@ -27,7 +27,7 @@
 
 SWORD_NAMESPACE_START
 
-/** this filter converts GBF  text to HTML text with hrefs
+/** this filter converts GBF text to HTML text with hrefs
  */
 class SWDLLEXPORT GBFHTMLHREF : public SWBasicFilter {
 	bool renderNoteNumbers;

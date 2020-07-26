@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  stringmgr.h -	A class which provides string handling functions which
+ * stringmgr.h -	A class which provides string handling functions which
  *			can be reimplemented by frontends
  *
  * $Id$
@@ -43,7 +43,7 @@ public:
 	* @param newStringMgr The new global StringMgr. This pointer will be deleted by this StringMgr
 	*/	
 	static void setSystemStringMgr(StringMgr *newStringMgr);
-   
+
 	/** Returns the global StringMgr handle
 	* @return The global string handle
 	*/
@@ -74,7 +74,7 @@ public:
 	virtual bool isLower(SW_u32 character) const;
 	virtual bool isDigit(SW_u32 character) const;
 	virtual bool isAlpha(SW_u32 character) const;
-   
+
 	/** Converts the param to an uppercase latin1 string
 	* @param text The text encoded in latin1 which should be turned into an upper case string
 	* @param max Max buffer size
@@ -89,11 +89,11 @@ protected:
 	/** Default constructor. Protected to make instances on user side impossible, because this is a Singleton
 	*/		
 	StringMgr();
-   
+
 	/** Copy constructor
 	*/	
 	StringMgr(const StringMgr &);
-   
+
 	/** Destructor
 	*/	
 	virtual ~StringMgr();

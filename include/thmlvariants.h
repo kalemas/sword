@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlvariants.h -	Implementation of ThMLVariants
+ * thmlvariants.h -	Definition of ThMLVariants
  *
  * $Id$
  *

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- *  zcom4.h - 	code for class 'zCom4'- a module that reads compressed text
- *     	       	files: ot and nt using indexs ??.vss
+ * zcom4.h -	code for class 'zCom4'- a module that reads compressed text
+ *		files: ot and nt using indexs ??.vss
  *
  * $Id$
  *

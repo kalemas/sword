@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_abbrevs.h -	Canonical text information to be included by
+ * canon_abbrevs.h -	Canonical text information to be included by
  *			 VerseKey.cpp
  *
  * $Id$

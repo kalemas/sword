@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swcom.h -	code for base class 'SWCom'.  SWCom is the basis for all
+ * swcom.h -	code for base class 'SWCom'.  SWCom is the basis for all
  *		types of commentary modules.
  *		It is traditionally close to the same as the SWText
  *		module type, but has defaults set which more
@@ -45,13 +45,13 @@ SWORD_NAMESPACE_START
 class VerseKey;
 class SWKey;
 
-  /** The basis for all commentary modules
-  */
+/** The basis for all commentary modules
+ */
 class SWDLLEXPORT SWCom : public SWModule {
 
 	mutable VerseKey *tmpVK1;
 	mutable VerseKey *tmpVK2;
-        mutable bool tmpSecond;
+	mutable bool tmpSecond;
 	char *versification;
 
 protected:

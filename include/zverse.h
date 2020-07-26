@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- *  zverse.h -		code for class 'zVerse'- a module that reads raw text
- *			files:  ot and nt using indexs ??.bks ??.cps ??.vss
+ * zverse.h -		code for class 'zVerse'- a module that reads raw text
+ *			files: ot and nt using indexs ??.bks ??.cps ??.vss
  *			and provides lookup and parsing functions based on
  *			class VerseKey
  *

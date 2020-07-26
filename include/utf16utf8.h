@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf16utf8.h -	Implementation of UTF16UTF8
+ * utf16utf8.h -	Definition of UTF16UTF8
  *
  * $Id$
  *

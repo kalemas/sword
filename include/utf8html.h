@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf8html.h -	Implementation of UTF8HTML
+ * utf8html.h -	Definition of UTF8HTML
  *
  * $Id$
  *

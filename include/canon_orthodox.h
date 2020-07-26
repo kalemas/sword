@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_orthodox.h -	Versification data for the Orthodox system
+ * canon_orthodox.h -	Versification data for the Orthodox system
  *
  * $Id$
  *

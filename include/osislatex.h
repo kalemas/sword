@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osislatex.h -	Render filter for LaTeX of an OSIS module
+ * osislatex.h -	Render filter for LaTeX of an OSIS module
  *
  * $Id$
  *
@@ -47,10 +47,10 @@ protected:
 		bool inXRefNote;
 		bool isBiblicalText;
 		int suspendLevel;
-		bool firstCell; // for tables, indicates whether a cell is the first one in a row
+		bool firstCell;	// for tables, indicates whether a cell is the first one in a row
 		SWBuf wordsOfChristStart;
 		SWBuf wordsOfChristEnd;
-		SWBuf divLevel;  // divLevel "module", "testament, "bookgroup", "book", "majorsection", "section", "paragraph" , ignore others.
+		SWBuf divLevel;	// divLevel "module", "testament, "bookgroup", "book", "majorsection", "section", "paragraph" , ignore others.
 		
 		TagStack *quoteStack;
 		TagStack *hiStack;

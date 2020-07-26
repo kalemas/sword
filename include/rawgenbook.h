@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  rawgenbook.h -	code for class 'RawGenBook'- a module that reads raw
+ * rawgenbook.h -	code for class 'RawGenBook'- a module that reads raw
  *			text files:
  *			ot and nt using indexs ??.bks ??.cps ??.vss
  *
@@ -39,8 +39,6 @@ class SWDLLEXPORT RawGenBook : public SWGenBook {
 	bool verseKey;
 
 public:
-  
-    
 	RawGenBook(const char *ipath, const char *iname = 0, const char *idesc = 0,
 			SWDisplay * idisp = 0, SWTextEncoding encoding = ENC_UNKNOWN,
 			SWTextDirection dir = DIRECTION_LTR,

@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  gbfhtml.h -	Implementation of GBFHTML
+ * gbfhtml.h -	Definition of GBFHTML
  *
  * $Id$
  *

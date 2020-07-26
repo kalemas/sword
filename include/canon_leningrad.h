@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_leningrad.h -	Versification data for the Leningrad system
+ * canon_leningrad.h -	Versification data for the Leningrad system
  *
  * $Id$
  *

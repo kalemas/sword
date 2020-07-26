@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swcacher.h -	definition of class SWCacher used to provide an
+ * swcacher.h -		definition of class SWCacher used to provide an
  *			interface for objects that cache and want a standard
  *			interface for cleaning up.
  *
@@ -32,7 +32,7 @@ SWORD_NAMESPACE_START
 /** used to provide an interface for objects that cache and want
  *	a standard interface for cleaning up.
  */
-class SWDLLEXPORT  SWCacher {
+class SWDLLEXPORT SWCacher {
 public:
 	SWCacher();
 	virtual ~SWCacher();

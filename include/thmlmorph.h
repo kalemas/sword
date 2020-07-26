@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlmorph.h -	Implementation of ThMLMorph
+ * thmlmorph.h -	Definition of ThMLMorph
  *
  * $Id$
  *

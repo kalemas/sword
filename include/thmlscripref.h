@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlscripref.h -	Implementation of ThMLScripRef
+ * thmlscripref.h -	Definition of ThMLScripRef
  *
  * $Id$
  *

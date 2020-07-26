@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  roman.h -	roman numeral functions
+ * roman.h -	roman numeral functions
  *
  * $Id$
  *

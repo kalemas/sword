@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  strkey.h -	code for class 'strkey'- a standard Biblical verse key
+ * strkey.h -	code for class 'strkey'- a standard Biblical verse key
  *
  * $Id$
  *
@@ -30,27 +30,31 @@
 
 SWORD_NAMESPACE_START
 
-  /** a standard string key class (used
-  * for modules that index on single strings (eg. cities,
-  * names, words, etc.)
-  */
-class SWDLLEXPORT StrKey:public SWKey
-{
-  static SWClass classdef;
-  void init ();
-public:
-  /** initializes instance of StrKey
-  *
-  * @param ikey text key (word, city, name, etc.)
-  */
-  StrKey (const char *ikey = 0);
-  /** cleans up instance of StrKey
-  */
-  virtual ~ StrKey ();
+/** a standard string key class (used
+ * for modules that index on single strings (eg. cities,
+ * names, words, etc.)
+ */
+class SWDLLEXPORT StrKey:public SWKey {
 
-  SWKEY_OPERATORS
+	static SWClass classdef;
+	void init ();
+
+public:
+
+	/** initializes instance of StrKey
+	 *
+	 * @param ikey text key (word, city, name, etc.)
+	 */
+	StrKey (const char *ikey = 0);
+
+	/** cleans up instance of StrKey
+	 */
+	virtual ~ StrKey ();
+
+	SWKEY_OPERATORS
 
 };
+
 SWORD_NAMESPACE_END
 
 #endif

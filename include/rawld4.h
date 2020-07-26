@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  rawld4.cpp -	code for class 'RawLD4'- a module that reads raw
+ * rawld4.cpp -		code for class 'RawLD4'- a module that reads raw
  *			lexicon and dictionary files: *.dat *.idx
  *
  * $Id$

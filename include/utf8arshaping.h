@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf8arshaping.h -	Implementation of UTF8arShaping
+ * utf8arshaping.h -	Definition of UTF8arShaping
  *
  * $Id$
  *
@@ -41,7 +41,7 @@ private:
 	UErrorCode err;
 public:
 	UTF8arShaping();
-	~UTF8arShaping();  
+	~UTF8arShaping();
 	virtual char processText(SWBuf &text, const SWKey *key = 0, const SWModule *module = 0);
 };
 

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  ftplibftpt.h -	code for ftplib impl of FTP Transport
+ * ftplibftpt.h -	code for ftplib impl of FTP Transport
  *			(FTPLibFTPTransport)
  *
  * $Id$

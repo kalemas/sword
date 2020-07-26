@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  gbfhtml.h -	Implementation of GBFHTML
+ * gbfhtml.h -	Definition of GBFHTML
  *
  * $Id$
  *
@@ -27,7 +27,7 @@
 
 SWORD_NAMESPACE_START
 
-/** this filter converts GBF  text to HTML text 
+/** this filter converts GBF text to HTML text 
  */
 class SWDLLEXPORT GBFHTML : public SWBasicFilter {
 protected:

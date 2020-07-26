@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- *  hrefcom.h -	code for class 'HREFCom'- a module that produces HTML HREFs
- *	       	pointing to actual text desired.  Uses standard
+ * hrefcom.h -	code for class 'HREFCom'- a module that produces HTML HREFs
+ *		pointing to actual text desired.  Uses standard
  *		files:	ot and nt using indexs ??.bks ??.cps ??.vss
  *
  * $Id$

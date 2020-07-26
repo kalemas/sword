@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  greeklexattribs.h -	Implementation of GreekLexAttribs
+ * greeklexattribs.h -	Definition of GreekLexAttribs
  *
  * $Id$
  *

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  nullim.h -	Implementation of NullIM
+ * nullim.h -	Definition of NullIM
  *
  * $Id$
  *

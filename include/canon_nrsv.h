@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_nrsv.h -	Versification data for the NRSV system
+ * canon_nrsv.h -	Versification data for the NRSV system
  *
  * $Id$
  *

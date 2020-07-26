@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_catholic2.h -	Versification data for the Catholic2 system
+ * canon_catholic2.h -	Versification data for the Catholic2 system
  *
  * $Id$
  *

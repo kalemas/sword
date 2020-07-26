@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlfootnotes.h -	Implementation of ThMLFootnotes
+ * thmlfootnotes.h -	Definition of ThMLFootnotes
  *
  * $Id$
  *

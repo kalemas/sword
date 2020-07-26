@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisenum.h -	Implementation of OSISEnum
+ * osisenum.h -	Definition of OSISEnum
  *
  * $Id$
  *

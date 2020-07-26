@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  curlhttpt.h  -	code for CURL impl of HTTP Transport
+ * curlhttpt.h -	code for CURL impl of HTTP Transport
  *
  * $Id$
  *

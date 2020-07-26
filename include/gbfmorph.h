@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  gbfmorph.h -	Implementation of GBFMorph
+ * gbfmorph.h -	Definition of GBFMorph
  *
  * $Id$
  *
@@ -27,8 +27,8 @@
 
 SWORD_NAMESPACE_START
 
-  /** This Filter shows/hides morph tags in a GBF text
-  */
+/** This Filter shows/hides morph tags in a GBF text
+ */
 class SWDLLEXPORT GBFMorph : public SWOptionFilter {
 public:
 	GBFMorph();

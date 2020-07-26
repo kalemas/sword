@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  installmgr.h -	Implementation of InstallMgr
+ * installmgr.h -	Definition of InstallMgr
  *
  * $Id$
  *
@@ -78,17 +78,17 @@ protected:
 	bool unverifiedPeerAllowed;
 
 	/** override this method and provide your own custom RemoteTransport subclass
-         */
+	 */
 	virtual RemoteTransport *createFTPTransport(const char *host, StatusReporter *statusReporter);
 
 	/** override this method and provide your own custom HTTP RemoteTransport
-         */
+	 */
 	virtual RemoteTransport *createHTTPTransport(const char *host, StatusReporter *statusReporter);
 
 
 	/** we have a transport member to set as current running transport so we
 	 *  can ask it to terminate below, if user requests
-         */
+	 */
 	RemoteTransport *transport;
 
 public:
@@ -103,52 +103,53 @@ public:
 
 	SWConfig *installConf;
 
-        /** all remote sources configured for this installmgr.  Use this to gain access
-         *  to individual remote sources.
-         */
+	/** all remote sources configured for this installmgr.  Use this to gain access
+	 *  to individual remote sources.
+	 */
 	InstallSourceMap sources;
 
 	/** Username and Password supplied here can be used to identify your frontend
 	 *  by supplying a valid anon password like installmgr@macsword.com
 	 *  This will get overridden if a password is required and provided in an indivual
 	 *  source configuration.
-         */
+	 */
 	InstallMgr(const char *privatePath = "./", StatusReporter *statusReporter = 0, SWBuf u="ftp", SWBuf p="installmgr@user.com");
 	virtual ~InstallMgr();
 
 	/** Call to re-read InstallMgr.conf
-         */
+	 */
 	void readInstallConf();
 
 	/** Call to dump sources and other settings to InstallMgr.conf
-         */
+	 */
 	void saveInstallConf();
 
 	/** Removes all configured sources from memory.  Call saveInstallConf() to persist
-         */
+	 */
 	void clearSources();
 
-        /** call to delete all files of a locally installed module.
-         */
+	/** call to delete all files of a locally installed module.
+	 */
 	virtual int removeModule(SWMgr *manager, const char *modName);
 
-        /** mostly an internally used method to remote download from a remote source to a local destination
-         */
+	/** mostly an internally used method to remote download from a remote source
+	 * to a local destination
+	 */
 	virtual int remoteCopy(InstallSource *is, const char *src, const char *dest, bool dirTransfer = false, const char *suffix = "");
 
-        /** call to install a module from a local path (fromLocation) or remote InstallSource (is) (leave the other 0)
-         */
+	/** call to install a module from a local path (fromLocation) or remote InstallSource (is) (leave the other 0)
+	 */
 	virtual int installModule(SWMgr *destMgr, const char *fromLocation, const char *modName, InstallSource *is = 0);
 
 
-        /** call to obtain and locally cache the available content list of the remote source
-         */
+	/** call to obtain and locally cache the available content list of the remote source
+	 */
 	virtual int refreshRemoteSource(InstallSource *is);
 
 
-        /** call to populate installmgr configuration with all known
-         *  remote sources from the master list at CrossWire
-         */
+	/** call to populate installmgr configuration with all known
+	 *  remote sources from the master list at CrossWire
+	 */
 	virtual int refreshRemoteSourceConfiguration();
 
 
@@ -161,7 +162,7 @@ public:
 	 *  method yourself at the desired time.
 	 *
 	 *  Return true if your user confirms.
-         *
+	 *
 	 *  User disclaimer should ask user for confirmation of 2 critical items:
 	 *  and the default answer should be NO
 	 *  (due to possibly the wrong language for the disclaimer)
@@ -171,7 +172,7 @@ public:
 	 *
 	 *  A sample default impl is provided below:
 	 *
-         */
+	 */
 	virtual bool isUserDisclaimerConfirmed() const; /* {
 
 		bool confirmed = userDisclaimerConfirmed;
@@ -259,15 +260,15 @@ public:
 
 
 	/** whether or not to use passive mode when doing ftp transfers
-         */
+	 */
 	void setFTPPassive(bool passive) { this->passive = passive; }
 	bool isFTPPassive() { return passive; }
 
 	void setUnverifiedPeerAllowed(bool allowed) { this->unverifiedPeerAllowed = allowed; }
 	bool isUnverifiedPeerAllowed() { return unverifiedPeerAllowed; }
 
-        /** call from another thread to terminate the installation process
-         */
+	/** call from another thread to terminate the installation process
+	 */
 	void terminate();
 
 	/************************************************************************

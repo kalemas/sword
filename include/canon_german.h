@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_german.h -	Versification data for the German system
+ * canon_german.h -	Versification data for the German system
  *
  * $Id$
  *

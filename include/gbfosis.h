@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  gbfosis.h -	Implementation of GBFOSIS
+ * gbfosis.h -	Definition of GBFOSIS
  *
  * $Id$
  *

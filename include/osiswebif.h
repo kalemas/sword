@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osiswebif.h -	Implementation of OSISWEBIF
+ * osiswebif.h -	Definition of OSISWEBIF
  *
  * $Id$
  *
@@ -27,7 +27,7 @@
 
 SWORD_NAMESPACE_START
 
-/** this filter converts OSIS  text to HTML text with hrefs
+/** this filter converts OSIS text to HTML text with hrefs
  */
 class SWDLLEXPORT OSISWEBIF : public OSISXHTML {
 	const SWBuf baseURL;

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  echomod.h -	code for class 'EchoMod' - a test module that just echo back
+ * echomod.h -	code for class 'EchoMod' - a test module that just echo back
  *		text of key.
  *
  * $Id$

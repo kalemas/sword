@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  gbffootnotes.h -	Implementation of GBFFootnotes
+ * gbffootnotes.h -	Definition of GBFFootnotes
  *
  * $Id$
  *
@@ -28,7 +28,7 @@
 SWORD_NAMESPACE_START
 
 /** This Filter shows/hides footnotes in a GBF text
-  */
+ */
 class SWDLLEXPORT GBFFootnotes : public SWOptionFilter {
 public:
 	GBFFootnotes();

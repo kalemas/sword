@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  scsuutf8.h - SWFilter descendant to convert a SCSU character to UTF-8
+ * scsuutf8.h - SWFilter descendant to convert a SCSU character to UTF-8
  *
  * $Id$
  *
@@ -53,7 +53,7 @@ private:
 
 	int UTF8Output(unsigned long, SWBuf* utf8Buf);
 #endif
-  
+
 public:
 	SCSUUTF8();
 	~SCSUUTF8();

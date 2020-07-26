@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  osiswordjs.h -	Implementation of OSISWordJS
+ * osiswordjs.h -	Definition of OSISWordJS
  *
  * $Id$
  *
@@ -28,14 +28,15 @@
 SWORD_NAMESPACE_START
 
 class SWMgr;
-  /** This Filter shows/hides strong's numbers in a OSIS text
-  */
+
+/** This Filter shows/hides strong's numbers in a OSIS text
+ */
 class SWDLLEXPORT OSISWordJS : public SWOptionFilter {
-     SWModule *defaultGreekLex;
-     SWModule *defaultHebLex;
-     SWModule *defaultGreekParse;
-     SWModule *defaultHebParse;
-     SWMgr *mgr;
+	SWModule *defaultGreekLex;
+	SWModule *defaultHebLex;
+	SWModule *defaultGreekParse;
+	SWModule *defaultHebParse;
+	SWMgr *mgr;
 
 public:
 	OSISWordJS();

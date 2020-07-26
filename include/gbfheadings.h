@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  gbfheadings.h -	Implementation of GBFHeadings
+ * gbfheadings.h -	Definition of GBFHeadings
  *
  * $Id$
  *
@@ -27,8 +27,8 @@
 
 SWORD_NAMESPACE_START
 
-  /** This Filter shows/hides headings in a GBF text
-  */
+/** This Filter shows/hides headings in a GBF text
+ */
 class SWDLLEXPORT GBFHeadings : public SWOptionFilter {
 public:
 	GBFHeadings();

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- *  swfilter.h -	definition of class SWFilter used to filter text between
- *		       	different formats
+ * swfilter.h -		definition of class SWFilter used to filter text between
+ *			different formats
  *
  * $Id$
  *
@@ -39,7 +39,7 @@ class SWModule;
 * Filters are used to filter/convert text between different formats
 * like GBF, HTML, RTF ...
 */
-class SWDLLEXPORT  SWFilter {
+class SWDLLEXPORT SWFilter {
 public:
 	virtual ~SWFilter() {}
 

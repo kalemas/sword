@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  teiplain.h -	Implementation of TEIPlain
+ * teiplain.h -	Definition of TEIPlain
  *
  * $Id$
  *

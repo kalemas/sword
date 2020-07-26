@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swcipher.h -	definition of Class SWCipher used for data
+ * swcipher.h -		definition of Class SWCipher used for data
  *			cipher/decipher
  *
  * $Id$
@@ -31,27 +31,28 @@
 
 SWORD_NAMESPACE_START
 
-class SWDLLEXPORT SWCipher
-{
+class SWDLLEXPORT SWCipher {
 
-  sapphire master;
-  sapphire work;
+	sapphire master;
+	sapphire work;
 
-  char *buf;
-  bool cipher;
-  unsigned long len;
+	char *buf;
+	bool cipher;
+	unsigned long len;
+
 protected:
+
 public:
-    SWCipher (unsigned char *key);
-  virtual void setCipherKey (const char *key);
-    virtual ~ SWCipher ();
-  virtual void setUncipheredBuf(const char *buf = 0, unsigned long len = 0);
-  virtual char *getUncipheredBuf();
-  virtual void setCipheredBuf(unsigned long *len, const char *buf = 0);
-  virtual char *getCipheredBuf(unsigned long *len = 0);
-  virtual void encode (void);
-  virtual void decode (void);
-  static SWBuf personalize(const SWBuf &buf, bool encode);
+	SWCipher (unsigned char *key);
+	virtual void setCipherKey (const char *key);
+	virtual ~ SWCipher ();
+	virtual void setUncipheredBuf(const char *buf = 0, unsigned long len = 0);
+	virtual char *getUncipheredBuf();
+	virtual void setCipheredBuf(unsigned long *len, const char *buf = 0);
+	virtual char *getCipheredBuf(unsigned long *len = 0);
+	virtual void encode (void);
+	virtual void decode (void);
+	static SWBuf personalize(const SWBuf &buf, bool encode);
 };
 
 SWORD_NAMESPACE_END

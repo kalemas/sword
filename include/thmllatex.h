@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmllatex.h -	Implementation of ThMLLaTeX
+ * thmllatex.h -	Definition of ThMLLaTeX
  *
  * $Id$
  *

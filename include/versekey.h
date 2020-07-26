@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  versekey.h -	code for class 'VerseKey'- a standard Biblical verse
+ * versekey.h -		code for class 'VerseKey'- a standard Biblical verse
  *			key
  *
  * $Id$

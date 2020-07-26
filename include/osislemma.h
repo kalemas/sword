@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osislemma.h -	Implementation of OSISLemma
+ * osislemma.h -	Definition of OSISLemma
  *
  * $Id$
  *

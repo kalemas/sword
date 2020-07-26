@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  treekeyidx.h -	code for class 'TreeKeyIdx'
+ * treekeyidx.h -	code for class 'TreeKeyIdx'
  *
  * $Id$
  *

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_synodal.h -	Versification data for the Synodal system
+ * canon_synodal.h -	Versification data for the Synodal system
  *
  * $Id$
  *

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  gbfwebif.h -	Implementation of GBFWEBIF
+ * gbfwebif.h -	Definition of GBFWEBIF
  *
  * $Id$
  *

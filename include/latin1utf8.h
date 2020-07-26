@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  latin1utf8.h -	Implementation of Latin1UTF8
+ * latin1utf8.h -	Definition of Latin1UTF8
  *
  * $Id$
  *

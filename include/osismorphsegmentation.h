@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osismorphsegmentation.h -	Implementation of OSISMorphSegmentation
+ * osismorphsegmentation.h -	Definition of OSISMorphSegmentation
  *
  * $Id$
  *
@@ -27,10 +27,9 @@
 
 SWORD_NAMESPACE_START
 
-/*  This filters toggles splitting of morphemes
- *  (for morpheme segmented Hebrew in the WLC)
+/* This filters toggles splitting of morphemes
+ * (for morpheme segmented Hebrew in the WLC)
  */
-
 class SWDLLEXPORT OSISMorphSegmentation : public SWOptionFilter {
 
 public:

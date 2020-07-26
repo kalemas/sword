@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osishtmlhref.h -	Implementation of OSISHTMLHREF
+ * osishtmlhref.h -	Definition of OSISHTMLHREF
  *
  * $Id$
  *
@@ -45,8 +45,8 @@ protected:
 		int suspendLevel;
 		SWBuf wordsOfChristStart;
 		SWBuf wordsOfChristEnd;
-                TagStacks *tagStacks;	// TODO: modified to wrap all TagStacks necessary for this filter until 1.7.x
-//                TagStack *hiStack;	// TODO: commented out for binary compat for 1.6.x	 wrapped in tagStacks until 1.7.x
+		TagStacks *tagStacks;	// TODO: modified to wrap all TagStacks necessary for this filter until 1.7.x
+//		TagStack *hiStack;	// TODO: commented out for binary compat for 1.6.x	 wrapped in tagStacks until 1.7.x
 		SWBuf lastTransChange;
 		SWBuf w;
 		SWBuf fn;

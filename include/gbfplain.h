@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  gbfplain.h -	Implementation of GBFPlain
+ * gbfplain.h -	Definition of GBFPlain
  *
  * $Id$
  *
@@ -27,8 +27,8 @@
 
 SWORD_NAMESPACE_START
 
-  /** This filter converts GBF text to plain text
-  */
+/** This filter converts GBF text to plain text
+ */
 class SWDLLEXPORT GBFPlain : public SWFilter {
 public:
 	GBFPlain();

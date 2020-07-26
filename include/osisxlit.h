@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisxlit.h -	Implementation of OSISXlit
+ * osisxlit.h -	Definition of OSISXlit
  *
  * $Id$
  *

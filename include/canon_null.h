@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_null.h -	Versification data for the null system
+ * canon_null.h -	Versification data for the null system
  *
  * $Id$
  *

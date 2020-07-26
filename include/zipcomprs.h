@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  zipcomprs.h -	definition of Class ZipCompress used for data
+ * zipcomprs.h -	definition of Class ZipCompress used for data
  *			compression
  *
  * $Id$

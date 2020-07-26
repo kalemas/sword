@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- *  rawverse4.h -	code for class 'RawVerse4'- a module that reads raw
- *			text files:  ot and nt using indexs ??.bks ??.cps
+ * rawverse4.h -	code for class 'RawVerse4'- a module that reads raw
+ *			text files: ot and nt using indexs ??.bks ??.cps
  *			??.vss and provides lookup and parsing functions based
  *			on class VerseKey
  *
@@ -37,8 +37,8 @@ class SWBuf;
 
 class SWDLLEXPORT RawVerse4 {
 
-
 	static int instance;		// number of instantiated RawVerse objects or derivitives
+
 protected:
 	FileDesc *idxfp[2];
 	FileDesc *textfp[2];

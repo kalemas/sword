@@ -1,7 +1,7 @@
 /*****************************************************************************
  *
- *  rawstr4.h -	code for class 'RawStr4'- a module that reads raw text
- *		files:  ot and nt using indexs ??.bks ??.cps ??.vss
+ * rawstr4.h -	code for class 'RawStr4'- a module that reads raw text
+ *		files: ot and nt using indexs ??.bks ??.cps ??.vss
  *		and provides lookup and parsing functions based on
  *		class StrKey
  *

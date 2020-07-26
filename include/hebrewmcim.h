@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  hebrewmcim.h -	Implementation of HebrewMCIM
+ * hebrewmcim.h -	Definition of HebrewMCIM
  *
  * $Id$
  *
@@ -40,14 +40,14 @@ SWORD_NAMESPACE_START
 
 class SWDLLEXPORT HebrewMCIM : public SWInputMethod {
 
-    void init();
-    int subst[255];
-    map<int, int> subst2[12];
-    map<int, int*> multiChars;
+	void init();
+	int subst[255];
+	map<int, int> subst2[12];
+	map<int, int*> multiChars;
 
 public:
-    HebrewMCIM();
-    int *translate(char in);
+	HebrewMCIM();
+	int *translate(char in);
 };
 
 SWORD_NAMESPACE_END

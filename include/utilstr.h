@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utilstr.h -	prototypes for string utility functions
+ * utilstr.h -	prototypes for string utility functions
  *
  * $Id$
  *

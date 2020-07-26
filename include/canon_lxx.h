@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_lxx.h -	Versification data for the LXX system
+ * canon_lxx.h -	Versification data for the LXX system
  *
  * $Id$
  *

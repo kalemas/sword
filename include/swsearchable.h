@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swsearchable.h -	definition of class SWSearchable used to provide an
+ * swsearchable.h -	definition of class SWSearchable used to provide an
  *			interface for objects that be searched.
  *
  * $Id$

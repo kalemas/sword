@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  teihtmlhref.h -	Implementation of TEIHTMLHREF
+ * teihtmlhref.h -	Definition of TEIHTMLHREF
  *
  * $Id$
  *

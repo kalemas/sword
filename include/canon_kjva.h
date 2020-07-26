@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_kjva.h -	Versification data for the KJVA system
+ * canon_kjva.h -	Versification data for the KJVA system
  *
  * $Id$
  *

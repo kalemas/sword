@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf8transliterator.h -	Implementation of UTF8Transliterator
+ * utf8transliterator.h -	Definition of UTF8Transliterator
  *
  * $Id$
  *

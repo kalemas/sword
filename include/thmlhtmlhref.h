@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlhtmlhref.h -	Implementation of ThMLHTMLHREF
+ * thmlhtmlhref.h -	Definition of ThMLHTMLHREF
  *
  * $Id$
  *

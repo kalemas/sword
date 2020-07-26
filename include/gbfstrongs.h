@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  gbfstrongs.h -	Implementation of GBFStrongs
+ * gbfstrongs.h -	Definition of GBFStrongs
  *
  * $Id$
  *

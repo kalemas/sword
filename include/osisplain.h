@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisplain.h -	Implementation of OSISPlain
+ * osisplain.h -	Definition of OSISPlain
  *
  * $Id$
  *

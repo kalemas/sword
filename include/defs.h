@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  defs.h -	Global defines, mostly platform-specific stuff
+ * defs.h -	Global defines, mostly platform-specific stuff
  *
  * $Id$
  *

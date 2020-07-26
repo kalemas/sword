@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- *  swlocale.h -	definition of Class SWLocale used for retrieval
- *		       	of locale lookups
+ * swlocale.h -		definition of Class SWLocale used for retrieval
+ *			of locale lookups
  *
  * $Id$
  *

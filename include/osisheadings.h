@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisheadings.h -	Implementation of OSISHeadings
+ * osisheadings.h -	Definition of OSISHeadings
  *
  * $Id$
  *

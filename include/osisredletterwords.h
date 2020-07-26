@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisredletterwords.h -	Implementation of OSISRedLetterWords
+ * osisredletterwords.h -	Definition of OSISRedLetterWords
  *
  * $Id$
  *

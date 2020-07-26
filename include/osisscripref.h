@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisscripref.h -	Implementation of OSISScripRef
+ * osisscripref.h -	Definition of OSISScripRef
  *
  * $Id$
  *

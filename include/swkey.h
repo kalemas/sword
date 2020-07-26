@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swkey.h -	code for base class 'swkey'.  swkey is the basis for all
+ * swkey.h -	code for base class 'swkey'.  swkey is the basis for all
  *		types of keys for indexing into modules (e.g. verse, word,
  *		place, etc.)
  *
@@ -36,22 +36,22 @@ SWORD_NAMESPACE_START
 #define KEYERR_OUTOFBOUNDS 1
 
 #define SWKEY_OPERATORS \
-  SWKey &operator =(const char *ikey) { setText(ikey); return *this; } \
-  SWKey &operator =(const SWKey &ikey) { positionFrom(ikey); return *this; } \
-  SWKey &operator =(SW_POSITION pos) { setPosition(pos); return *this; } \
-  operator const char *() const { return getText(); } \
-  bool operator ==(const SWKey &ikey) { return equals(ikey); } \
-  bool operator !=(const SWKey &ikey) { return !equals(ikey); } \
-  virtual bool operator >(const SWKey &ikey) { return (compare(ikey) > 0); } \
-  virtual bool operator <(const SWKey &ikey) { return (compare(ikey) < 0); } \
-  virtual bool operator >=(const SWKey &ikey) { return (compare(ikey) > -1); }  \
-  virtual bool operator <=(const SWKey &ikey) { return (compare(ikey) < 1); } \
-  SWKey &operator -=(int steps) { decrement(steps); return *this; } \
-  SWKey &operator +=(int steps) { increment(steps); return *this; } \
-  SWKey &operator ++()    { increment(1); return *this; } \
-  SWKey  operator ++(int) { SWKey temp = *this; increment(1); return temp; } \
-  SWKey &operator --()    { decrement(1); return *this; } \
-  SWKey  operator --(int) { SWKey temp = *this; decrement(1); return temp; }
+	SWKey &operator =(const char *ikey) { setText(ikey); return *this; } \
+	SWKey &operator =(const SWKey &ikey) { positionFrom(ikey); return *this; } \
+	SWKey &operator =(SW_POSITION pos) { setPosition(pos); return *this; } \
+	operator const char *() const { return getText(); } \
+	bool operator ==(const SWKey &ikey) { return equals(ikey); } \
+	bool operator !=(const SWKey &ikey) { return !equals(ikey); } \
+	virtual bool operator >(const SWKey &ikey) { return (compare(ikey) > 0); } \
+	virtual bool operator <(const SWKey &ikey) { return (compare(ikey) < 0); } \
+	virtual bool operator >=(const SWKey &ikey) { return (compare(ikey) > -1); } \
+	virtual bool operator <=(const SWKey &ikey) { return (compare(ikey) < 1); } \
+	SWKey &operator -=(int steps) { decrement(steps); return *this; } \
+	SWKey &operator +=(int steps) { increment(steps); return *this; } \
+	SWKey &operator ++()    { increment(1); return *this; } \
+	SWKey  operator ++(int) { SWKey temp = *this; increment(1); return temp; } \
+	SWKey &operator --()    { decrement(1); return *this; } \
+	SWKey  operator --(int) { SWKey temp = *this; decrement(1); return temp; }
 
 
 /** For use with = operator to position key.

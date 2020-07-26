@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  entriesblk.h -	Implementation of EntriesBlock
+ * entriesblk.h -	Definition of EntriesBlock
  *
  * $Id$
  *

@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  gbfrtf.h -	Implementation of GBFRTF
+ * gbfrtf.h -	Definition of GBFRTF
  *
  * $Id$
  *

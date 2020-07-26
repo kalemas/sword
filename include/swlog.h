@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swlog.h -	definition of class SWLog used for logging messages
+ * swlog.h -	definition of class SWLog used for logging messages
  *
  * $Id$
  *

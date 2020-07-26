@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  teixhtml.h -	Implementation of TEIXHTML
+ * teixhtml.h -	Definition of TEIXHTML
  *
  * $Id$
  *

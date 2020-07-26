@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  gbfredletterwords.h -	Implementation of GBFRedLetterWords
+ * gbfredletterwords.h -	Definition of GBFRedLetterWords
  *
  * $Id$
  *

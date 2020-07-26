@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  rawfiles.h -	code for class 'RawFiles'- a module that produces HTML
+ * rawfiles.h -		code for class 'RawFiles'- a module that produces HTML
  *			HREFs pointing to actual text desired.  Uses standard
  *			files:	ot and nt using indexs ??.bks ??.cps ??.vss
  *

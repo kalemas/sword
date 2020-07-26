@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf8greekaccents.h -	Implementation of UTF8GreekAccents
+ * utf8greekaccents.h -	Definition of UTF8GreekAccents
  *
  * $Id$
  *
@@ -27,8 +27,8 @@
 
 SWORD_NAMESPACE_START
 
-  /** This Filter shows/hides Greek Accents marks in UTF8 text
-  */
+/** This Filter shows/hides Greek Accents marks in UTF8 text
+ */
 class SWDLLEXPORT UTF8GreekAccents : public SWOptionFilter {
 public:
 	UTF8GreekAccents();

@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- *  swmodule.h -	code for base class 'module'.  Module is the basis for
- *		  	all types of modules (e.g. texts, commentaries, maps,
- *		  	lexicons, etc.)
+ * swmodule.h -	code for base class 'module'.  Module is the basis for
+ *		all types of modules (e.g. texts, commentaries, maps,
+ *		lexicons, etc.)
  *
  * $Id$
  *
@@ -97,15 +97,14 @@ typedef std::map < SWBuf, AttributeList, std::less < SWBuf > > AttributeTypeList
 
 class SWDLLEXPORT SWModule : public SWCacher, public SWSearchable {
 
-class StdOutDisplay : public SWDisplay {
-     char display(SWModule &imodule)
-     {
-     #ifndef	_WIN32_WCE
-          std::cout << imodule.renderText();
-     #endif
-          return 0;
-     }
-};
+	class StdOutDisplay : public SWDisplay {
+		char display(SWModule &imodule) {
+#ifndef	_WIN32_WCE
+			std::cout << imodule.renderText();
+#endif
+			return 0;
+		}
+	};
 
 protected:
 
@@ -669,7 +668,7 @@ public:
 	 * @return result buffer
 	 */
 	SWBuf renderText(const char *buf, int len = -1, bool render = true) const;
-    SWBuf renderText();
+	 SWBuf renderText();
 	SWDEPRECATED const char *RenderText(const char *buf = 0, int len = -1, bool render = true) { return renderText(buf, len, render); }
 
 	/** Produces any header data which might be useful which is associated with the

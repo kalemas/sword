@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  femain.h -	Implementation of FEMain
+ * femain.h -	Definition of FEMain
  *
  * $Id$
  *
@@ -26,9 +26,9 @@
 class FEMain
 {
 public:
-  FEMain ();
-  virtual ~FEMain ();
-  list < SWDisplay * >displays;	// so we can delete each display we create
+	FEMain();
+	virtual ~FEMain();
+	list <SWDisplay *> displays;	// so we can delete each display we create
 };
 
 #endif

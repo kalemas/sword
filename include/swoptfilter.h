@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  swoptfilter.h -	Implenetation of SWOptionFilter
+ * swoptfilter.h -	Definition of SWOptionFilter
  *
  * $Id$
  *
@@ -35,8 +35,8 @@ SWORD_NAMESPACE_START
 typedef std::list < SWBuf > StringList;
 
 
-  /** Base class for all option filters.
-  */
+/** Base class for all option filters.
+ */
 class SWDLLEXPORT SWOptionFilter : public virtual SWFilter {
 protected:
 	SWBuf optionValue;

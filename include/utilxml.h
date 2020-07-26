@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utilxml.h -	definition of class that deal with xml constructs 
+ * utilxml.h -	definition of class that deal with xml constructs 
  *
  * $Id$
  *

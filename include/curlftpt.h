@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  curlftpt.h  -	code for CURL impl of FTP Transport
+ * curlftpt.h -	code for CURL impl of FTP Transport
  *
  * $Id$
  *

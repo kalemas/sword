@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlheadings.h -	Implementation of ThMLHeadings
+ * thmlheadings.h -	Definition of ThMLHeadings
  *
  * $Id$
  *

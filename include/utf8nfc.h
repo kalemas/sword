@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf8nfc.h -	Implementation of UTF8NFC
+ * utf8nfc.h -	Definition of UTF8NFC
  *
  * $Id$
  *
@@ -40,7 +40,7 @@ private:
 	UErrorCode err;
 public:
 	UTF8NFC();
-	~UTF8NFC();  
+	~UTF8NFC();
 	virtual char processText(SWBuf &text, const SWKey *key = 0, const SWModule *module = 0);
 };
 

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisosis.h -	Implementation of OSISOSIS
+ * osisosis.h -	Definition of OSISOSIS
  *
  * $Id$
  *

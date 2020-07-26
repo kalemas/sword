@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swgenbook.h -	Implementation of SWGenBook
+ * swgenbook.h -	Definition of SWGenBook
  *
  * $Id$
  *

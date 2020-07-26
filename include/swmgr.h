@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swmgr.h -	definition of class SWMgr used to interact with an install
+ * swmgr.h -	definition of class SWMgr used to interact with an install
  *		base of sword modules.
  *
  * $Id$

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swld.h -	code for base class 'SWLD'.  SWLD is the basis for all
+ * swld.h -	code for base class 'SWLD'.  SWLD is the basis for all
  *		types of Lexicon and Dictionary modules (hence the 'LD').
  *
  * $Id$
@@ -30,9 +30,9 @@
 
 SWORD_NAMESPACE_START
 
-  /** the basis for all types of Lexicon and
-  * Dictionary modules (hence the 'LD').
-  */
+/** the basis for all types of Lexicon and
+ * Dictionary modules (hence the 'LD').
+ */
 class SWDLLEXPORT SWLD : public SWModule {
 protected:
 	mutable char *entkeytxt;

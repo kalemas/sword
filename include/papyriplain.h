@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  papyriplain.h -	Implementation of PapyriPlain
+ * papyriplain.h -	Definition of PapyriPlain
  *
  * $Id$
  *
@@ -27,8 +27,8 @@
 
 SWORD_NAMESPACE_START
 
-  /** This filter converts Papyri text to plain text
-  */
+/** This filter converts Papyri text to plain text
+ */
 class SWDLLEXPORT PapyriPlain : public SWOptionFilter {
 public:
 	PapyriPlain();

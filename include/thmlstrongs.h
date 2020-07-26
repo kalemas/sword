@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlstrongs.h -	Implementation of ThMLStrongs
+ * thmlstrongs.h -	Definition of ThMLStrongs
  *
  * $Id$
  *

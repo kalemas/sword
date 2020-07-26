@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  teirtf.h -	Implementation of TEIRTF
+ * teirtf.h -	Definition of TEIRTF
  *
  * $Id$
  *

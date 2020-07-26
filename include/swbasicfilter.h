@@ -1,9 +1,9 @@
 /******************************************************************************
  *
- *  swbasicfilter.h -	definition of class SWBasicFilter.  An SWFilter
- *  		       	impl that provides some basic methods that
- *  	       		many filter will need and can use as a starting
- *     			point
+ * swbasicfilter.h -	definition of class SWBasicFilter.  An SWFilter
+ *					impl that provides some basic methods that
+ *					many filter will need and can use as a starting
+ *					point
  *
  * $Id$
  *
@@ -197,7 +197,7 @@ protected:
 	 * @param buf the output buffer 
 	 * @param escString the escape sequence (e.g. <code>"#235"</code> for &amp;235;)
 	 * @return subclasses should return true if they handled the esc seq, or false if they did not.
-         */
+	 */
 	virtual bool handleNumericEscapeString(SWBuf &buf, const char *escString);
 
 

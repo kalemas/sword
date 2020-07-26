@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlxhtml.h -	Implementation of ThMLXHTML
+ * thmlxhtml.h -	Definition of ThMLXHTML
  *
  * $Id$
  *

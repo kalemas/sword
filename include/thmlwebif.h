@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlwebif.h -	Implementation of ThMLWEBIF
+ * thmlwebif.h -	Definition of ThMLWEBIF
  *
  * $Id$
  *

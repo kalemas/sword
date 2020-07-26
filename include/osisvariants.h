@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisvariants.h -	Implementation of OSISVariants
+ * osisvariants.h -	Definition of OSISVariants
  *
  * $Id$
  *

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  xzcomprs.h -	XzCompress, a driver class that provides xz (LZMA2)
+ * xzcomprs.h -		XzCompress, a driver class that provides xz (LZMA2)
  *			compression
  *
  * $Id$

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlosis.h -	Implementation of ThMLOSIS
+ * thmlosis.h -	Definition of ThMLOSIS
  *
  * $Id$
  *

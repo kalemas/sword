@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf8cantillation.h -	Implementation of UTF8Cantillation
+ * utf8cantillation.h -	Definition of UTF8Cantillation
  *
  * $Id$
  *
@@ -27,8 +27,8 @@
 
 SWORD_NAMESPACE_START
 
-  /** This Filter shows/hides Hebrew cantillation marks in UTF8 text
-  */
+/** This Filter shows/hides Hebrew cantillation marks in UTF8 text
+ */
 class SWDLLEXPORT UTF8Cantillation : public SWOptionFilter {
 public:
 	UTF8Cantillation();

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  unicodertf.h -	Implementation of UnicodeRTF
+ * unicodertf.h -	Definition of UnicodeRTF
  *
  * $Id$
  *

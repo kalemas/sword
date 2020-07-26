@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  multimapwdef.h -	Implementation of multimapwithdefault
+ * multimapwdef.h -	Definition of multimapwithdefault
  *
  * $Id$
  *

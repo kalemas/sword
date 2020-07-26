@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf8hebrewpoints.h -	Implementation of UTF8HebrewPoints
+ * utf8hebrewpoints.h -	Definition of UTF8HebrewPoints
  *
  * $Id$
  *

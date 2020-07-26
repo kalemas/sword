@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf8scsu.h -	Implementation of UTF8SCSU
+ * utf8scsu.h -	Definition of UTF8SCSU
  *
  * $Id$
  *

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  listkey.h -	code for base class 'listkey'.  listkey is the basis for all
+ * listkey.h -	code for base class 'listkey'.  listkey is the basis for all
  *		types of keys for indexing into modules
  *		(e.g. verse, word, place, etc.)
  *
@@ -31,10 +31,10 @@
 
 SWORD_NAMESPACE_START
 
-  /** ListKey is the basis for all
-  * types of keys that have lists of specified indexes
-  * (e.g. a list of verses, place, etc.)
-  */
+/** ListKey is the basis for all
+ * types of keys that have lists of specified indexes
+ * (e.g. a list of verses, place, etc.)
+ */
 class SWDLLEXPORT ListKey : public SWKey {
 
 	static SWClass classdef;

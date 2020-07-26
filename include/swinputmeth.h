@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swinputmeth.h -	Implementation of SWInputMethod
+ * swinputmeth.h -	Definition of SWInputMethod
  *
  * $Id$
  * 
@@ -29,18 +29,18 @@ SWORD_NAMESPACE_START
 class SWDLLEXPORT SWInputMethod {
 
 private:
-    int state;
+	int state;
 
 protected:
-    virtual void setState(int state);
+	virtual void setState(int state);
 
 public:
-    SWInputMethod();
-    virtual ~SWInputMethod() {}
+	SWInputMethod();
+	virtual ~SWInputMethod() {}
 
-    virtual int *translate(char in) = 0;
-    virtual int getState();
-    virtual void clearState();
+	virtual int *translate(char in) = 0;
+	virtual int getState();
+	virtual void clearState();
 };
 
 SWORD_NAMESPACE_END

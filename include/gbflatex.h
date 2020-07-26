@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  gbflatex.h -	Implementation of GBFLaTeX
+ * gbflatex.h -	Definition of GBFLaTeX
  *
  * $Id$
  *

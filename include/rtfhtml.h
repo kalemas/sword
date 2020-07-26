@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  rtfhtml.h -	Implementation of RTFHTML
+ * rtfhtml.h -	Definition of RTFHTML
  *
  * $Id$
  *

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlplain.h -	Implementation of ThMLPlain
+ * thmlplain.h -	Definition of ThMLPlain
  *
  * $Id$
  *

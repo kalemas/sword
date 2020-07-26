@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  encfiltmgr.h -	definition of class SWEncodingMgr, subclass of
+ * encfiltmgr.h -	definition of class SWEncodingMgr, subclass of
  *			used to transcode all module text to a requested
  *			markup
  *
@@ -32,9 +32,9 @@ SWORD_NAMESPACE_START
 class SWFilter;
 
 /** This class is like a normal SWMgr,
-  * but you can additonally specify which encoding
-  * you want to use.
-  */
+ * but you can additonally specify which encoding
+ * you want to use.
+ */
 
 class SWDLLEXPORT EncodingFilterMgr : public SWFilterMgr {
 
@@ -47,7 +47,7 @@ protected:
 
 	/*
 	 * current encoding value
-	 */        
+	 */
 	char encoding;
 
 public:

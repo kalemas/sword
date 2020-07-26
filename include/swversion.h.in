@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swversion.h -	definition of class SWVersion used to compare version
+ * swversion.h -	definition of class SWVersion used to compare version
  *			info
  *
  * $Id$

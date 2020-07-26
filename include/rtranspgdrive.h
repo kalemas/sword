@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  rtranspgdrive.h  -	code for Google Drive impl of Remote Transport
+ * rtranspgdrive.h -	code for Google Drive impl of Remote Transport
  *
  * $Id$
  *

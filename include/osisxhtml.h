@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisxhtml.h -	Render filter for classed XHTML of an OSIS module
+ * osisxhtml.h -	Render filter for classed XHTML of an OSIS module
  *
  * $Id$
  *

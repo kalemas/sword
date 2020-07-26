@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisrtf.h -	Implementation of OSISRTF
+ * osisrtf.h -	Definition of OSISRTF
  *
  * $Id$
  *

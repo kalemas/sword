@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  filemgr.h -	definition of class FileMgr used for pooling file handles
+ * filemgr.h -	definition of class FileMgr used for pooling file handles
  *
  * $Id$
  *
@@ -126,21 +126,21 @@ public:
 	virtual void flush();
 	virtual long resourceConsumption();
 
-     /** Get an environment variable from the OS
-     * @param variableName
-     *
-     * @return variable value from the OS
-     */
-     static SWBuf getEnvValue(const char *variableName);
+	/** Get an environment variable from the OS
+	* @param variableName
+	*
+	* @return variable value from the OS
+	*/
+	static SWBuf getEnvValue(const char *variableName);
 
-     /** Check if a path can be access with supplied permissions
-     * @param path Path to the resource
-     * @param mode Desired access mode
-     *
-     * @return whether or not the resource can be accessed with the requested
-     *	mode
-     */
-     static bool hasAccess(const char *path, int mode);
+	/** Check if a path can be access with supplied permissions
+	* @param path Path to the resource
+	* @param mode Desired access mode
+	*
+	* @return whether or not the resource can be accessed with the requested
+	*	mode
+	*/
+	static bool hasAccess(const char *path, int mode);
 
 	/** Checks for the existence and readability of a file.
 	* @param ipath Path to file.
@@ -154,16 +154,16 @@ public:
 	*/
 	static signed char existsDir(const char *ipath, const char *idirName = 0);
 
-     /** Given a directory path, returns contents of directory
-     * @param dirPath Path to directory
-     * @param includeSize Optimization flag to allow passing false
-     *	to skip file size lookup (true forces both size and directory lookup)
-     * @param includeIsDirectory Optimization flag to allow passing false
-     *	to skip isDirectory lookup
-     *
-     * @return a container of DirEntry records describing contents
-     */
-     static std::vector<struct DirEntry> getDirList(const char *dirPath, bool includeSize = false, bool includeIsDirectory = true);
+	/** Given a directory path, returns contents of directory
+	* @param dirPath Path to directory
+	* @param includeSize Optimization flag to allow passing false
+	*	to skip file size lookup (true forces both size and directory lookup)
+	* @param includeIsDirectory Optimization flag to allow passing false
+	*	to skip isDirectory lookup
+	*
+	* @return a container of DirEntry records describing contents
+	*/
+	static std::vector<struct DirEntry> getDirList(const char *dirPath, bool includeSize = false, bool includeIsDirectory = true);
 
 
 	/** Truncate a file at its current position
@@ -183,7 +183,7 @@ public:
 	 */
 	static int openFile(const char *fName, int mode, int perms);
 	static int openFileReadOnly(const char *fName);
-     
+
 	static int copyFile(const char *srcFile, const char *destFile);
 	static int copyDir(const char *srcDir, const char *destDir);
 	static int removeDir(const char *targetDir);

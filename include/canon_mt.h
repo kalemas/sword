@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_mt.h -	Versification data for the Masoretic Text (MT) system
+ * canon_mt.h -	Versification data for the Masoretic Text (MT) system
  *
  * $Id$
  *

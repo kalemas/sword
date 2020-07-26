@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  osismorph.h -	Implementation of OSISMorph
+ * osismorph.h -	Definition of OSISMorph
  *
  * $Id$
  *

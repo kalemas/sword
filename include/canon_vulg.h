@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_vulg.h -	Versification data for the Vulg system
+ * canon_vulg.h -	Versification data for the Vulg system
  *
  * $Id$
  *

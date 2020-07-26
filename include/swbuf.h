@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swbuf.h -	code for SWBuf used as a transport and utility for data buffers
+ * swbuf.h -	code for SWBuf used as a transport and utility for data buffers
  *
  * $Id$
  *
@@ -138,7 +138,7 @@ public:
 	* SWBuf::setFillByte - Set the fillByte character
 	*
 	* @param ch This character is used when the SWBuf is (re)sized.
-	*   The memory will be filled with this character. \see setSize() \see resize()
+	*	The memory will be filled with this character. \see setSize() \see resize()
 	*/
 	inline void setFillByte(char ch) { fillByte = ch; }
 
@@ -158,14 +158,14 @@ public:
 	*	@param pos The position of the requested character.
 	* @return The character at the specified position
 	*/
-// fastest guarded impl.  If we reference out of bounds, we return our 
+	// fastest guarded impl.  If we reference out of bounds, we return our 
 	inline char &charAtGuarded(unsigned long pos) { return ((pos <= (unsigned long)(endAlloc - buf)) ? buf[pos] : (*endAlloc)); }
-// unguarded impl. This is obviously much faster and is likely why std::string specifies references out of bounds have undefined
-// behavior.  This is the default impl for operator []
+	// unguarded impl. This is obviously much faster and is likely why std::string specifies references out of bounds have undefined
+	// behavior.  This is the default impl for operator []
 	inline char &charAt(unsigned long pos) { return *(buf + pos); }
 	inline const char &charAt(unsigned long pos) const { return *(buf + pos); }
 
-/* these have all proven to be slower implementations */
+// these have all proven to be slower implementations
 //	inline char &charAt(unsigned long pos) { return buf[pos]; }
 //	inline char &charAtGuarded(unsigned long pos) { return pos <= (unsigned long)end - (unsigned long)buf ? buf[pos] : *nullStr; }
 //	inline char &charAtGuarded(unsigned long pos) { return pos <= length() ? buf[pos] : *nullStr; }
@@ -232,12 +232,12 @@ public:
 	* @warning This function can only write at most JUNKBUFSIZE to the string per call.
 	*
 	* @warning This function is not very fast. For loops with many iterations you might
-	*  consider replacing it by other calls. 
-	*  Example: 
-	*    \code SWBuf buf.setFormatted("<%s>", stringVal); \endcode 
-	*  should be replaced by: 
-	*    \code buf.set("<"); buf.append(stringVal); buf.append(">"); \endcode
-	*  This will produce much faster results.
+	*	consider replacing it by other calls. 
+	*	Example: 
+	*		\code SWBuf buf.setFormatted("<%s>", stringVal); \endcode 
+	*		should be replaced by: 
+	*		\code buf.set("<"); buf.append(stringVal); buf.append(">"); \endcode
+	*	This will produce much faster results.
 	*
 	* @param format The format string. Same syntax as printf, for example.
 	* @param ... Add all arguments here.
@@ -326,12 +326,12 @@ public:
 	* @warning This function can only write at most JUNKBUFSIZE to the string per call.
 	*
 	* @warning This function is not very fast. For loops with many iterations you might
-	*  consider replacing it by other calls. 
-	*  Example: 
-	*    \code SWBuf buf.appendFormatted("<%s>", stringVal); \endcode 
-	*  should be replaced by: 
-	*    \code buf.append("<"); buf.append(stringVal); buf.append(">"); \endcode
-	*  This will produce much faster results.
+	*	consider replacing it by other calls. 
+	*	Example: 
+	*		\code SWBuf buf.appendFormatted("<%s>", stringVal); \endcode 
+	*		should be replaced by: 
+	*		\code buf.append("<"); buf.append(stringVal); buf.append(">"); \endcode
+	*	This will produce much faster results.
 	*
 	* @param format The format string. Same syntax as printf, for example.
 	* @param ... Add all arguments here.
@@ -445,13 +445,13 @@ public:
 	 * Returns the prefix and modifies this buffer, shifting left to remove prefix
 	 * @param separator to use (e.g. ':')
 	 * @param endOfStringAsSeparator - also count end of string as separator.
-	 *                                 this is useful for tokenizing entire string like:
-	 *                                 x|y|z
-	 *                                 if true it will also include 'z'.
+	 *							this is useful for tokenizing entire string like:
+	 *								x|y|z
+	 *							if true it will also include 'z'.
 	 *
 	 * @return prefix if separator character found; otherwise, null and leaves buffer unmodified
 	 */
-	inline const char *stripPrefix(char separator, bool endOfStringAsSeparator = false) { const char *m = strchr(buf, separator); if (!m && endOfStringAsSeparator) { if (*buf) { operator >>(1); *buf=0; end = buf; return buf + 1;} else return buf; } if (m) { int len = (int)(m-buf); char *hold = new char[len]; memcpy(hold, buf, len); *this << (len+1); memcpy(end+1, hold, len); delete [] hold; end[len+1] = 0; } return (m) ? end+1 : 0; }  // safe.  we know we don't actually realloc and shrink buffer when shifting, so we can place our return val at end.
+	inline const char *stripPrefix(char separator, bool endOfStringAsSeparator = false) { const char *m = strchr(buf, separator); if (!m && endOfStringAsSeparator) { if (*buf) { operator >>(1); *buf=0; end = buf; return buf + 1;} else return buf; } if (m) { int len = (int)(m-buf); char *hold = new char[len]; memcpy(hold, buf, len); *this << (len+1); memcpy(end+1, hold, len); delete [] hold; end[len+1] = 0; } return (m) ? end+1 : 0; }	// safe.  we know we don't actually realloc and shrink buffer when shifting, so we can place our return val at end.
 
 	// this could be nicer, like replacing a contiguous series of target bytes with single replacement; offering replacement const char *
 	/**
@@ -459,7 +459,7 @@ public:
 	 * @param targets a set of bytes, any of which will be replaced
 	 * @param newByte value to use as replacement or 0 to remove matching byte.
 	 *
-	 * Example: replaceBytes("abc", 'z');  // replaces all occurances of 'a', 'b', and 'c' with 'z'
+	 * Example: replaceBytes("abc", 'z');	// replaces all occurances of 'a', 'b', and 'c' with 'z'
 	 */
 	inline SWBuf &replaceBytes(const char *targets, char newByte) {
 		for (unsigned int i = 0; (i < size()); i++) {

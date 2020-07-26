@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  remotetrans.h -	code for Remote Transport
+ * remotetrans.h -	code for Remote Transport
  *
  * $Id$
  *

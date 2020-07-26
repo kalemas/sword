@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- *  osisstrongs.h -	Implementation of OSISStrongs
+ * osisstrongs.h -	Definition of OSISStrongs
  *
  * $Id$
  *
@@ -27,8 +27,8 @@
 
 SWORD_NAMESPACE_START
 
-  /** This Filter shows/hides strong's numbers in a OSIS text
-  */
+/** This Filter shows/hides strong's numbers in a OSIS text
+ */
 class SWDLLEXPORT OSISStrongs : public SWOptionFilter {
 public:
 	OSISStrongs();

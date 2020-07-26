@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlrtf.h -	Implementation of ThMLRTF
+ * thmlrtf.h -	Definition of ThMLRTF
  *
  * $Id$
  *

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  markupfiltmgr.h -	definition of class SWMarkupMgr, subclass of
+ * markupfiltmgr.h -	definition of class SWMarkupMgr, subclass of
  *			used to transcode all module text to a requested
  *			markup
  *
@@ -33,45 +33,45 @@ SWORD_NAMESPACE_START
 */
 class SWDLLEXPORT MarkupFilterMgr : public EncodingFilterMgr {
 protected:
-        SWFilter* fromthml;
-        SWFilter* fromgbf;
-        SWFilter* fromplain;
-        SWFilter* fromosis;
-        SWFilter* fromtei;
+	SWFilter* fromthml;
+	SWFilter* fromgbf;
+	SWFilter* fromplain;
+	SWFilter* fromosis;
+	SWFilter* fromtei;
 
 	/**
 	 * current markup value
 	 */
-        char markup;
+	char markup;
 
-        void createFilters(char markup);
+	void createFilters(char markup);
 public:
 	/** Constructor of SWMarkupMgr.
 	 *
 	 * @param encoding The desired encoding.
 	 * @param markup The desired markup format.
 	 */
-        MarkupFilterMgr(char markup = FMT_THML, char encoding = ENC_UTF8);
+	MarkupFilterMgr(char markup = FMT_THML, char encoding = ENC_UTF8);
 
 	/**
 	 * The destructor of SWMarkupMgr.
 	 */
-        ~MarkupFilterMgr();
+	~MarkupFilterMgr();
 
 	/** Markup sets/gets the markup after initialization
 	 * 
 	 * @param m The new markup or FMT_UNKNOWN if you just want to get the current markup.
 	 * @return The current (possibly changed) markup format.
 	 */
-        void setMarkup(char m = FMT_UNKNOWN);
-        char getMarkup() const { return markup; }
+	void setMarkup(char m = FMT_UNKNOWN);
+	char getMarkup() const { return markup; }
 
 	/**
 	 * Adds the render filters which are defined in "section" to the SWModule object "module".
 	 * @param module To this module the render filter(s) are added
 	 * @param section We use this section to get a list of filters we should apply to the module
 	 */	
-        virtual void addRenderFilters(SWModule *module, ConfigEntMap &section);
+	virtual void addRenderFilters(SWModule *module, ConfigEntMap &section);
 };
 
 SWORD_NAMESPACE_END

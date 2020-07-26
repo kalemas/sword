@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmllemma.h -	Implementation of ThMLLemma
+ * thmllemma.h -	Definition of ThMLLemma
  *
  * $Id$
  *

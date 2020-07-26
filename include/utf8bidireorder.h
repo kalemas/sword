@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf8bidireorder.h -	Implementation of UTF8BiDiReorder
+ * utf8bidireorder.h -	Definition of UTF8BiDiReorder
  *
  * $Id$
  *
@@ -40,7 +40,7 @@ private:
 	UErrorCode err;
 public:
 	UTF8BiDiReorder();
-	~UTF8BiDiReorder();  
+	~UTF8BiDiReorder();
 	virtual char processText(SWBuf &text, const SWKey *key = 0, const SWModule *module = 0);
 };
 

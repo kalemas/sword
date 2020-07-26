@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swfiltermgr.h -	definition of class SWFilterMgr used as an interface to
+ * swfiltermgr.h -	definition of class SWFilterMgr used as an interface to
  *			manage filters on a module
  *
  * $Id$
@@ -40,48 +40,48 @@ private:
 	SWMgr *parentMgr;
 
 public:
-  SWFilterMgr();
-  virtual ~SWFilterMgr();
+	SWFilterMgr();
+	virtual ~SWFilterMgr();
 
-  virtual void setParentMgr(SWMgr *parentMgr);
-  virtual SWMgr *getParentMgr();
+	virtual void setParentMgr(SWMgr *parentMgr);
+	virtual SWMgr *getParentMgr();
 
-  virtual void addGlobalOptions(SWModule *module, ConfigEntMap &section, ConfigEntMap::iterator start,
+	virtual void addGlobalOptions(SWModule *module, ConfigEntMap &section, ConfigEntMap::iterator start,
 				 ConfigEntMap::iterator end);
-  virtual void addLocalOptions(SWModule *module, ConfigEntMap &section, ConfigEntMap::iterator start,
+	virtual void addLocalOptions(SWModule *module, ConfigEntMap &section, ConfigEntMap::iterator start,
 				ConfigEntMap::iterator end);
 
 
-  /**
-    * Adds the encoding filters which are defined in "section" to the SWModule object "module".
-    * @param module To this module the encoding filter(s) are added
-    * @param section We use this section to get a list of filters we should apply to the module
-    */
-  virtual void addEncodingFilters(SWModule *module, ConfigEntMap &section);
+	/**
+	 * Adds the encoding filters which are defined in "section" to the SWModule object "module".
+	 * @param module To this module the encoding filter(s) are added
+	 * @param section We use this section to get a list of filters we should apply to the module
+	 */
+	virtual void addEncodingFilters(SWModule *module, ConfigEntMap &section);
 
 
-    /**
-    * Adds the render filters which are defined in "section" to the SWModule object "module".
-    * @param module To this module the render filter(s) are added
-    * @param section We use this section to get a list of filters we should apply to the module
-    */
-  virtual void addRenderFilters(SWModule *module, ConfigEntMap &section);
+	/**
+	 * Adds the render filters which are defined in "section" to the SWModule object "module".
+	 * @param module To this module the render filter(s) are added
+	 * @param section We use this section to get a list of filters we should apply to the module
+	 */
+	virtual void addRenderFilters(SWModule *module, ConfigEntMap &section);
 
 
-  /**
-    * Adds the strip filters which are defined in "section" to the SWModule object "module".
-    * @param module To this module the strip filter(s) are added
-    * @param section We use this section to get a list of filters we should apply to the module
-    */
-  virtual void addStripFilters(SWModule *module, ConfigEntMap &section);
+	/**
+	 * Adds the strip filters which are defined in "section" to the SWModule object "module".
+	 * @param module To this module the strip filter(s) are added
+	 * @param section We use this section to get a list of filters we should apply to the module
+	 */
+	virtual void addStripFilters(SWModule *module, ConfigEntMap &section);
 
 
-  /**
-    * Adds the raw filters which are defined in "section" to the SWModule object "module".
-    * @param module To this module the raw filter(s) are added
-    * @param section We use this section to get a list of filters we should apply to the module
-    */
-  virtual void addRawFilters(SWModule *module, ConfigEntMap &section);
+	/**
+	 * Adds the raw filters which are defined in "section" to the SWModule object "module".
+	 * @param module To this module the raw filter(s) are added
+	 * @param section We use this section to get a list of filters we should apply to the module
+	 */
+	virtual void addRawFilters(SWModule *module, ConfigEntMap &section);
 
 };
 SWORD_NAMESPACE_END

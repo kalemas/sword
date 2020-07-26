@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  swtext.h -	code for base class 'SWText'.  SWText is the basis for all
+ * swtext.h -	code for base class 'SWText'.  SWText is the basis for all
  *		types of text modules
  *
  * $Id$
@@ -39,7 +39,7 @@ class SWDLLEXPORT SWText : public SWModule {
 	// for conversion if we have been set with a different internal key type
 	mutable VerseKey *tmpVK1;
 	mutable VerseKey *tmpVK2;
-        mutable bool tmpSecond;
+	mutable bool tmpSecond;
 	char *versification;
 
 protected:

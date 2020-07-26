@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisfootnotes.h -	Implementation of OSISFootnotes
+ * osisfootnotes.h -	Definition of OSISFootnotes
  *
  * $Id$
  *

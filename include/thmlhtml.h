@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlhtml.h -	Implementation of ThMLHTML
+ * thmlhtml.h -	Definition of ThMLHTML
  *
  * $Id$
  *

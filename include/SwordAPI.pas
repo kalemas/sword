@@ -1,7 +1,7 @@
 {******************************************************************************
  *
- *  SwordAPI.pas -	
- *  
+ * SwordAPI.pas -	
+ *
  * $Id$
  *
  * Copyright 1996-2013 CrossWire Bible Society (http://www.crosswire.org)
@@ -26,10 +26,10 @@ const
 	DLLNAME = 'sword32.dll';
 
 type
-    paramt = record
-           path, name, disc: pchar;
-    end;
-    pparamt = ^paramt;
+	paramt = record
+		 path, name, disc: pchar;
+	end;
+	pparamt = ^paramt;
 
 function  NewModule(modtype: PChar; params: pparamt): integer; stdcall; external DLLNAME;
 procedure DeleteModule(hmod: integer); stdcall; external DLLNAME;

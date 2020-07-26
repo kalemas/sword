@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  ztext4.h -	code for class 'zText4'- a module that reads compressed text
+ * ztext4.h -	code for class 'zText4'- a module that reads compressed text
  *		files: ot and nt using indexs ??.vss
  *
  * $Id$
@@ -66,7 +66,7 @@ public:
 	virtual void linkEntry(const SWKey *linkKey);	// Link current module entry to other module entry
 	virtual void deleteEntry();	// Delete current module entry
 	// end write interface ------------------------
-  
+
 	virtual void rawZFilter(SWBuf &buf, char direction = 0) const { rawFilter(buf, (SWKey *)(long)direction); }// hack, use key as direction for enciphering
 
 	// swcacher interface ----------------------

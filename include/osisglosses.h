@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  osisglosses.h -	Implementation of OSISGlosses
+ * osisglosses.h -	Definition of OSISGlosses
  *
  * $Id$
  *

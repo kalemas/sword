@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  canon_luther.h -	Versification data for the Luther system
+ * canon_luther.h -	Versification data for the Luther system
  *
  * $Id$
  *

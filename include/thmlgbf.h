@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  thmlgbf.h -	Implementation of ThMLGBF
+ * thmlgbf.h -	Definition of ThMLGBF
  *
  * $Id$
  *

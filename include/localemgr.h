@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  localemgr.h -	definition of class LocaleMgr used to interact with
+ * localemgr.h -	definition of class LocaleMgr used to interact with
  *			registered locales for a sword installation
  *
  * $Id$
@@ -59,7 +59,7 @@ protected:
 
 public:
 
-	/** Default constructor of  LocaleMgr
+	/** Default constructor of LocaleMgr
 	* You do normally not need this constructor, use LocaleMgr::getSystemLocaleMgr() instead.
 	*/
 	LocaleMgr(const char *iConfigPath = 0);
@@ -99,7 +99,7 @@ public:
 
 	/** Set the new standard locale of Sword.
 	*
-	* @param name The name of the new default locale  
+	* @param name The name of the new default locale
 	*/
 	virtual void setDefaultLocaleName(const char *name);
 

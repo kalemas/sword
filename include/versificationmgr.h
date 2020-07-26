@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  versification.h -	definition of class VersificationMgr used for managing
+ * versification.h -	definition of class VersificationMgr used for managing
  *			versification systems
  *
  * $Id$

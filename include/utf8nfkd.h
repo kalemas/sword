@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  utf8nfkd.h -	Implementation of UTF8NFKD
+ * utf8nfkd.h -	Definition of UTF8NFKD
  *
  * $Id$
  *
@@ -33,7 +33,7 @@ private:
 	struct UTF8NFKDPrivate *p;
 public:
 	UTF8NFKD();
-	~UTF8NFKD();  
+	~UTF8NFKD();
 	virtual char processText(SWBuf &text, const SWKey *key = 0, const SWModule *module = 0);
 };
 
