@@ -38,6 +38,9 @@
 #else
 #include <unistd.h>
 #endif
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 
 #ifndef O_BINARY
@@ -406,7 +409,7 @@ std::vector<struct DirEntry> FileMgr::getDirList(const char *dirPath, bool inclu
 				i.size = FileMgr::getFileSize(basePath + i.name);
 				dirList.push_back(i);
 			}
-		} while (FindNextFile(findIterator, &fileData) != 0);
+		} while (FindNextFileW(findIterator, &fileData) != 0);
 		FindClose(findIterator);
 	}
 #endif

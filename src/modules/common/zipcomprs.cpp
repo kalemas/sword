@@ -32,6 +32,7 @@
 #ifndef WIN32
 #include <utime.h>
 #else
+#include <windows.h>
 #include <time.h>
 #endif
 extern "C" {
