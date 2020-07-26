@@ -12,7 +12,7 @@ Raw:
 <div sID="gen16" type="section"/> <title canonical="true" type="psalm">A Psalm of David<note n="A" osisID="Ps.3.xref.A" swordFootnote="1" type="crossReference"></note>, when he fled from Absalom his son.</title> <div sID="gen17" type="x-p"/> <lg sID="gen18"/> 
 -------
 Rendered Header:
- <h3 class="title psalm canonical">A Psalm of David<a class="noteMarker crossReference" href="passagestudy.jsp?action=showNote&type=x&value=1&module=OSISReference&passage=Psalms+3%3A1"><small><sup class="x">*x</sup></small></a>, when he fled from Absalom his son.</h3>
+ <h3 class="title psalm canonical">A Psalm of David<a class="noteMarker crossReference" href="passagestudy.jsp?action=showNote&type=x&value=1&module=zOSISReference&passage=Psalms+3%3A1"><small><sup class="x">*x</sup></small></a>, when he fled from Absalom his son.</h3>
 
 <br />
  
@@ -87,10 +87,10 @@ CSS:
 	
 -------
 RenderText:
-<span class="line indent0">‘<a class="noteMarker crossReference" href="passagestudy.jsp?action=showNote&type=x&value=1&module=OSISReference&passage=Matthew+2%3A6"><small><sup class="x">*x</sup></small></a><span class="small-caps">And you, Bethlehem, land of Judah</span>, </span><br />
+<span class="line indent0">‘<a class="noteMarker crossReference" href="passagestudy.jsp?action=showNote&type=x&value=1&module=zOSISReference&passage=Matthew+2%3A6"><small><sup class="x">*x</sup></small></a><span class="small-caps">And you, Bethlehem, land of Judah</span>, </span><br />
 <span class="line indent0"><span class="small-caps">Are by no means least among the leaders of Judah</span>; </span><br />
 <span class="line indent0"><span class="small-caps">For out of you shall come forth a Ruler</span> </span><br />
-<span class="line indent0"><span class="small-caps">Who will</span> <a class="noteMarker crossReference" href="passagestudy.jsp?action=showNote&type=x&value=2&module=OSISReference&passage=Matthew+2%3A6"><small><sup class="x">*x</sup></small></a><span class="small-caps">shepherd My people Israel</span>.’” <br />
+<span class="line indent0"><span class="small-caps">Who will</span> <a class="noteMarker crossReference" href="passagestudy.jsp?action=showNote&type=x&value=2&module=zOSISReference&passage=Matthew+2%3A6"><small><sup class="x">*x</sup></small></a><span class="small-caps">shepherd My people Israel</span>.’” <br />
   
 -------
 -------

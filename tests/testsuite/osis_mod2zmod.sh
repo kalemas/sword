@@ -54,7 +54,11 @@ cd tmp/osis_mod2zmod
 
 echo
 echo "-- Plain output"
-../../../../utilities/diatheke/diatheke -b zOSISReference -f plain -k Acts 2:19-22 | grep -v zOSISReference
+../../../../utilities/diatheke/diatheke -b OSISReference -f plain -k "Acts 2:19-20" | grep -v OSISReference
 echo
 echo "-- RTF output"
-../../../../utilities/diatheke/diatheke -b zOSISReference -f RTF -k Acts 2:19-22 | grep -v zOSISReference
+../../../../utilities/diatheke/diatheke -b OSISReference -f RTF -k "Acts 2:19-20" | grep -v OSISReference
+echo "-- Verse osisID list Link test"
+../../../../utilities/diatheke/diatheke -b OSISReference -f RTF -k "Acts 2:21-22" | grep -v OSISReference
+echo "-- Div osisReference range Link test"
+../../../../utilities/diatheke/diatheke -b OSISReference -f RTF -k "Gen 1:6-7" | grep -v OSISReference
