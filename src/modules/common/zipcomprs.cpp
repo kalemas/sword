@@ -44,52 +44,53 @@ extern "C" {
  */
 namespace {
 
+
 #define BLOCKSIZE 512
 #define REGTYPE	 '0'		/* regular file */
 #define AREGTYPE '\0'		/* regular file */
 #define DIRTYPE  '5'		/* directory */
 
-struct tar_header {		/* byte offset */
-  char name[100];		/*   0 */
-  char mode[8];			/* 100 */
-  char uid[8];			/* 108 */
-  char gid[8];			/* 116 */
-  char size[12];		/* 124 */
-  char mtime[12];		/* 136 */
-  char chksum[8];		/* 148 */
-  char typeflag;		/* 156 */
-  char linkname[100];		/* 157 */
-  char magic[6];		/* 257 */
-  char version[2];		/* 263 */
-  char uname[32];		/* 265 */
-  char gname[32];		/* 297 */
-  char devmajor[8];		/* 329 */
-  char devminor[8];		/* 337 */
-  char prefix[155];		/* 345 */
-				/* 500 */
+
+struct tar_header {			/* byte offset */
+	char name[100];		/*   0 */
+	char mode[8];			/* 100 */
+	char uid[8];			/* 108 */
+	char gid[8];			/* 116 */
+	char size[12];			/* 124 */
+	char mtime[12];		/* 136 */
+	char chksum[8];		/* 148 */
+	char typeflag;			/* 156 */
+	char linkname[100];		/* 157 */
+	char magic[6];			/* 257 */
+	char version[2];		/* 263 */
+	char uname[32];		/* 265 */
+	char gname[32];		/* 297 */
+	char devmajor[8];		/* 329 */
+	char devminor[8];		/* 337 */
+	char prefix[155];		/* 345 */
+						/* 500 */
 };
+
 
 union tar_buffer {
-  char               buffer[BLOCKSIZE];
-  struct tar_header  header;
+	char               buffer[BLOCKSIZE];
+	struct tar_header  header;
 };
 
-int getoct(char *p,int width)
-{
-  int result = 0;
-  char c;
-  
-  while (width --)
-    {
-      c = *p++;
-      if (c == ' ')
-	continue;
-      if (c == 0)
-	break;
-      result = result * 8 + (c - '0');
-    }
-  return result;
+
+int getoct(char *p, int width) {
+	int result = 0;
+	char c;
+
+	while (width--) {
+		c = *p++;
+		if (c == ' ') continue;
+		if (c ==  0 ) break;
+		result = result * 8 + (c - '0');
+	}
+	return result;
 }
+
 
 int untar (gzFile in, const char *dest) {
 	union  tar_buffer buffer;
@@ -100,7 +101,7 @@ int untar (gzFile in, const char *dest) {
 	sword::FileDesc   *outfile = NULL;
 	sword::SWBuf  fname;
 	time_t tartime;
-  
+
 	while (1) {
 		len = gzread(in, &buffer, BLOCKSIZE);
 		if (len < 0)
@@ -111,7 +112,7 @@ int untar (gzFile in, const char *dest) {
 		*/
 		if (len != BLOCKSIZE)
 			sword::SWLog::getSystemLog()->logError("gzread: incomplete block read");
-	 
+
 		/*
 		* If we have to get a tar header
 		*/
@@ -127,7 +128,7 @@ int untar (gzFile in, const char *dest) {
 			fname = dest;
 			if (!fname.endsWith("/") && !fname.endsWith("\\")) fname += '/';
 			fname += buffer.header.name;
-	  
+
 			switch (buffer.header.typeflag) {
 			case DIRTYPE: {
 				sword::SWBuf dummyFile = fname + "dummyFile";
@@ -185,11 +186,11 @@ int untar (gzFile in, const char *dest) {
 					FILETIME ftm,ftLocal;
 					SYSTEMTIME st;
 					struct tm localt;
- 
+
 					localt = *localtime(&tartime);
 
 					hFile = CreateFileW((const wchar_t *)sword::utf8ToWChar(fname).getRawData(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-		  
+
 					st.wYear = (WORD)localt.tm_year+1900;
 					st.wMonth = (WORD)localt.tm_mon;
 					st.wDayOfWeek = (WORD)localt.tm_wday;

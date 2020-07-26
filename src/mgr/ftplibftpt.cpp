@@ -152,13 +152,13 @@ char FTPLibFTPTransport::getURL(const char *destPath, const char *sourceURL, SWB
 	pd.sr = statusReporter;
 	pd.term = &term;
 	pd.totalSize = 0;
-     FileDesc *fd = 0;
+	FileDesc *fd = 0;
 	if (destBuf) {
 		FtpOptions(FTPLIB_CALLBACK_WRITER, (long)&my_swbufwriter, ftpConnection);
 		FtpOptions(FTPLIB_CALLBACK_WRITERARG, (long)destBuf, ftpConnection);
 	}
 	else {
-     	fd = FileMgr::getSystemFileMgr()->open(outFile, FileMgr::CREAT|FileMgr::WRONLY);
+		fd = FileMgr::getSystemFileMgr()->open(outFile, FileMgr::CREAT|FileMgr::WRONLY);
 		FtpOptions(FTPLIB_CALLBACK_WRITER, (long)&my_filewriter, ftpConnection);
 		FtpOptions(FTPLIB_CALLBACK_WRITERARG, (long)fd, ftpConnection);
 	}
@@ -181,7 +181,7 @@ char FTPLibFTPTransport::getURL(const char *destPath, const char *sourceURL, SWB
 		pd.totalSize = size;
 		retVal = FtpGet(0, sourcePath, FTPLIB_IMAGE, ftpConnection) - 1;
 	}
-     if (fd) FileMgr::getSystemFileMgr()->close(fd);
+	if (fd) FileMgr::getSystemFileMgr()->close(fd);
 	SWLog::getSystemLog()->logDebug("FTPLibFTPTransport - returning: %d\n", retVal);
 	return retVal;
 }

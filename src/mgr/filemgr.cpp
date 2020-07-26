@@ -267,7 +267,7 @@ signed char FileMgr::trunc(FileDesc *file) {
 		if (i == 9999)
 			return -2;
 
-          FileDesc *fd = open(buf, CREAT|RDWR);
+		FileDesc *fd = open(buf, CREAT|RDWR);
 		if (!fd || fd->getFd() < 0)
 			return -3;
 
@@ -393,12 +393,12 @@ std::vector<struct DirEntry> FileMgr::getDirList(const char *dirPath, bool inclu
 #else
 	// Crappy Windows-specific code because well... They can't be conformant
 	WIN32_FIND_DATAW fileData;
-     SWBuf wcharBuf = utf8ToWChar(basePath+"*");
-     const wchar_t *wcharPath = (const wchar_t *)wcharBuf.getRawData();
+	SWBuf wcharBuf = utf8ToWChar(basePath+"*");
+	const wchar_t *wcharPath = (const wchar_t *)wcharBuf.getRawData();
 	HANDLE findIterator = FindFirstFileW(wcharPath, &fileData);
 	if (findIterator != INVALID_HANDLE_VALUE) {
 		do {
-          	SWBuf dirEntName = wcharToUTF8(fileData.cFileName);
+			SWBuf dirEntName = wcharToUTF8(fileData.cFileName);
 			if (dirEntName != "." && dirEntName != "..") {
 				struct DirEntry i;
 				i.name = dirEntName;
@@ -455,7 +455,7 @@ int FileMgr::createParent(const char *pName) {
 int FileMgr::openFile(const char *fName, int mode, int perms) {
 	int fd =
 #ifndef WIN32
-	     ::open(fName, mode, perms);
+		::open(fName, mode, perms);
 #else
 		::_wopen((const wchar_t *)utf8ToWChar(fName).getRawData(), mode, perms);
 #endif
@@ -504,7 +504,7 @@ int FileMgr::copyFile(const char *sourceFile, const char *targetFile) {
 int FileMgr::removeFile(const char *fName) {
 	return
 #ifndef WIN32
-     ::remove(fName);
+	::remove(fName);
 #else
 	::_wremove((const wchar_t *)utf8ToWChar(fName).getRawData());
 #endif
@@ -584,7 +584,7 @@ char FileMgr::isDirectory(const char *path) {
 	struct _stat stats;
 	int error = _wstat((const wchar_t *)utf8ToWChar(path).getRawData(), &stats);
 #endif
-     if (error) return 0;
+	if (error) return 0;
 	return ((stats.st_mode & S_IFDIR) == S_IFDIR);
 }
 
@@ -597,7 +597,7 @@ long FileMgr::getFileSize(const char *path) {
 	struct _stat stats;
 	int error = _wstat((const wchar_t *)utf8ToWChar(path).getRawData(), &stats);
 #endif
-     if (error) return 0;
+	if (error) return 0;
 	return stats.st_size;
 }
 
