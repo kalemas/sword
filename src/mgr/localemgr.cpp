@@ -156,47 +156,42 @@ LocaleMgr::~LocaleMgr() {
 
 
 void LocaleMgr::loadConfigDir(const char *ipath) {
-	DIR *dir;
-	struct dirent *ent;
-	SWBuf newmodfile;
 	LocaleMap::iterator it;
 	SWLog::getSystemLog()->logInformation("LocaleMgr::loadConfigDir loading %s", ipath);
  
-	if ((dir = opendir(ipath))) {
-		rewinddir(dir);
-		while ((ent = readdir(dir))) {
-			if ((strcmp(ent->d_name, ".")) && (strcmp(ent->d_name, ".."))) {
-				newmodfile = ipath;
-				if ((ipath[strlen(ipath)-1] != '\\') && (ipath[strlen(ipath)-1] != '/'))
-					newmodfile += "/";
-				newmodfile += ent->d_name;
-				SWLocale *locale = new SWLocale(newmodfile.c_str());
-				
-				if (locale->getName()) {					
-					bool supported = false;
-					if (StringMgr::hasUTF8Support()) {
-						supported = (locale->getEncoding() && (!strcmp(locale->getEncoding(), "UTF-8") || !strcmp(locale->getEncoding(), "ASCII")) );
-					}
-					else {
-						supported = !locale->getEncoding() || (locale->getEncoding() && (strcmp(locale->getEncoding(), "UTF-8") != 0)); //exclude UTF-8 locales
-					}
-					
-					if (!supported) { //not supported
-						delete locale;
-						continue;
-					}
-				
-					it = locales->find(locale->getName());
-					if (it != locales->end()) { // already present
-						*((*it).second) += *locale;
-						delete locale;
-					}
-					else locales->insert(LocaleMap::value_type(locale->getName(), locale));
+	SWBuf baseDir = ipath;
+	if (!baseDir.endsWith('/') && !baseDir.endsWith('\\')) baseDir += '/';
+
+	std::vector<DirEntry> dirList = FileMgr::getDirList(ipath);
+	for (unsigned int i = 0; i < dirList.size(); ++i) {
+		if (dirList[i].name.endsWith(".conf")) {
+			SWBuf localeFile;
+			localeFile = baseDir + dirList[i].name;
+			SWLocale *locale = new SWLocale(localeFile);
+
+			if (locale->getName()) {					
+				bool supported = false;
+				if (StringMgr::hasUTF8Support()) {
+					supported = (locale->getEncoding() && (!strcmp(locale->getEncoding(), "UTF-8") || !strcmp(locale->getEncoding(), "ASCII")) );
 				}
-				else	delete locale;
+				else {
+					supported = !locale->getEncoding() || (locale->getEncoding() && (strcmp(locale->getEncoding(), "UTF-8") != 0)); //exclude UTF-8 locales
+				}
+
+				if (!supported) { //not supported
+					delete locale;
+					continue;
+				}
+
+				it = locales->find(locale->getName());
+				if (it != locales->end()) { // already present
+					*((*it).second) += *locale;
+					delete locale;
+				}
+				else locales->insert(LocaleMap::value_type(locale->getName(), locale));
 			}
+			else	delete locale;
 		}
-		closedir(dir);
 	}
 }
 

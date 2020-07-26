@@ -151,7 +151,7 @@ SWLog::getSystemLog()->logDebug("bibleSync Nav Received: %s", ref.c_str());
 	}
 }
 #endif
-    
+
 class MyStatusReporter : public StatusReporter {
 public:
 	unsigned long last;
@@ -159,18 +159,18 @@ public:
 	MyStatusReporter() : last(0), statusReporter(0) {}
 	void init(org_crosswire_sword_InstallMgr_StatusCallback sr) { statusReporter = sr; last = 0xffffffff; }
 
-    virtual void update(unsigned long totalBytes, unsigned long completedBytes) {
+	virtual void update(unsigned long totalBytes, unsigned long completedBytes) {
 
 		if (!statusReporter) return;
 
 		if (completedBytes != last) {
 			statusReporter("update", totalBytes, completedBytes);
 			last = completedBytes;
-        }
+		}
 	}
-    
-    
-    virtual void preStatus(long totalBytes, long completedBytes, const char *message) {
+
+
+	virtual void preStatus(long totalBytes, long completedBytes, const char *message) {
 
 		if (!statusReporter) return;
 
@@ -188,7 +188,7 @@ public:
 */
 	}
 
-};      
+};
 
 class HandleSWModule {
 public:
@@ -369,7 +369,8 @@ public:
 		HandleSWMgr::availableLocales = 0;
 
 		HandleInstMgr::remoteSources = 0;
-		StringMgr::setSystemStringMgr(new FlatStringMgr());
+		// add this stringmgr to allow you to supply a toUpperUTF8 method
+		// StringMgr::setSystemStringMgr(new FlatStringMgr());
 	}
 	~InitStatics() {
 
@@ -379,7 +380,7 @@ public:
 		HandleInstMgr::clearRemoteSources();
 
 		clearStringArray(&tmpStringArrayRetVal);
-        sword::stdstr(&tmpStringRetVal, (const char *)0);
+		sword::stdstr(&tmpStringRetVal, (const char *)0);
 		
 	}
 } _initStatics;
@@ -458,15 +459,15 @@ const struct org_crosswire_sword_SearchHit * SWDLLEXPORT org_crosswire_sword_SWM
 	hmod->peeuuu.init(progressReporter);
 	if ((scope) && (strlen(scope)) > 0) {
 		sword::SWKey *p = module->createKey();
-        	sword::VerseKey *parser = SWDYNAMIC_CAST(VerseKey, p);
-	        if (!parser) {
-        		delete p;
-	                parser = new VerseKey();
-	        }
-	        *parser = module->getKeyText();
+		sword::VerseKey *parser = SWDYNAMIC_CAST(VerseKey, p);
+		if (!parser) {
+			delete p;
+			parser = new VerseKey();
+		}
+		*parser = module->getKeyText();
 		lscope = parser->parseVerseList(scope, *parser, true);
 		result = module->search(searchString, searchType, flags, &lscope, 0, &percentUpdate, &(hmod->peeuuu));
-                delete parser;
+		delete parser;
 	}
 	else	result = module->search(searchString, searchType, flags, 0, 0, &percentUpdate, &(hmod->peeuuu));
 
@@ -1302,20 +1303,20 @@ const char ** SWDLLEXPORT org_crosswire_sword_SWConfig_getSections
 SWLog::getSystemLog()->logDebug("libsword: getConfigSections %s at path: %s", exists?"Exists":"Absent", confPath);
 	if (exists) {
 		SWConfig config(confPath);
-        SectionMap::const_iterator sit;
+		SectionMap::const_iterator sit;
 		for (sit = config.getSections().begin(); sit != config.getSections().end(); ++sit) {
 			count++;
 		}
-        SWLog::getSystemLog()->logDebug("libsword: %d sections found in config", count);
-        retVal = (const char **)calloc(count+1, sizeof(const char *));
+		SWLog::getSystemLog()->logDebug("libsword: %d sections found in config", count);
+		retVal = (const char **)calloc(count+1, sizeof(const char *));
 		count = 0;
 		for (sit = config.getSections().begin(); sit != config.getSections().end(); ++sit) {
 			stdstr((char **)&(retVal[count++]), assureValidUTF8(sit->first.c_str()));
 		}
 	}
-    else {
-        retVal = (const char **)calloc(1, sizeof(const char *));
-    }
+	else {
+		retVal = (const char **)calloc(1, sizeof(const char *));
+	}
 
 	tmpStringArrayRetVal = retVal;
 	return retVal;
@@ -1836,7 +1837,7 @@ void SWDLLEXPORT org_crosswire_sword_SWMgr_sendBibleSyncMessage
 SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() begin");
 
 #ifdef BIBLESYNC
-    if (!bibleSync) {
+	if (!bibleSync) {
 SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() bibleSync not active; message not sent.");
 		return;
 	}
