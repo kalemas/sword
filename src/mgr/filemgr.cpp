@@ -398,11 +398,14 @@ std::vector<struct DirEntry> FileMgr::getDirList(const char *dirPath, bool inclu
 	HANDLE findIterator = FindFirstFileW(wcharPath, &fileData);
 	if (findIterator != INVALID_HANDLE_VALUE) {
 		do {
-			struct DirEntry i;
-			i.name = wcharToUTF8(fileData.cFileName);
-			i.isDirectory = fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
-			i.size = FileMgr::getFileSize(basePath + i.name);
-			dirList.push_back(i);
+          	SWBuf dirEntName = wcharToUTF8(fileData.cFileName);
+			if (dirEntName != "." && dirEntName != "..") {
+				struct DirEntry i;
+				i.name = dirEntName;
+				i.isDirectory = fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
+				i.size = FileMgr::getFileSize(basePath + i.name);
+				dirList.push_back(i);
+			}
 		} while (FindNextFile(findIterator, &fileData) != 0);
 		FindClose(findIterator);
 	}

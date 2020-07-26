@@ -19,7 +19,7 @@
  * General Public License for more details.
  *
  */
- 
+
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -45,6 +45,12 @@ namespace {
 		int s = (int)output.size();
 		output.size(s+size);
 		memcpy(output.getRawData()+s, buffer, size);
+		return (int)size;
+	}
+
+	static int my_filewriter(netbuf *nControl, void *buffer, size_t size, void *fd) {
+		FileDesc *output = (FileDesc *)fd;
+		output->write(buffer, size);
 		return (int)size;
 	}
 
@@ -146,13 +152,15 @@ char FTPLibFTPTransport::getURL(const char *destPath, const char *sourceURL, SWB
 	pd.sr = statusReporter;
 	pd.term = &term;
 	pd.totalSize = 0;
-
+     FileDesc *fd = 0;
 	if (destBuf) {
 		FtpOptions(FTPLIB_CALLBACK_WRITER, (long)&my_swbufwriter, ftpConnection);
 		FtpOptions(FTPLIB_CALLBACK_WRITERARG, (long)destBuf, ftpConnection);
 	}
 	else {
-		FtpOptions(FTPLIB_CALLBACK_WRITER, 0L, ftpConnection);
+     	fd = FileMgr::getSystemFileMgr()->open(outFile, FileMgr::CREAT|FileMgr::WRONLY);
+		FtpOptions(FTPLIB_CALLBACK_WRITER, (long)&my_filewriter, ftpConnection);
+		FtpOptions(FTPLIB_CALLBACK_WRITERARG, (long)fd, ftpConnection);
 	}
 
 	FtpOptions(FTPLIB_CALLBACK, (long)&my_fprogress, ftpConnection);
@@ -163,7 +171,7 @@ char FTPLibFTPTransport::getURL(const char *destPath, const char *sourceURL, SWB
 //		SWLog::getSystemLog()->logDebug("getting test directory %s\n", sourcePath.c_str());
 //		FtpDir(NULL, sourcePath, ftpConnection);
 		SWLog::getSystemLog()->logDebug("getting real directory %s\n", sourcePath.c_str());
-		retVal = FtpDir(destBuf ? 0 : outFile.c_str(), sourcePath, ftpConnection) - 1;
+		retVal = FtpDir(0, sourcePath, ftpConnection) - 1;
 		SWLog::getSystemLog()->logDebug("got real directory %s to %s\n", sourcePath.c_str(), destBuf ? "*internal buffer*" : outFile.c_str());
 	}
 	else {
@@ -171,9 +179,9 @@ char FTPLibFTPTransport::getURL(const char *destPath, const char *sourceURL, SWB
 		int size;
 		FtpSize(sourcePath, &size, FTPLIB_IMAGE, ftpConnection);
 		pd.totalSize = size;
-		retVal = FtpGet(destBuf ? 0 : outFile.c_str(), sourcePath, FTPLIB_IMAGE, ftpConnection) - 1;
+		retVal = FtpGet(0, sourcePath, FTPLIB_IMAGE, ftpConnection) - 1;
 	}
-
+     if (fd) FileMgr::getSystemFileMgr()->close(fd);
 	SWLog::getSystemLog()->logDebug("FTPLibFTPTransport - returning: %d\n", retVal);
 	return retVal;
 }
