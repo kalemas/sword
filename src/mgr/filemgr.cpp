@@ -39,6 +39,7 @@
 #include <unistd.h>
 #endif
 #ifdef WIN32
+#include <wchar.h>
 #include <windows.h>
 #endif
 
