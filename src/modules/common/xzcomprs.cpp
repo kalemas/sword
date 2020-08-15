@@ -77,6 +77,7 @@ XzCompress::~XzCompress() {
  */
 
 void XzCompress::encode(void) {
+
 	direct = 0;	// set direction needed by parent [Get|Send]Chars()
 
 	// get buffer
@@ -98,8 +99,7 @@ void XzCompress::encode(void) {
 	char *zbuf = new char[zlen+1];
 	size_t zpos = 0;
 
-	if (len)
-	{
+	if (len) {
 		//printf("Doing compress\n");
 		switch (lzma_easy_buffer_encode(level | LZMA_PRESET_EXTREME, LZMA_CHECK_CRC64, NULL, (const uint8_t*)buf, (size_t)len, (uint8_t*)zbuf, &zpos, (size_t)zlen)) {
 		        case LZMA_OK: sendChars(zbuf, zpos);  break;
@@ -112,8 +112,7 @@ void XzCompress::encode(void) {
 			default: fprintf(stderr, "ERROR: an unknown error occurred during compression.\n"); break;
 		}
 	}
-	else
-	{
+	else {
 		fprintf(stderr, "ERROR: no buffer to compress\n");
 	}
 	delete [] zbuf;
