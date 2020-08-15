@@ -137,6 +137,7 @@ char OSISStrongs::processText(SWBuf &text, const SWKey *key, const SWModule *mod
 							mp += attrib;
 							morphClass += mClass;
 							morph += mp;
+							mp.replaceBytes("+", ' ');
 							if (count > 1) {
 								SWBuf tmp;
 								tmp.setFormatted("Morph.%d", i+1);
@@ -179,6 +180,7 @@ char OSISStrongs::processText(SWBuf &text, const SWKey *key, const SWModule *mod
 							l += attrib;
 							if (i) { lemmaClass += " "; lemma += " "; }
 							lemma += l;
+							l.replaceBytes("+", ' ');
 							lemmaClass += lClass;
 							if (count > 1) {
 								SWBuf tmp;
@@ -202,6 +204,7 @@ char OSISStrongs::processText(SWBuf &text, const SWKey *key, const SWModule *mod
 							if (i) src += " ";
 							mp += attrib;
 							src += mp;
+							mp.replaceBytes("+", ' ');
 							if (count > 1) {
 								SWBuf tmp;
 								tmp.setFormatted("Src.%d", i+1);
