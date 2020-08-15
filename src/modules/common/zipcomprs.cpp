@@ -244,7 +244,7 @@ ZipCompress::~ZipCompress() {
 /******************************************************************************
  * ZipCompress::encode	- This function "encodes" the input stream into the
  *						output stream.
- *						The GetChars() and SendChars() functions are
+ *						The getChars() and sendChars() functions are
  *						used to separate this method from the actual
  *						i/o.
  * 		NOTE:			must set zlen for parent class to know length of
@@ -269,7 +269,7 @@ ZEXTERN int ZEXPORT compress2 OF((Bytef *dest,   uLongf *destLen,
    memory, Z_BUF_ERROR if there was not enough room in the output buffer,
    Z_STREAM_ERROR if the level parameter is invalid.
 */
-	direct = 0;	// set direction needed by parent [Get|Send]Chars()
+	direct = 0;	// set direction needed by parent [get|send]Chars()
 
 	// get buffer
 	char chunk[1024];
@@ -309,7 +309,7 @@ ZEXTERN int ZEXPORT compress2 OF((Bytef *dest,   uLongf *destLen,
 /******************************************************************************
  * ZipCompress::decode	- This function "decodes" the input stream into the
  *						output stream.
- *						The GetChars() and SendChars() functions are
+ *						The getChars() and sendChars() functions are
  *						used to separate this method from the actual
  *						i/o.
  */
@@ -333,7 +333,7 @@ ZEXTERN int ZEXPORT uncompress OF((Bytef *dest,   uLongf *destLen,
    enough memory, Z_BUF_ERROR if there was not enough room in the output
    buffer, or Z_DATA_ERROR if the input data was corrupted.
 */
-	direct = 1;	// set direction needed by parent [Get|Send]Chars()
+	direct = 1;	// set direction needed by parent [get|send]Chars()
 
 	// get buffer
 	char chunk[1024];
