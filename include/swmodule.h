@@ -232,11 +232,21 @@ public:
 	virtual char setKey(const SWKey *ikey);
 
 	/**
+	 * Sets this module's key to provided keyText without disturbing any settings on the a key itself
+	 * This is simply a shortcut for the common module->getKey()->setText(keyText);
+	 *
+	 * @param ikey key with which to set this module
+	 * @return error status
+	 */
+	inline char setKeyText(const char *keyText) { getKey()->setText(keyText); return key->getError(); }
+
+	/**
 	 * Sets a key to this module for position to a particular record
 	 * @param ikey The SWKey which should be used as new key.
 	 * @return Error status
 	 */
 	char setKey(const SWKey &ikey) { return setKey(&ikey); }
+
 	/**
 	 * @deprecated Use setKey() instead.
 	 */
