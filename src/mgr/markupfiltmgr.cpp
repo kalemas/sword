@@ -301,7 +301,7 @@ void MarkupFilterMgr::createFilters(char markup) {
 		fromthml  = new ThMLWEBIF();
 		fromgbf   = new GBFWEBIF();
 		fromosis  = new OSISWEBIF();
-		fromtei   = NULL;
+		fromtei   = new TEIXHTML();
 		break;
 
 	case FMT_TEI:
