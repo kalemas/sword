@@ -170,9 +170,9 @@ unsigned long SWCompress::sendChars(char *ibuf, unsigned long len) {
 
 
 /******************************************************************************
- * SWCompress::Encode	- This function "encodes" the input stream into the
+ * SWCompress::encode	- This function "encodes" the input stream into the
  *						output stream.
- *						The GetChars() and SendChars() functions are
+ *						The getChars() and sendChars() functions are
  *						used to separate this method from the actual
  *						i/o.
  */
@@ -185,7 +185,7 @@ void SWCompress::encode(void) {
 /******************************************************************************
  * SWCompress::decode	- This function "decodes" the input stream into the
  *						output stream.
- *						The GetChars() and SendChars() functions are
+ *						The getChars() and sendChars() functions are
  *						used to separate this method from the actual
  *						i/o.
  */
