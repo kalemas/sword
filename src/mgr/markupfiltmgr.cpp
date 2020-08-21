@@ -100,6 +100,7 @@ MarkupFilterMgr::~MarkupFilterMgr() {
  * RET: markup
  */
 void MarkupFilterMgr::setMarkup(char mark) {
+	if (mark && mark != markup) {
 		markup = mark;
 		ModMap::const_iterator module;
 
@@ -200,6 +201,7 @@ void MarkupFilterMgr::setMarkup(char mark) {
 		delete oldplain;
 		delete oldosis;
 		delete oldtei;
+	}
 }
 
 

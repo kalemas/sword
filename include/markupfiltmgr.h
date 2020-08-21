@@ -32,6 +32,7 @@ SWORD_NAMESPACE_START
 * you want to use.
 */
 class SWDLLEXPORT MarkupFilterMgr : public EncodingFilterMgr {
+
 protected:
 	SWFilter* fromthml;
 	SWFilter* fromgbf;
@@ -46,6 +47,7 @@ protected:
 
 	void createFilters(char markup);
 public:
+
 	/** Constructor of SWMarkupMgr.
 	 *
 	 * @param encoding The desired encoding.
@@ -60,11 +62,24 @@ public:
 
 	/** Markup sets/gets the markup after initialization
 	 * 
-	 * @param m The new markup or FMT_UNKNOWN if you just want to get the current markup.
+	 * DEPRECATED: use setMarkup / getMarkup
+	 *
+	 * @param m The new markup
 	 * @return The current (possibly changed) markup format.
 	 */
-	void setMarkup(char m = FMT_UNKNOWN);
+	SWDEPRECATED char Markup(char m = FMT_UNKNOWN) { if (m != FMT_UNKNOWN) setMarkup(m); return getMarkup(); }
+
+	/** getMarkup gets the markup after initialization
+	 * 
+	 * @return The current markup format.
+	 */
 	char getMarkup() const { return markup; }
+
+	/** setMarkup sets the markup after initialization
+	 * 
+	 * @param m The new markup
+	 */
+	void setMarkup(char m);
 
 	/**
 	 * Adds the render filters which are defined in "section" to the SWModule object "module".
