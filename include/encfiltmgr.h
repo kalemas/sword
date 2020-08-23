@@ -57,12 +57,21 @@ public:
 	 *
 	 * @param encoding The desired encoding.
 	 */
-	EncodingFilterMgr (char encoding = ENC_UTF8);
+	EncodingFilterMgr(char encoding = ENC_UTF8);
 
 	/**
 	 * The destructor of SWEncodingMgr.
 	 */
 	~EncodingFilterMgr();
+
+	/** Encoding sets/gets the encoding after initialization
+	 * 
+	 * DEPRECATED: use setEncoding / getEncoding
+	 *
+	 * @return The current encoding format.
+	 */
+
+	char Encoding(char enc) { if (enc != ENC_UNKNOWN) setEncoding(enc); return getEncoding(); }
 
 	/** getEncoding gets the encoding after initialization
 	 * 
