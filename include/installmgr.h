@@ -271,7 +271,9 @@ public:
 	void setUnverifiedPeerAllowed(bool allowed) { this->unverifiedPeerAllowed = allowed; }
 	bool isUnverifiedPeerAllowed() { return unverifiedPeerAllowed; }
 
-	/** call from another thread to terminate the installation process
+	/** Request nicely to terminate an ongoing transfer.
+	 * If threading is a concern, consider calling terminate() from your status reporters
+	 * as they are typically the link between the transfer thread and your UI.
 	 */
 	void terminate();
 

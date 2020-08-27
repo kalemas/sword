@@ -376,7 +376,7 @@ SWLog::getSystemLog()->logDebug("remoteCopy: dirTransfer: %s", dir.c_str());
 			}
 		}
 		SWCATCH (...) {
-			retVal = -3;
+			retVal = -1;
 		}
 	}
 	SWTRY {
@@ -570,7 +570,7 @@ int InstallMgr::refreshRemoteSource(InstallSource *is) {
 		ZipCompress::unTarGZ(fd, root.c_str());
 		FileMgr::getSystemFileMgr()->close(fd);
 	}
-	else if (errorCode > -2) // -2 and greater errors are connection errors
+	else if (errorCode > -2)	// don't try the next attempt on connection error or user requested termination
 #endif
 	errorCode = remoteCopy(is, "mods.d", target.c_str(), true, ".conf"); //copy the whole directory
 

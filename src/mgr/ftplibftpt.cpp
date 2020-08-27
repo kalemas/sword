@@ -123,7 +123,7 @@ char FTPLibFTPTransport::assureLoggedIn() {
 		}
 		else {
 			SWLog::getSystemLog()->logError("Failed to connect to %s\n", host.c_str());
-			retVal = -3;
+			retVal = -2;
 		}
 	}
 	return retVal;

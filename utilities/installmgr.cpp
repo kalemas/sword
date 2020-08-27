@@ -209,6 +209,7 @@ void createBasicConfig(bool enableRemote, bool addCrossWire, bool unverifiedPeer
 
 	SWConfig config(confPath.c_str());
 	config["General"]["PassiveFTP"] = "true";
+	config["General"]["TimeoutMillis"] = "10000";
 	config["General"]["UnverifiedPeerAllowed"] = (unverifiedPeerAllowed) ? "true" : "false";
 	if (enableRemote) {
 		config["Sources"]["FTPSource"] = is.getConfEnt();

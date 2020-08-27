@@ -134,6 +134,9 @@ vector<struct DirEntry> RemoteTransport::getDirList(const char *dirURL) {
 }
 
 
+/** network copy recursively a remote directly
+ * @return error status 0: OK; -1: operation error, -2: connection error; -3: user requested termination
+ */
 int RemoteTransport::copyDirectory(const char *urlPrefix, const char *dir, const char *dest, const char *suffix) {
 	SWLog::getSystemLog()->logDebug("RemoteTransport::copyDirectory");
 	int retVal = 0;
@@ -196,9 +199,10 @@ int RemoteTransport::copyDirectory(const char *urlPrefix, const char *dir, const
 				removeTrailingSlash(url);
 				url += "/";
 				url += dirEntry.name;
-				if (getURL(buffer.c_str(), url.c_str())) {
+				retVal = getURL(buffer.c_str(), url.c_str());
+				if (retVal) {
 					SWLog::getSystemLog()->logWarning("copyDirectory: failed to get file %s\n", url.c_str());
-					return -2;
+					return retVal;
 				}
 				completedBytes += dirEntry.size;
 			}

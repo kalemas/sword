@@ -166,7 +166,7 @@ char CURLHTTPTransport::getURL(const char *destPath, const char *sourceURL, SWBu
 
 		if(CURLE_OK != res) {
 			if (CURLE_FTP_ACCEPT_TIMEOUT == res || CURLE_OPERATION_TIMEDOUT == res) {
-				retVal = -3;
+				retVal = -2;
 			}
 			else {
 				retVal = -1;

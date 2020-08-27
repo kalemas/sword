@@ -67,7 +67,7 @@ public:
 	 * override this method in your real impl
 	 *
 	 * if destBuf then write to buffer instead of file
-	 * @return -1 simple error (resource not found); -2 more serious (connection error)
+	 * @return -1 operation error (e.g., resource not found); -2 connection error (e.g., connection timeout or login failure); -3 user requested termination
 	 */
 	virtual char getURL(const char *destPath, const char *sourceURL, SWBuf *destBuf = 0);
 
@@ -75,7 +75,7 @@ public:
 	 * override this method in your real impl
 	 *
 	 * if sourceBuf then read from buffer instead of file
-	 * @return -1 simple error (resource not found); -2 more serious (connection error)
+	 * @return -1 operation error (e.g., permission denied); -2 connection error (e.g., connection timeout or login failure); -3 user requested termination
 	 */
 	virtual char putURL(const char *destURL, const char *sourcePath, SWBuf *sourceBuf = 0);
 
