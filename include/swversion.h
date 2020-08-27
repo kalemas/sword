@@ -3,7 +3,7 @@
  * swversion.h -	definition of class SWVersion used to compare version
  *			info
  *
- * $Id: swversion.h.in 2959 2013-08-13 03:55:38Z chrislit $
+ * $Id: swversion.h.in 3765 2020-07-26 10:31:09Z scribe $
  *
  * Copyright 2001-2013 CrossWire Bible Society (http://www.crosswire.org)
  *	CrossWire Bible Society
@@ -24,12 +24,12 @@
 #ifndef SWVERSION_H
 #define SWVERSION_H
 
-#define SWORD_VERSION_NUM 1089003763
-#define SWORD_VERSION_STR "1.8.900.3763:3764M"
+#define SWORD_VERSION_NUM 1089003781
+#define SWORD_VERSION_STR "1.8.900.3781"
 #define SWORD_VERSION_MAJOR 1
 #define SWORD_VERSION_MINOR 8
 #define SWORD_VERSION_MICRO 900
-#define SWORD_VERSION_NANO 3763
+#define SWORD_VERSION_NANO 3781
 
 #include <defs.h>
 SWORD_NAMESPACE_START

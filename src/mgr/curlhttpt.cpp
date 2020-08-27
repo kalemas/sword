@@ -136,7 +136,8 @@ char CURLHTTPTransport::getURL(const char *destPath, const char *sourceURL, SWBu
 
 		/* Switch on full protocol/debug output */
 		curl_easy_setopt(session, CURLOPT_VERBOSE, true);
-		curl_easy_setopt(session, CURLOPT_CONNECTTIMEOUT, 45);
+		curl_easy_setopt(session, CURLOPT_CONNECTTIMEOUT_MS, timeoutMillis);
+		curl_easy_setopt(session, CURLOPT_TIMEOUT_MS, timeoutMillis);
 		
 		/* Disable checking host certificate */
 		if (isUnverifiedPeerAllowed()) {
@@ -164,7 +165,12 @@ char CURLHTTPTransport::getURL(const char *destPath, const char *sourceURL, SWBu
 		SWLog::getSystemLog()->logDebug("***** Finished performing curl easy action. \n");
 
 		if(CURLE_OK != res) {
-			retVal = -1;
+			if (CURLE_FTP_ACCEPT_TIMEOUT == res || CURLE_OPERATION_TIMEDOUT == res) {
+				retVal = -3;
+			}
+			else {
+				retVal = -1;
+			}
 		}
 	}
 

@@ -52,6 +52,7 @@ class SWDLLEXPORT RemoteTransport {
 protected:
 	StatusReporter *statusReporter;
 	bool passive;
+	long timeoutMillis;
 	bool term;
 	bool unverifiedPeerAllowed;
 	SWBuf host;
@@ -66,6 +67,7 @@ public:
 	 * override this method in your real impl
 	 *
 	 * if destBuf then write to buffer instead of file
+	 * @return -1 simple error (resource not found); -2 more serious (connection error)
 	 */
 	virtual char getURL(const char *destPath, const char *sourceURL, SWBuf *destBuf = 0);
 
@@ -73,6 +75,7 @@ public:
 	 * override this method in your real impl
 	 *
 	 * if sourceBuf then read from buffer instead of file
+	 * @return -1 simple error (resource not found); -2 more serious (connection error)
 	 */
 	virtual char putURL(const char *destURL, const char *sourcePath, SWBuf *sourceBuf = 0);
 
@@ -81,6 +84,8 @@ public:
 
 	virtual std::vector<struct DirEntry> getDirList(const char *dirURL);
 	void setPassive(bool passive) { this->passive = passive; }
+	void setTimeoutMillis(long timeoutMillis) { this->timeoutMillis = timeoutMillis; }
+	long getTimeoutMillis() { return timeoutMillis; }
 	bool isPassive() { return passive; }
 	void setUser(const char *user) { u = user; }
 	void setPasswd(const char *passwd) { p = passwd; }

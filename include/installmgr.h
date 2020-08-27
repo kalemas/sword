@@ -74,6 +74,7 @@ protected:
 	SWBuf confPath;
 	StatusReporter *statusReporter;
 	bool passive;
+	long timeoutMillis;
 	SWBuf u, p;
 	bool unverifiedPeerAllowed;
 
@@ -263,6 +264,9 @@ public:
 	 */
 	void setFTPPassive(bool passive) { this->passive = passive; }
 	bool isFTPPassive() { return passive; }
+
+	void setTimeoutMillis(long timeoutMillis) { this->timeoutMillis = timeoutMillis; }
+	long getTimeoutMillis() { return timeoutMillis; }
 
 	void setUnverifiedPeerAllowed(bool allowed) { this->unverifiedPeerAllowed = allowed; }
 	bool isUnverifiedPeerAllowed() { return unverifiedPeerAllowed; }

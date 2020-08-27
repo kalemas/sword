@@ -109,6 +109,7 @@ char FTPLibFTPTransport::assureLoggedIn() {
 		SWLog::getSystemLog()->logDebug("connecting to host: %s...\n", host.c_str());
 		if (FtpConnect(host, &ftpConnection)) {
 			FtpOptions(FTPLIB_CONNMODE, (passive) ? FTPLIB_PASSIVE : FTPLIB_PORT, ftpConnection);
+			FtpOptions(FTPLIB_IDLETIME, timeoutMillis, ftpConnection);
 
 			SWLog::getSystemLog()->logDebug("connected. logging in...\n");
 			if (FtpLogin(u.c_str(), p.c_str(), ftpConnection)) {
@@ -122,7 +123,7 @@ char FTPLibFTPTransport::assureLoggedIn() {
 		}
 		else {
 			SWLog::getSystemLog()->logError("Failed to connect to %s\n", host.c_str());
-			retVal = -1;
+			retVal = -3;
 		}
 	}
 	return retVal;

@@ -98,6 +98,7 @@ RemoteTransport *InstallMgr::createHTTPTransport(const char *host, StatusReporte
 
 InstallMgr::InstallMgr(const char *privatePath, StatusReporter *sr, SWBuf u, SWBuf p) {
 	passive = true;
+	timeoutMillis = 10000;
 	unverifiedPeerAllowed = true;
 	statusReporter = sr;
 	this->u = u;
@@ -143,6 +144,8 @@ void InstallMgr::readInstallConf() {
 	clearSources();
 	
 	setFTPPassive(stricmp((*installConf)["General"]["PassiveFTP"].c_str(), "false") != 0);
+	long t = atol((*installConf)["General"]["TimeoutMillis"].c_str());
+	if (t > 0) setTimeoutMillis(t);
 	setUnverifiedPeerAllowed(stricmp((*installConf)["General"]["UnverifiedPeerAllowed"].c_str(), "false") != 0);
 
 	SectionMap::iterator confSection = installConf->getSections().find("Sources");
@@ -310,6 +313,7 @@ SWLog::getSystemLog()->logDebug("remoteCopy: %s, %s, %s, %c, %s", (is?is->source
 
 		trans = createFTPTransport(is->source, statusReporter);
 		trans->setPassive(passive);
+		trans->setTimeoutMillis(timeoutMillis);
 	}
 	else if (is->type == "HTTP" || is->type == "HTTPS") {
 		trans = createHTTPTransport(is->source, statusReporter);
@@ -366,13 +370,13 @@ SWLog::getSystemLog()->logDebug("remoteCopy: dirTransfer: %s", dir.c_str());
 			SWBuf url = urlPrefix + is->directory.c_str();
 			removeTrailingSlash(url);
 			url += (SWBuf)"/" + src; //dont forget the final slash
-			if (trans->getURL(dest, url.c_str())) {
+			retVal = trans->getURL(dest, url.c_str());
+			if (retVal) {
 				SWLog::getSystemLog()->logDebug("netCopy: failed to get file %s", url.c_str());
-				retVal = -1;
 			}
 		}
 		SWCATCH (...) {
-			retVal = -1;
+			retVal = -3;
 		}
 	}
 	SWTRY {
@@ -566,7 +570,7 @@ int InstallMgr::refreshRemoteSource(InstallSource *is) {
 		ZipCompress::unTarGZ(fd, root.c_str());
 		FileMgr::getSystemFileMgr()->close(fd);
 	}
-	else
+	else if (errorCode > -2) // -2 and greater errors are connection errors
 #endif
 	errorCode = remoteCopy(is, "mods.d", target.c_str(), true, ".conf"); //copy the whole directory
 

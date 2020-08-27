@@ -155,13 +155,16 @@ char CURLFTPTransport::getURL(const char *destPath, const char *sourceURL, SWBuf
 		curl_easy_setopt(session, CURLOPT_NOPROGRESS, 0);
 		curl_easy_setopt(session, CURLOPT_PROGRESSDATA, &pd);
 		curl_easy_setopt(session, CURLOPT_PROGRESSFUNCTION, my_fprogress);
+
+
 		curl_easy_setopt(session, CURLOPT_DEBUGFUNCTION, my_trace);
 		/* Set a pointer to our struct to pass to the callback */
 		curl_easy_setopt(session, CURLOPT_FILE, &ftpfile);
 
 		/* Switch on full protocol/debug output */
 		curl_easy_setopt(session, CURLOPT_VERBOSE, true);
-		curl_easy_setopt(session, CURLOPT_CONNECTTIMEOUT, 45);
+		curl_easy_setopt(session, CURLOPT_CONNECTTIMEOUT_MS, timeoutMillis);
+		curl_easy_setopt(session, CURLOPT_TIMEOUT_MS, timeoutMillis);
 
 		/* FTP connection settings */
 
@@ -186,8 +189,13 @@ char CURLFTPTransport::getURL(const char *destPath, const char *sourceURL, SWBuf
 		// it seems CURL tries to use this option data later for some reason, so we unset here
 		curl_easy_setopt(session, CURLOPT_PROGRESSDATA, (void*)NULL);
 
-		if(CURLE_OK != res) {
-			retVal = -1;
+		if (CURLE_OK != res) {
+			if (CURLE_FTP_ACCEPT_TIMEOUT == res || CURLE_OPERATION_TIMEDOUT == res) {
+				retVal = -2;
+			}
+			else {
+				retVal = -1;
+			}
 		}
 	}
 
