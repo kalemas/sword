@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * teixhtml.h -	Definition of TEIXHTML
+ * teixhtml.h -	class TEIXHTML: a RenderFilter to render XHTML from modules
+ * 		marked up in TEI
  *
  * $Id$
  *
@@ -30,6 +31,7 @@ SWORD_NAMESPACE_START
 /** this filter converts TEI text to XHTML text
  */
 class SWDLLEXPORT TEIXHTML : public SWBasicFilter {
+
 private:
 	bool renderNoteNumbers;
 
@@ -42,6 +44,7 @@ protected:
 		SWBuf version;
 		MyUserData(const SWModule *module, const SWKey *key);
 	};
+
 	virtual BasicFilterUserData *createUserData(const SWModule *module, const SWKey *key) {
 		return new MyUserData(module, key);
 	}

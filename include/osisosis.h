@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osisosis.h -	Definition of OSISOSIS
+ * osisosis.h -	class OSISOSIS: a RenderFilter to render OSIS from modules
+ * 		marked up in OSIS with SWORD markup extensions
  *
  * $Id$
  *

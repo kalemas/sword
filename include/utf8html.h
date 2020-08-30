@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * utf8html.h -	Definition of UTF8HTML
+ * utf8html.h -	class UTF8HTML: a Filter to convert UTF8 multi-byte characters
+ * 		into HTML escape sequences
  *
  * $Id$
  *

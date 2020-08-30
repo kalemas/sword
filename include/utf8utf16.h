@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * utf8utf16.h -	Definition of UTF8UTF16
+ * utf8utf16.h -	class UTF8UTF16: an EncodingFilter to convert
+ * 			UTF8 to UTF16
  *
  * $Id$
  *

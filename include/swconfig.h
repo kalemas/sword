@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * swconfig.h -		definition of Class SWConfig used for saving and
+ * swconfig.h -		class SWConfig: used for saving and
  *			retrieval of configuration information
  *
  * $Id$

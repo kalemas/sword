@@ -1,7 +1,6 @@
 /******************************************************************************
  *
- * swlocale.h -		definition of Class SWLocale used for retrieval
- *			of locale lookups
+ * swlocale.h -		class SWLocale: localization functionality
  *
  * $Id$
  *
@@ -38,6 +37,8 @@ static const int ENDOFABBREVS = -2;
 * Another functions useful for frontend developers is @see getDescription.
 */
 class SWDLLEXPORT SWLocale {
+
+private:
 
 class Private;
 

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * gbflatex.h -	Definition of GBFLaTeX
+ * gbflatex.h -	class GBFLaTeX: a RenderFilter to render LaTeX from modules
+ * 		marked up in GBF
  *
  * $Id$
  *

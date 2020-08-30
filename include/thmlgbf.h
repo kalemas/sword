@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlgbf.h -	Definition of ThMLGBF
+ * thmlgbf.h -	class ThMLGBF: a RenderFilter to render GBF from modules
+ * 		marked up in ThML
  *
  * $Id$
  *
@@ -30,8 +31,10 @@ SWORD_NAMESPACE_START
 /** this filter converts ThML text to GBF text
  */
 class SWDLLEXPORT ThMLGBF : public SWFilter {
+
 protected:
 	virtual char processText(SWBuf &text, const SWKey *key = 0, const SWModule *module = 0);
+
 public:
 	ThMLGBF();
 };

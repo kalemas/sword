@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmllemma.h -	Definition of ThMLLemma
+ * thmllemma.h -	class ThMLLemma: an OptionFilter to handle lemma
+ * 			information on words in modules marked up in ThML
  *
  * $Id$
  *

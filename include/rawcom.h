@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * rawcom.h -	code for class 'RawCom'- a module that reads raw commentary
- *		files:	ot and nt using indexs ??.bks ??.cps ??.vss
+ * rawcom.h -	class RawCom: a module driver that supports commentary
+ *		modules uncompressed with entry size 2 bytes or less
  *
  * $Id$
  *

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osisenum.h -	Definition of OSISEnum
+ * osisenum.h -	class OSISEnum: an OptionFilter to handle n attibutes on words
+ * 		in an module marked up in OSIS
  *
  * $Id$
  *
@@ -27,7 +28,7 @@
 
 SWORD_NAMESPACE_START
 
-/** This Filter shows/hides headings in a OSIS text
+/** This Filter shows/hides word n attributes in an OSIS text
  */
 class SWDLLEXPORT OSISEnum : public SWOptionFilter {
 public:

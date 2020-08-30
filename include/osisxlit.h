@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osisxlit.h -	Definition of OSISXlit
+ * osisxlit.h -	class OSISXlit: an OptionFilter to handle transliteration
+ * 		information on words in modules marked up in OSIS
  *
  * $Id$
  *
@@ -27,7 +28,7 @@
 
 SWORD_NAMESPACE_START
 
-/** This Filter shows/hides headings in a OSIS text
+/** This Filter shows/hides transliterations in an OSIS text
  */
 class SWDLLEXPORT OSISXlit : public SWOptionFilter {
 public:

@@ -1,8 +1,7 @@
 /******************************************************************************
  *
- * rawfiles.h -		code for class 'RawFiles'- a module that produces HTML
- *			HREFs pointing to actual text desired.  Uses standard
- *			files:	ot and nt using indexs ??.bks ??.cps ??.vss
+ * rawfiles.h -		class RawFiles: a module driver that reads and writes
+ *			entries each to separate files on the filesystem
  *
  * $Id$
  *
@@ -34,11 +33,10 @@ SWORD_NAMESPACE_START
 
 class SWDLLEXPORT RawFiles : public RawVerse, public SWCom {
 
+private:
 	const char *getNextFilename();
 
 public:
-
-
 	RawFiles(const char *ipath, const char *iname = 0, const char *idesc = 0,
 			SWDisplay *idisp = 0, SWTextEncoding encoding = ENC_UNKNOWN,
 			SWTextDirection dir = DIRECTION_LTR, SWTextMarkup markup = FMT_UNKNOWN,

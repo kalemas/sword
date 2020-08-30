@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * teihtmlhref.h -	Definition of TEIHTMLHREF
+ * teihtmlhref.h -	class TEIHTMLHREF: a RenderFilter to render HTMLHREF
+ * 			markup from modules marked up in TEI
  *
  * $Id$
  *
@@ -30,6 +31,7 @@ SWORD_NAMESPACE_START
 /** this filter converts TEI text to HTMLHREF text
  */
 class SWDLLEXPORT TEIHTMLHREF : public SWBasicFilter {
+
 private:
 	bool renderNoteNumbers;
 

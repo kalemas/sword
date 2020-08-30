@@ -1,6 +1,8 @@
 /***************************************************************************
  *
- * gbfredletterwords.h -	Definition of GBFRedLetterWords
+ * gbfredletterwords.h -	class GBFRedLetterWords: an OptionFilter to
+ * 				handle Red Letter Words of Christ in modules
+ * 				marked up in GBF
  *
  * $Id$
  *

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlfootnotes.h -	Definition of ThMLFootnotes
+ * thmlfootnotes.h -	class ThMLFootnotes: an OptionFilter to handle
+ * 			footnotes in modules marked up in ThML
  *
  * $Id$
  *

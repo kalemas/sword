@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * treekeyidx.h -	code for class 'TreeKeyIdx'
+ * treekeyidx.h -	class TreeKeyIdx: a TreeKey implementation which
+ * 			grabs its structure from an index data file
  *
  * $Id$
  *
@@ -33,10 +34,11 @@ class FileDesc;
 
 /**
  * Class TreeKeyIdx
- * The TreeKey implementation used for all tree-based modules in Sword, such as GenBooks.
+ * The TreeKey implementation used for tree-based modules in SWORD, such as GenBooks.
  */
 class SWDLLEXPORT TreeKeyIdx : public TreeKey {
 		
+private:
 	class TreeNode {
 	public:
 		TreeNode();
@@ -64,7 +66,6 @@ class SWDLLEXPORT TreeKeyIdx : public TreeKey {
 	char getTreeNodeFromIdxOffset(long ioffset, TreeNode *node) const;
 	void saveTreeNode(TreeNode *node);
 	void saveTreeNodeOffsets(TreeNode *node);
-
 
 public:
 	TreeKeyIdx(const TreeKeyIdx &ikey);
@@ -113,7 +114,7 @@ public:
 	virtual void setText(const char *ikey);
 	virtual void setPosition(SW_POSITION p);
 	virtual const char *getText() const;
-	virtual int _compare (const TreeKeyIdx & ikey);
+	virtual int _compare(const TreeKeyIdx & ikey);
 	virtual int compare(const SWKey &ikey);
 	virtual void decrement(int steps = 1);
 	virtual void increment(int steps = 1);

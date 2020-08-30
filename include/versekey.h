@@ -1,7 +1,9 @@
 /******************************************************************************
  *
- * versekey.h -		code for class 'VerseKey'- a standard Biblical verse
- *			key
+ * versekey.h -		class 'VerseKey': an SWKey for biblical verses with a
+ * 			book ch:vs structure.  Includes a freehand text
+ * 			parser for the many ways one might specify a biblical
+ * 			verse reference or reference range / list.
  *
  * $Id$
  *
@@ -50,6 +52,7 @@ SWORD_NAMESPACE_START
  */
 class SWDLLEXPORT VerseKey : public SWKey {
 
+private:
 	static SWClass classdef;
 
 	/** number of instantiated VerseKey objects or derivitives

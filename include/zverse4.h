@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * zverse4.h -		code for class 'zVerse4'- a module that reads raw text
- *			files: ot and nt using indexs ??.bks ??.cps ??.vss
- *			and provides lookup and parsing functions based on
- *			class VerseKey
+ * zverse4.h -		class zVerse4: a helper class for module drivers
+ *			which provide 4 byte size entries and use VerseKey
+ *			for their entry keys
  *
  * $Id$
  *
@@ -36,6 +35,8 @@ class SWCompress;
 class SWBuf;
 
 class SWDLLEXPORT zVerse4 {
+
+private:
 	SWCompress *compressor;
 
 protected:

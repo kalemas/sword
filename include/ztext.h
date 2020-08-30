@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * ztext.h -	code for class 'zText'- a module that reads compressed text
- *		files: ot and nt using indexs ??.vss
+ * ztext.h -	class zText: a module driver supporting compressed
+ *		Bibles with common 2 byte size entries
  *
  * $Id$
  *
@@ -38,6 +38,7 @@ SWORD_NAMESPACE_START
 */
 class SWDLLEXPORT zText:public zVerse, public SWText {
 
+private:
 	VerseKey *lastWriteKey;
 	bool sameBlock(VerseKey * lastWriteKey, VerseKey * key);
 	int blockType;

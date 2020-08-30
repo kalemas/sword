@@ -1,6 +1,8 @@
 /******************************************************************************
  *
- * utf8transliterator.h -	Definition of UTF8Transliterator
+ * utf8transliterator.h -	class UTF8Transliterator: a Filter to
+ * 				transliterate a UTF8 text stream into
+ * 				an alternate script. e.g., Hebrew to Latin
  *
  * $Id$
  *
@@ -59,8 +61,8 @@ typedef std::pair<icu::UnicodeString, SWTransData> SWTransPair;
 /** This Filter uses ICU for transliteration
 */
 class SWDLLEXPORT UTF8Transliterator : public SWOptionFilter {
-private:
 
+private:
 	unsigned char option;
 
 	static const char optionstring[NUMTARGETSCRIPTS][16];

@@ -1,6 +1,8 @@
 /***************************************************************************
  *
- * rtfhtml.h -	Definition of RTFHTML
+ * rtfhtml.h -	class RTFHTML: a RenderFilter to render HTML from
+ *		a very limited subset of RTF
+ * 		
  *
  * $Id$
  *

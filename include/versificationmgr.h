@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * versification.h -	definition of class VersificationMgr used for managing
+ * versificationmgr.h -	class VersificationMgr: used for managing
  *			versification systems
  *
  * $Id$
@@ -39,8 +39,7 @@ struct sbook;
 class TreeKey;
 
 
-struct abbrev
-{
+struct abbrev {
 	const char *ab;
 	const char *osis;
 };
@@ -69,10 +68,6 @@ struct sbook {
 
 class SWDLLEXPORT VersificationMgr : public SWCacher {
 
-
-public:
-	class System;
-
 private:
 	friend class __staticsystemVersificationMgr;
 
@@ -85,7 +80,9 @@ protected:
 	static VersificationMgr *systemVersificationMgr;
 
 public:
+	class System;
 	class SWDLLEXPORT Book {
+	private:
 		friend class System;
 		friend struct BookOffsetLess;
 		class Private;
@@ -125,6 +122,7 @@ public:
 	};
 
 	class SWDLLEXPORT System {
+	private:
 		class Private;
 		Private *p;
 		SWBuf name;
@@ -149,6 +147,7 @@ public:
 		long getNTStartOffset() const { return ntStartOffset; }
 		void translateVerse(const System *dstSys, const char **book, int *chapter, int *verse, int *verse_end) const;
 	};
+
 	VersificationMgr() { init(); }
 	~VersificationMgr();
 	static VersificationMgr *getSystemVersificationMgr();

@@ -1,6 +1,7 @@
 /***************************************************************************
  *
- * papyriplain.h -	Definition of PapyriPlain
+ * papyriplain.h -	class PapyriPlain: a StripFilter to remove Leiden
+ * 			markup from modules
  *
  * $Id$
  *
@@ -27,7 +28,7 @@
 
 SWORD_NAMESPACE_START
 
-/** This filter converts Papyri text to plain text
+/** This filter converts Papyri text to plain text. stripFilter to remove Leiden markup from manuscript transcriptions
  */
 class SWDLLEXPORT PapyriPlain : public SWOptionFilter {
 public:

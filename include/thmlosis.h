@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlosis.h -	Definition of ThMLOSIS
+ * thmlosis.h -	class ThMLOSIS: a RenderFilter to render OSIS from modules
+ * 		marked up in ThML
  *
  * $Id$
  *

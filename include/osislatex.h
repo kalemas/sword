@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osislatex.h -	Render filter for LaTeX of an OSIS module
+ * osislatex.h -	class OSISLaTeX: a RenderFilter which renders LaTeX
+ * 			from a module marked up in OSIS
  *
  * $Id$
  *
@@ -27,7 +28,7 @@
 
 SWORD_NAMESPACE_START
 
-/** this filter converts OSIS text to classed XHTML
+/** this filter converts OSIS text to LaTeX
  */
 class SWDLLEXPORT OSISLaTeX : public SWBasicFilter {
 private:

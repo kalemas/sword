@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlxhtml.h -	Definition of ThMLXHTML
+ * thmlxhtml.h -	class ThMLXHTML: a RenderFilter to render XHTML from
+ * 			modules marked up in ThML
  *
  * $Id$
  *
@@ -31,8 +32,11 @@ SWORD_NAMESPACE_START
 /** this filter converts ThML text to classed XHTML
  */
 class SWDLLEXPORT ThMLXHTML : public SWBasicFilter {
+
+private:
 	SWBuf imgPrefix;
 	bool renderNoteNumbers;
+
 protected:
 	class MyUserData : public BasicFilterUserData {
 	public:
@@ -43,10 +47,13 @@ protected:
 		SWBuf version;
 		XMLTag startTag;
 	};
+
 	virtual BasicFilterUserData *createUserData(const SWModule *module, const SWKey *key) {
 		return new MyUserData(module, key);
 	}
+
 	virtual bool handleToken(SWBuf &buf, const char *token, BasicFilterUserData *userData);
+
 public:
 	ThMLXHTML();
 	virtual const char *getImagePrefix() { return imgPrefix.c_str(); }

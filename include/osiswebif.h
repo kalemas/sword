@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osiswebif.h -	Definition of OSISWEBIF
+ * osiswebif.h -	class OSISWEBIF: a RenderFilter to render WEBIF markup
+ * 			from modules marked up in OSIS
  *
  * $Id$
  *

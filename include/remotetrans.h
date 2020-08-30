@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * remotetrans.h -	code for Remote Transport
+ * remotetrans.h -	class RemoteTransport: the base for all communication
+ * 			transport drivers
  *
  * $Id$
  *

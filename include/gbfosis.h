@@ -1,6 +1,7 @@
 /***************************************************************************
  *
- * gbfosis.h -	Definition of GBFOSIS
+ * gbfosis.h -	class GBFOSIS: a RenderFilter to render OSIS from modules
+ * 		marked up in GBF
  *
  * $Id$
  *

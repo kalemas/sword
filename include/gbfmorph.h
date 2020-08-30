@@ -1,6 +1,7 @@
 /***************************************************************************
  *
- * gbfmorph.h -	Definition of GBFMorph
+ * gbfmorph.h -	class GBFMorph: an OptionFilter to handle morphology in
+ * 		modules marked up in GBF
  *
  * $Id$
  *

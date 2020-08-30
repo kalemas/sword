@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlrtf.h -	Definition of ThMLRTF
+ * thmlrtf.h -	class ThMLRTF: a RenderFilter to render RTF from modules
+ * 		marked up in ThML
  *
  * $Id$
  *
@@ -31,6 +32,7 @@ SWORD_NAMESPACE_START
 /** this filter converts ThML text to RTF text
  */
 class SWDLLEXPORT ThMLRTF : public SWBasicFilter {
+
 protected:
 	class MyUserData : public BasicFilterUserData {
 	public:
@@ -40,11 +42,14 @@ protected:
 		bool isBiblicalText;
 		XMLTag startTag;
 	};
+
 	virtual BasicFilterUserData *createUserData(const SWModule *module, const SWKey *key) {
 		return new MyUserData(module, key);
 	}
+
 	virtual bool handleToken(SWBuf &buf, const char *token, BasicFilterUserData *userData);
 	virtual char processText(SWBuf &text, const SWKey *key = 0, const SWModule *module = 0);
+
 public:
 	ThMLRTF();
 };

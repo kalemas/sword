@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * utf8bidireorder.h -	Definition of UTF8BiDiReorder
+ * utf8bidireorder.h -	class UTF8BiDiReorder: an encoding filter which
+ * 			reorders UTF-8 according to Unicode BiDi rules
  *
  * $Id$
  *
@@ -35,9 +36,11 @@ SWORD_NAMESPACE_START
 /** This Filter reorders UTF-8 text according to Unicode BiDi
  */
 class SWDLLEXPORT UTF8BiDiReorder : public SWFilter {
+
 private:
 	UConverter* conv;
 	UErrorCode err;
+
 public:
 	UTF8BiDiReorder();
 	~UTF8BiDiReorder();

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osishtmlhref.h -	Definition of OSISHTMLHREF
+ * osishtmlhref.h -	class OSISHTMLHREF: a RenderFilter to render HTMLHREF
+ * 			from modules marked up in OSIS
  *
  * $Id$
  *

@@ -1,6 +1,9 @@
 /******************************************************************************
  *
- * multimapwdef.h -	Definition of multimapwithdefault
+ * multimapwdef.h -	template multimapwithdefault: a template which extends
+ * 			multipmap with easy access operators to
+ * 			obtain entries which are not repeated, plus a few
+ * 			nice convenience methods
  *
  * $Id$
  *

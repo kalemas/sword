@@ -1,6 +1,7 @@
 /***************************************************************************
  *
- * osismorph.h -	Definition of OSISMorph
+ * osismorph.h -	class OSISMorph: an OptionFilter to handle morph
+ * 			information on words in modules marked up in OSIS
  *
  * $Id$
  *
@@ -27,7 +28,7 @@
 
 SWORD_NAMESPACE_START
 
-/** This Filter shows/hides morph tags in a OSIS text
+/** This Filter shows/hides morph tags in an OSIS text
  */
 class SWDLLEXPORT OSISMorph : public SWOptionFilter {
 public:

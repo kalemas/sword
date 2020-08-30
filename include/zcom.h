@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * zcom.h - 	code for class 'zCom'- a module that reads compressed text
- *		files: ot and nt using indexs ??.vss
+ * zcom.h - 	class zCom: a module driver for uncompressed commentaries
+ * 		with entries sizes stored at 2 bytes
  *
  * $Id$
  *
@@ -32,6 +32,7 @@ SWORD_NAMESPACE_START
 
 class SWDLLEXPORT zCom : public zVerse, public SWCom {
 
+private:
 	VerseKey *lastWriteKey;
 	bool sameBlock(VerseKey * lastWriteKey, VerseKey * key);
 	int blockType;

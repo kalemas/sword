@@ -1,6 +1,8 @@
 /***************************************************************************
  *
- * cipherfil.h -	
+ * cipherfil.h -	class CipherFilter: an EncodingFilter which can
+ * 			encipher an decipher a text stream based on
+ * 			a CipherKey
  *
  * $Id$
  *
@@ -29,7 +31,7 @@ SWORD_NAMESPACE_START
 
 class SWCipher;
 
-class SWDLLEXPORT CipherFilter:public SWFilter {
+class SWDLLEXPORT CipherFilter : public SWFilter {
 	SWCipher *cipher;
 public:
 	CipherFilter(const char *key);

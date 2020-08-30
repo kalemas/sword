@@ -1,6 +1,13 @@
 /***************************************************************************
  *
- * swoptfilter.h -	Definition of SWOptionFilter
+ * swoptfilter.h -	class SWOptionFilter: the base for all OptionFilters
+ * 			in SWORD.  An OptionFilter allows the user to turn
+ * 			on and off certain features they may wish to see or
+ * 			not see.  Essentially, an OptionFilter is usually
+ * 			included in a choice for the end user and the result
+ * 			of being turned "Off" is that the filter will strip
+ * 			the markup for that feature from the text stream
+ * 			when it is processed.
  *
  * $Id$
  *
@@ -32,12 +39,13 @@ SWORD_NAMESPACE_START
 /**
 * The type definitoin for option types
 */
-typedef std::list < SWBuf > StringList;
+typedef std::list<SWBuf> StringList;
 
 
 /** Base class for all option filters.
  */
 class SWDLLEXPORT SWOptionFilter : public virtual SWFilter {
+
 protected:
 	SWBuf optionValue;
 	const char *optName;
@@ -45,8 +53,8 @@ protected:
 	const StringList *optValues;
 	bool option;
 	bool isBooleanVal;
-public:
 
+public:
 	SWOptionFilter();
 	SWOptionFilter(const char *oName, const char *oTip, const StringList *oValues);
 	virtual ~SWOptionFilter();

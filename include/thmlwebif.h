@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlwebif.h -	Definition of ThMLWEBIF
+ * thmlwebif.h -	class ThMLWEBIF: a RenderFilter to render WEBIF markup
+ * 			from modules marked up in ThML
  *
  * $Id$
  *
@@ -30,11 +31,14 @@ SWORD_NAMESPACE_START
 /** this filter converts ThML text to HTML text with hrefs
  */
 class SWDLLEXPORT ThMLWEBIF : public ThMLXHTML {
+
+private:
 	const SWBuf baseURL;
 	const SWBuf passageStudyURL;
 
 protected:
 	virtual bool handleToken(SWBuf &buf, const char *token, BasicFilterUserData *userData);
+
 public:
 	ThMLWEBIF();
 };

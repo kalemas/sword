@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osisfootnotes.h -	Definition of OSISFootnotes
+ * osisfootnotes.h -	class OSISFootnotes: an OptionFilter which handles
+ * 			footnotes in modules marked up in OSIS
  *
  * $Id$
  *
@@ -27,7 +28,7 @@
 
 SWORD_NAMESPACE_START
 
-/** This Filter shows/hides headings in a OSIS text
+/** This Filter shows/hides footnotes in a OSIS text
  */
 class SWDLLEXPORT OSISFootnotes : public SWOptionFilter {
 public:

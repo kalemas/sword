@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * lzsscomprs.h -	definition of Class SWCompress used for data
- *			compression
+ * lzsscomprs.h -	class LZSSCompress: SWCompress implementation
+ * 			using LZSS
  *
  * $Id$
  *

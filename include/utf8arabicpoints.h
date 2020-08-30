@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * utf8arabicpoints.h -		SWFilter descendant to remove UTF-8 Arabic
- *				vowel points
+ * utf8arabicpoints.h -		class UTF8ArabicPoints: an SWFilter descendant
+ *				to remove UTF-8 Arabic vowel points
  *
  * $Id$
  *

@@ -1,6 +1,7 @@
 /***************************************************************************
  *
- * gbfheadings.h -	Definition of GBFHeadings
+ * gbfheadings.h -	class GBFHeadings: an OptionFilter class for
+ * 			handling headings in modules marked up in GBF
  *
  * $Id$
  *

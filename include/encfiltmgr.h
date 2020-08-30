@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * encfiltmgr.h -	definition of class SWEncodingMgr, subclass of
- *			used to transcode all module text to a requested
- *			markup
+ * encfiltmgr.h -	class SWEncodingMgr: a FilterMgr which applies
+ *			appropriate EncodingFilters to obtain a requested
+ *			encoding
  *
  * $Id$
  *

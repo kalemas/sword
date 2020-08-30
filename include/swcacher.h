@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * swcacher.h -		definition of class SWCacher used to provide an
+ * swcacher.h -		class SWCacher: used to provide an
  *			interface for objects that cache and want a standard
  *			interface for cleaning up.
  *

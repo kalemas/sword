@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * url.h -	code for an URL parser utility class
+ * url.h -	class URL: a URL parser utility class
  *
  * $Id$
  *

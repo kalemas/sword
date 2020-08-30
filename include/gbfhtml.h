@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * gbfhtml.h -	Definition of GBFHTML
+ * gbfhtml.h -	class GBFHTML: a RenderFilter for rendering HTML from
+ * 		modules marked up in GBF
  *
  * $Id$
  *
@@ -31,11 +32,13 @@ SWORD_NAMESPACE_START
  */
 class SWDLLEXPORT GBFHTML : public SWBasicFilter {
 protected:
+
 	class MyUserData : public BasicFilterUserData {
 	public:
 		MyUserData(const SWModule *module, const SWKey *key) : BasicFilterUserData(module, key) {}
 		bool hasFootnotePreTag;
 	};
+
 	virtual BasicFilterUserData *createUserData(const SWModule *module, const SWKey *key) {
 		return new MyUserData(module, key);
 	}

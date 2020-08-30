@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * swinputmeth.h -	Definition of SWInputMethod
+ * swinputmeth.h -	class SWInputMethod: the base for all InputMethods in
+ * 			SWORD
  *
  * $Id$
  * 

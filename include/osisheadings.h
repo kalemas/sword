@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osisheadings.h -	Definition of OSISHeadings
+ * osisheadings.h -	class OSISHeadings: an OptionFilter which handles
+ * 			headings in modules marked up in OSIS
  *
  * $Id$
  *

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osisxhtml.h -	Render filter for classed XHTML of an OSIS module
+ * osisxhtml.h -	class OSISXHTML: a RenderFilter to render classed XHTML
+ * 			markup for modules marked up in OSIS
  *
  * $Id$
  *
@@ -30,11 +31,12 @@ SWORD_NAMESPACE_START
 /** this filter converts OSIS text to classed XHTML
  */
 class SWDLLEXPORT OSISXHTML : public SWBasicFilter {
+
 private:
 	bool morphFirst;
 	bool renderNoteNumbers;
-protected:
 
+protected:
 	class TagStack;
 	virtual BasicFilterUserData *createUserData(const SWModule *module, const SWKey *key);
 	virtual bool handleToken(SWBuf &buf, const char *token, BasicFilterUserData *userData);

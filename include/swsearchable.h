@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * swsearchable.h -	definition of class SWSearchable used to provide an
- *			interface for objects that be searched.
+ * swsearchable.h -	class SWSearchable: used to provide an
+ *			interface for objects that can be searched.
  *
  * $Id$
  *
@@ -34,6 +34,7 @@ class SWKey;
 /** used to provide an interface for objects that be searched.
  */
 class SWDLLEXPORT SWSearchable {
+
 public:
 	SWSearchable();
 	virtual ~SWSearchable();

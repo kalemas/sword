@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * hrefcom.h -	code for class 'HREFCom'- a module that produces HTML HREFs
- *		pointing to actual text desired.  Uses standard
- *		files:	ot and nt using indexs ??.bks ??.cps ??.vss
+ * hrefcom.h -	class HREFCom: a module driver that supports commentary
+ *		entries which don't store their text body, but instead a URL
+ *		where the text body can be retrieved.
  *
  * $Id$
  *
@@ -32,21 +32,19 @@
 
 SWORD_NAMESPACE_START
 
-class SWDLLEXPORT HREFCom:public RawVerse, public SWCom {
+class SWDLLEXPORT HREFCom : public RawVerse, public SWCom {
+
+private:
 	char *prefix;
 
 public:
-
-
-	HREFCom(const char *ipath, const char *prefix, const char *iname = 0,
-			const char *idesc = 0, SWDisplay * idisp = 0);
+	HREFCom(const char *ipath, const char *prefix, const char *iname = 0, const char *idesc = 0, SWDisplay * idisp = 0);
 	virtual ~HREFCom();
 	virtual SWBuf &getRawEntryBuf() const;
 
 	// OPERATORS -----------------------------------------------------------------
 	
 	SWMODULE_OPERATORS
-
 };
 
 SWORD_NAMESPACE_END

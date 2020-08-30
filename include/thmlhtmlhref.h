@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlhtmlhref.h -	Definition of ThMLHTMLHREF
+ * thmlhtmlhref.h -	class ThMLHTMLHREF: a RenderFilter to render HTMLHREF
+ * 			markup from modules marked up in ThML
  *
  * $Id$
  *
@@ -20,8 +21,8 @@
  *
  */
 
-#ifndef _THMLHTMLHREF_H
-#define _THMLHTMLHREF_H
+#ifndef THMLHTMLHREF_H
+#define THMLHTMLHREF_H
 
 #include <swbasicfilter.h>
 #include <utilxml.h>
@@ -31,8 +32,11 @@ SWORD_NAMESPACE_START
 /** this filter converts ThML text to HTML text with hrefs
  */
 class SWDLLEXPORT ThMLHTMLHREF : public SWBasicFilter {
+
+private:
 	SWBuf imgPrefix;
 	bool renderNoteNumbers;
+
 protected:
 	class MyUserData : public BasicFilterUserData {
 	public:
@@ -43,10 +47,13 @@ protected:
 		SWBuf version;
 		XMLTag startTag;
 	};
+
 	virtual BasicFilterUserData *createUserData(const SWModule *module, const SWKey *key) {
 		return new MyUserData(module, key);
 	}
+
 	virtual bool handleToken(SWBuf &buf, const char *token, BasicFilterUserData *userData);
+
 public:
 	ThMLHTMLHREF();
 	virtual const char *getImagePrefix() { return imgPrefix.c_str(); }

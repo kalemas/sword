@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * swobject.h -		definition for SWObject used as lowest base class for
+ * swobject.h -		class SWObject: used as lowest base class for
  *			many SWORD objects
  *
  * $Id$
@@ -33,6 +33,7 @@ SWORD_NAMESPACE_START
  * Class used for SWDYNAMIC_CAST to save the inheritance order.
  */
 class SWDLLEXPORT SWClass {
+
 private:
 	const char **descends;
 

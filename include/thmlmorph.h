@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlmorph.h -	Definition of ThMLMorph
+ * thmlmorph.h -	class ThMLMorph: an OptionFilter to handle morph
+ * 			information on words in modules marked up in ThML
  *
  * $Id$
  *

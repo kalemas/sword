@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osislemma.h -	Definition of OSISLemma
+ * osislemma.h -	class OSISLemma: an OptionFilter to handle lemma
+ * 			entries on words in modules marked up in OSIS
  *
  * $Id$
  *
@@ -27,7 +28,7 @@
 
 SWORD_NAMESPACE_START
 
-/** This Filter shows/hides headings in a OSIS text
+/** This Filter shows/hides lemmata in an OSIS text
  */
 class SWDLLEXPORT OSISLemma : public SWOptionFilter {
 public:

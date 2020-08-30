@@ -1,6 +1,8 @@
 /***************************************************************************
  *
- * thmlwordjs.h -	Definition of ThMLWordJS
+ * thmlwordjs.h -	class ThMLWordJS: an OptionFilter to inject
+ * 			JavaScript for mostly onclick events for modules
+ * 			marked up in ThML
  *
  * $Id$
  *
@@ -28,10 +30,12 @@
 SWORD_NAMESPACE_START
 
 class SWMgr;
-/** This Filter shows/hides strong's numbers in a ThML text
+
+/** This Filter injects onclick JavaScript into the text stream for ThML modules
  */
 class SWDLLEXPORT ThMLWordJS : public SWOptionFilter {
 
+private:
 	SWModule *defaultGreekLex;
 	SWModule *defaultHebLex;
 	SWModule *defaultGreekParse;

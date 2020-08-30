@@ -1,6 +1,8 @@
 /***************************************************************************
  *
- * osiswordjs.h -	Definition of OSISWordJS
+ * osiswordjs.h -	class OSISWordJS: an OptionFilter to inject
+ * 			JavaScript (mostly for onclick events) for modules
+ * 			marked up in OSIS
  *
  * $Id$
  *
@@ -29,7 +31,7 @@ SWORD_NAMESPACE_START
 
 class SWMgr;
 
-/** This Filter shows/hides strong's numbers in a OSIS text
+/** This Filter inject JavaScript proving onclick events for modules marked up in OSIS
  */
 class SWDLLEXPORT OSISWordJS : public SWOptionFilter {
 	SWModule *defaultGreekLex;

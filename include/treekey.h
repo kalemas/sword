@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * treekey.h -	code for class 'TreeKey'
+ * treekey.h -	class TreeKey: an SWKey for traversing a table of contents
  *
  * $Id$
  *
@@ -36,6 +36,8 @@ SWORD_NAMESPACE_START
  * The base class for all tree-based key implementations in Sword.
  */
 class SWDLLEXPORT TreeKey : public SWKey {
+
+private:
 	static SWClass classdef;
 	void init();
 
@@ -50,7 +52,6 @@ protected:
 	void positionChanged() { if (posChangeListener) posChangeListener->positionChanged(); }
 
 public:
-
 	class PositionChangeListener {
 		TreeKey *treeKey;
 	public:
@@ -66,8 +67,8 @@ public:
 //	TreeKey (const char *ikey = 0);
 //	TreeKey (const SWKey * ikey);
 //	TreeKey (TreeKey const &k);
-	TreeKey () { init(); };
-	~TreeKey () {};
+	TreeKey() { init(); };
+	~TreeKey() {};
 
 
 	virtual const char *getLocalName() = 0;

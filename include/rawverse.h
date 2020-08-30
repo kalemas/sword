@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * rawverse.h -		code for class 'RawVerse'- a module that reads raw text
- *			files: ot and nt using indexs ??.bks ??.cps ??.vss
- *			and provides lookup and parsing functions based on
- *			class VerseKey
+ * rawverse.h -		class RawVerse: a helper class for module drivers
+ *			which store their data uncompress and use a 2 byte
+ *			entry size and a VerseKey key type
  *
  * $Id$
  *
@@ -36,6 +35,7 @@ class SWBuf;
 
 class SWDLLEXPORT RawVerse {
 
+private:
 	static int instance;		// number of instantiated RawVerse objects or derivitives
 
 protected:

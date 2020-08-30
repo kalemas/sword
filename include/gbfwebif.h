@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * gbfwebif.h -	Definition of GBFWEBIF
+ * gbfwebif.h -	class GBFWEBIF: a RenderFilter to render WEBIF markup from
+ * 		modules marked up in GBF
  *
  * $Id$
  *

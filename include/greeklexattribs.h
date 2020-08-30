@@ -1,6 +1,8 @@
 /***************************************************************************
  *
- * greeklexattribs.h -	Definition of GreekLexAttribs
+ * greeklexattribs.h -	class GreekLexAttribs: an OptionFilter to handle
+ * 			Greek Lexicon attributes for modules marked up
+ * 			in TEI
  *
  * $Id$
  *
@@ -27,7 +29,7 @@
 
 SWORD_NAMESPACE_START
 
-/** this filter converts ThML text to plain text
+/** an OptionFilter to handle Greek Lexicon attributes for modules marked up in TEI
  */
 class SWDLLEXPORT GreekLexAttribs : public SWOptionFilter {
 public:

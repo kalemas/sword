@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * utf8hebrewpoints.h -	Definition of UTF8HebrewPoints
+ * utf8hebrewpoints.h -	class UTF8HebrewPoints: an OptionFilter to handle
+ * 			Hebrew vowel points in UTF8 text
  *
  * $Id$
  *

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osisvariants.h -	Definition of OSISVariants
+ * osisvariants.h -	class OSISVariants: an OptionFilter to handle variants
+ * 			in modules marked up in OSIS
  *
  * $Id$
  *

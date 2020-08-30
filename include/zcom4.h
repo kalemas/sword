@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * zcom4.h -	code for class 'zCom4'- a module that reads compressed text
- *		files: ot and nt using indexs ??.vss
+ * zcom4.h -	class zCom4: a module driver for compressed commentaries 
+ *		with long entries.  Allows a 4 byte size entry
  *
  * $Id$
  *
@@ -32,13 +32,13 @@ SWORD_NAMESPACE_START
 
 class SWDLLEXPORT zCom4 : public zVerse4, public SWCom {
 
+private:
 	VerseKey *lastWriteKey;
 	bool sameBlock(VerseKey * lastWriteKey, VerseKey * key);
 	int blockType;
 
 
 public:
-
 	zCom4(const char *ipath, const char *iname = 0, const char *idesc = 0,
 			int blockType = CHAPTERBLOCKS, SWCompress *icomp = 0,
 			SWDisplay *idisp = 0, SWTextEncoding encoding = ENC_UNKNOWN,

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * swdisp.h -	code for base class 'swdisp'.  swdisp is the basis for all
+ * swdisp.h -	class SWDisplay: the basis for all
  *		types of displays (e.g. raw textout, curses, xwindow, etc.)
  *
  * $Id$
@@ -31,7 +31,7 @@ SWORD_NAMESPACE_START
 
 class SWModule;
 
-/** swdisp is the basis for all types of displays
+/** SWDisplay is the basis for all types of displays
  * (e.g. raw textout, curses, xwindow, etc.)
  */
 class SWDLLEXPORT SWDisplay : public SWObject {

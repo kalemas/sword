@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlhtml.h -	Definition of ThMLHTML
+ * thmlhtml.h -	class ThMLHTML: a RenderFilter to render HTML from modules
+ * 		marked up in ThML
  *
  * $Id$
  *
@@ -30,16 +31,20 @@ SWORD_NAMESPACE_START
 /** this filter converts ThML text to HTML text
  */
 class SWDLLEXPORT ThMLHTML : public SWBasicFilter {
+
 protected:
 	class MyUserData : public BasicFilterUserData {
 	public:
 		MyUserData(const SWModule *module, const SWKey *key) : BasicFilterUserData(module, key), inSecHead(false) {}
 		bool inSecHead;
 	};
+
 	virtual BasicFilterUserData *createUserData(const SWModule *module, const SWKey *key) {
 		return new MyUserData(module, key);
 	}
+
 	virtual bool handleToken(SWBuf &buf, const char *token, BasicFilterUserData *userData);
+
 public:
 	ThMLHTML();
 };

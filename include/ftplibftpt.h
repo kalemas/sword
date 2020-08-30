@@ -1,7 +1,6 @@
 /******************************************************************************
  *
- * ftplibftpt.h -	code for ftplib impl of FTP Transport
- *			(FTPLibFTPTransport)
+ * ftplibftpt.h -	Implementation of FTP RemoteTransport using FTPLib
  *
  * $Id$
  *

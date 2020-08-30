@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlheadings.h -	Definition of ThMLHeadings
+ * thmlheadings.h -	class ThMLHeadings: an OptionFilter to handle headings
+ * 			in modules marked up in ThML
  *
  * $Id$
  *

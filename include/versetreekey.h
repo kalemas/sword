@@ -1,7 +1,8 @@
 /******************************************************************************
  *
- * versetreekey.h -	code for class 'VerseTreeKey'- a standard Biblical
- *			verse key
+ * versetreekey.h -	class VerseTreeKey: a specialized VerseKey which
+ * 			obtains its versification system from a module with
+ * 			a tree structure
  *
  * $Id$
  *
@@ -40,6 +41,7 @@ SWORD_NAMESPACE_START
  */
 class SWDLLEXPORT VerseTreeKey : public VerseKey, public TreeKey::PositionChangeListener {
 
+private:
 	static SWClass classdef;
 	TreeKey *treeKey;
 //	vector<struct sbook> books;

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * swgenbook.h -	Definition of SWGenBook
+ * swgenbook.h -	class SWGenBook: representation of a General Book with
+ * 			a TreeKey table of contents for its keyset
  *
  * $Id$
  *

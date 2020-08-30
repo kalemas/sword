@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * femain.h -	Definition of FEMain
+ * femain.h -	class FEMain: a class which was meant to begin encapsulating
+ * 		frontend frameworks, but never really took off. Mostly unused.
  *
  * $Id$
  *
@@ -23,12 +24,11 @@
 #ifndef FEMAIN_H
 #define FEMAIN_H
 
-class FEMain
-{
+class FEMain {
 public:
 	FEMain();
 	virtual ~FEMain();
-	list <SWDisplay *> displays;	// so we can delete each display we create
+	list<SWDisplay *> displays;	// so we can delete each display we create
 };
 
 #endif

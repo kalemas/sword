@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * utf8nfkd.h -	Definition of UTF8NFKD
+ * utf8nfkd.h -	class UTF8NFKD: a Filter to normalize a UTF8 text stream to
+ * 		Unicode Normal Form Decomposed, Compatibility (NFKD)
  *
  * $Id$
  *
@@ -28,9 +29,12 @@
 SWORD_NAMESPACE_START
 
 struct UTF8NFKDPrivate;
+
 class SWDLLEXPORT UTF8NFKD : public SWFilter {
+
 private:
 	struct UTF8NFKDPrivate *p;
+
 public:
 	UTF8NFKD();
 	~UTF8NFKD();

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osisrtf.h -	Definition of OSISRTF
+ * osisrtf.h -	class OSISRTF: a RenderFilter to render RTF from modules
+ * 		marked up in OSIS
  *
  * $Id$
  *

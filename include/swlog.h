@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * swlog.h -	definition of class SWLog used for logging messages
+ * swlog.h -	class SWLog: used for logging messages
  *
  * $Id$
  *
@@ -29,7 +29,9 @@
 
 SWORD_NAMESPACE_START
 
+
 class SWDLLEXPORT SWLog {
+
 protected:
 	char logLevel;
 	static SWLog *systemLog;

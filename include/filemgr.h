@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * filemgr.h -	definition of class FileMgr used for pooling file handles
+ * filemgr.h -	class FileMgr: encapsulates all file IO and
+ * 		platform-specific eccentricities.
  *
  * $Id$
  *

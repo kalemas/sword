@@ -41,7 +41,7 @@
 
 SWORD_NAMESPACE_START
 
-unsigned char sapphire::keyrand(int limit,
+unsigned char Sapphire::keyrand(int limit,
                                 unsigned char *user_key,
                                 unsigned char keysize,
                                 unsigned char *rsum,
@@ -72,7 +72,7 @@ unsigned char sapphire::keyrand(int limit,
     return u;
     }
 
-void sapphire::initialize(unsigned char *key, unsigned char keysize)
+void Sapphire::initialize(unsigned char *key, unsigned char keysize)
     {
     // Key size may be up to 256 bytes.
     // Pass phrases may be used directly, with longer length
@@ -127,7 +127,7 @@ void sapphire::initialize(unsigned char *key, unsigned char keysize)
     keypos = 0;
     }
 
-void sapphire::hash_init(void)
+void Sapphire::hash_init(void)
     {
     // This function is used to initialize non-keyed hash
     // computation.
@@ -148,25 +148,25 @@ void sapphire::hash_init(void)
         cards[i] = (unsigned char) j;
     }
 
-sapphire::sapphire(unsigned char *key, unsigned char keysize)
+Sapphire::Sapphire(unsigned char *key, unsigned char keysize)
     {
     if (key && keysize)
         initialize(key, keysize);
     }
 
-void sapphire::burn(void)
+void Sapphire::burn(void)
     {
     // Destroy the key and state information in RAM.
     memset(cards, 0, 256);
     rotor = ratchet = avalanche = last_plain = last_cipher = 0;
     }
 
-sapphire::~sapphire()
+Sapphire::~Sapphire()
     {
     burn();
     }
 
-unsigned char sapphire::encrypt(unsigned char b)
+unsigned char Sapphire::encrypt(unsigned char b)
     {
     // Picture a single enigma rotor with 256 positions, rewired
     // on the fly by card-shuffling.
@@ -197,7 +197,7 @@ unsigned char sapphire::encrypt(unsigned char b)
     return last_cipher;
     }
 
-unsigned char sapphire::decrypt(unsigned char b)
+unsigned char Sapphire::decrypt(unsigned char b)
     {
     unsigned char swaptemp;
 
@@ -222,7 +222,7 @@ unsigned char sapphire::decrypt(unsigned char b)
     return last_plain;
     }
 
-void sapphire::hash_final(unsigned char *hash,      // Destination
+void Sapphire::hash_final(unsigned char *hash,      // Destination
                           unsigned char hashlength) // Size of hash.
     {
     int i;

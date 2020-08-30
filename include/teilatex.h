@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * teilatex.h -	Definition of TEILaTeX
+ * teilatex.h -	class TEILaTeX: a RenderFilter to render LaTeX from modules
+ * 		marked up in TEI
  *
  * $Id$
  *
@@ -30,6 +31,7 @@ SWORD_NAMESPACE_START
 /** this filter converts TEI text to LaTeX text
  */
 class SWDLLEXPORT TEILaTeX : public SWBasicFilter {
+
 private:
 	bool renderNoteNumbers;
 

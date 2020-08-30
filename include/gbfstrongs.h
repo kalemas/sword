@@ -1,6 +1,7 @@
 /***************************************************************************
  *
- * gbfstrongs.h -	Definition of GBFStrongs
+ * gbfstrongs.h -	class GBFStrongs: an OptionFilter to handle Strongs
+ * 			numbers on each word for modules marked up in GBF
  *
  * $Id$
  *

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osisglosses.h -	Definition of OSISGlosses
+ * osisglosses.h -	class OSISGlosses: an OptionFilter which handles
+ * 			glosses in modules marked up in OSIS
  *
  * $Id$
  *
@@ -27,7 +28,7 @@
 
 SWORD_NAMESPACE_START
 
-/** This Filter shows/hides headings in a OSIS text
+/** This Filter shows/hides glosses in a OSIS text
  */
 class SWDLLEXPORT OSISGlosses : public SWOptionFilter {
 public:

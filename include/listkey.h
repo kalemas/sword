@@ -1,8 +1,10 @@
 /******************************************************************************
  *
- * listkey.h -	code for base class 'listkey'.  listkey is the basis for all
- *		types of keys for indexing into modules
- *		(e.g. verse, word, place, etc.)
+ * listkey.h -	class ListKey: a container Key which facilitates a list of
+ * 		SWKey objects.  This is useful for search results or returning
+ * 		the result of parsing freetext verse ranges.  The usefulness
+ * 		of having this container of keys itself be an SWKey is that it
+ * 		can be used natively by an SWModule to iterate the results.
  *
  * $Id$
  *
@@ -31,9 +33,7 @@
 
 SWORD_NAMESPACE_START
 
-/** ListKey is the basis for all
- * types of keys that have lists of specified indexes
- * (e.g. a list of verses, place, etc.)
+/** ListKey is a container SWKey which faciliates a list of SWKey objects
  */
 class SWDLLEXPORT ListKey : public SWKey {
 

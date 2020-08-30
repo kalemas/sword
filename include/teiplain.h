@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * teiplain.h -	Definition of TEIPlain
+ * teiplain.h -	class TEIPlain: a StripFilter for modules marked up in TEI
  *
  * $Id$
  *
@@ -31,7 +31,7 @@ SWORD_NAMESPACE_START
 /** this filter converts TEI text to plain text
  */
 class SWDLLEXPORT TEIPlain : public SWBasicFilter {
-public:
+
 protected:
 	class MyUserData : public BasicFilterUserData {
 	public:

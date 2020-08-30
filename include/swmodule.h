@@ -1,8 +1,7 @@
 /******************************************************************************
  *
- * swmodule.h -	code for base class 'module'.  Module is the basis for
- *		all types of modules (e.g. texts, commentaries, maps,
- *		lexicons, etc.)
+ * swmodule.h -	class SWModule: the basis for all types of modules
+ * 		(e.g. Bibles, commentaries, maps, lexicons, general books, etc.)
  *
  * $Id$
  *
@@ -97,6 +96,7 @@ typedef std::map < SWBuf, AttributeList, std::less < SWBuf > > AttributeTypeList
 
 class SWDLLEXPORT SWModule : public SWCacher, public SWSearchable {
 
+private:
 	class StdOutDisplay : public SWDisplay {
 		char display(SWModule &imodule) {
 #ifndef	_WIN32_WCE

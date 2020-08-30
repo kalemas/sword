@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmllatex.h -	Definition of ThMLLaTeX
+ * thmllatex.h -	class ThMLLaTeX: a RenderFilter to render LaTeX from
+ * 			modules marked up in ThML
  *
  * $Id$
  *
@@ -31,8 +32,11 @@ SWORD_NAMESPACE_START
 /** this filter converts ThML text to LaTeX
  */
 class SWDLLEXPORT ThMLLaTeX : public SWBasicFilter {
+
+private:
 	SWBuf imgPrefix;
 	bool renderNoteNumbers;
+
 protected:
 	class MyUserData : public BasicFilterUserData {
 	public:
@@ -43,10 +47,13 @@ protected:
 		SWBuf version;
 		XMLTag startTag;
 	};
+
 	virtual BasicFilterUserData *createUserData(const SWModule *module, const SWKey *key) {
 		return new MyUserData(module, key);
 	}
+
 	virtual bool handleToken(SWBuf &buf, const char *token, BasicFilterUserData *userData);
+
 public:
 	ThMLLaTeX();
 	virtual const char *getImagePrefix() { return imgPrefix.c_str(); }

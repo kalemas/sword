@@ -1,7 +1,8 @@
 /******************************************************************************
  *
- * rawld.cpp -	code for class 'RawLD'- a module that reads raw lexicon and
- *		dictionary files: *.dat *.idx
+ * rawld.cpp -	class RawLD: a module driver that supports
+ *			lexicon and dictionary files
+ *			with entry sizes require up to 2 bytes
  *
  * $Id$
  *
@@ -32,13 +33,13 @@
 SWORD_NAMESPACE_START
 
 class SWDLLEXPORT RawLD : public RawStr, public SWLD {
+
+private:
 	char getEntry(long away = 0) const;
 
 public:
-
-
 	RawLD(const char *ipath, const char *iname = 0, const char *idesc = 0,
-			SWDisplay * idisp = 0, SWTextEncoding encoding = ENC_UNKNOWN,
+			SWDisplay *idisp = 0, SWTextEncoding encoding = ENC_UNKNOWN,
 			SWTextDirection dir = DIRECTION_LTR,
 			SWTextMarkup markup = FMT_UNKNOWN, const char* ilang = 0, bool caseSensitive = false, bool strongsPadding = true);
 

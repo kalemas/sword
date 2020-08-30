@@ -1,7 +1,6 @@
 /******************************************************************************
  *
- * swtext.h -	code for base class 'SWText'.  SWText is the basis for all
- *		types of text modules
+ * swtext.h -	class SWText: the basis for all	Bible modules
  *
  * $Id$
  *
@@ -36,6 +35,7 @@ class VerseKey;
  */
 class SWDLLEXPORT SWText : public SWModule {
 
+private:
 	// for conversion if we have been set with a different internal key type
 	mutable VerseKey *tmpVK1;
 	mutable VerseKey *tmpVK2;

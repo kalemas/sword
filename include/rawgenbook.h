@@ -1,8 +1,7 @@
 /******************************************************************************
  *
- * rawgenbook.h -	code for class 'RawGenBook'- a module that reads raw
- *			text files:
- *			ot and nt using indexs ??.bks ??.cps ??.vss
+ * rawgenbook.h -	class RawGenBook- a module driver that support
+ *			Generic Books uncompressed
  *
  * $Id$
  *
@@ -34,6 +33,8 @@ SWORD_NAMESPACE_START
 class FileDesc;
 
 class SWDLLEXPORT RawGenBook : public SWGenBook {
+
+private:
 	char *path;
 	FileDesc *bdtfd;
 	bool verseKey;

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * gbfxhtml.h -	Definition of GBFXHTML
+ * gbfxhtml.h -	class GBFXHTML: a RenderFilter to render XHTML from modules
+ * 		marked up in GBF
  *
  * $Id$
  *

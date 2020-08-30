@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * utf8scsu.h -	Definition of UTF8SCSU
+ * utf8scsu.h -	class UTF8SCSU: an EncodingFilter to convert UTF8 to
+ * 		Standard Compression Scheme for Unicode (SCSU)
  *
  * $Id$
  *
@@ -35,10 +36,12 @@ SWORD_NAMESPACE_START
 /** This filter converts UTF-8 encoded text to SCSU
  */
 class SWDLLEXPORT UTF8SCSU : public SWFilter {
+
 private:
 	UConverter* scsuConv;
 	UConverter* utf8Conv;
 	UErrorCode err;
+
 public:
 	UTF8SCSU();
 	~UTF8SCSU();

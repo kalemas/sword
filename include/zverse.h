@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * zverse.h -		code for class 'zVerse'- a module that reads raw text
- *			files: ot and nt using indexs ??.bks ??.cps ??.vss
- *			and provides lookup and parsing functions based on
- *			class VerseKey
+ * zverse.h -		class 'zVerse'- a support class for module drivers
+ *			which support a 2 byte entry size and use Versekey
+ *			for their entry keys
  *
  * $Id$
  *

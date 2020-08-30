@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * sysdata.h -	
+ * sysdata.h -	definitions that help SWORD work the same on different systems
  *
  * $Id$
  * 

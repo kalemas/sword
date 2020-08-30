@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlplain.h -	Definition of ThMLPlain
+ * thmlplain.h -	class ThMLPlain: a StripFilter for modules marked up
+ * 			in ThML
  *
  * $Id$
  *

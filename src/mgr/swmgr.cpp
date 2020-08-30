@@ -1474,7 +1474,7 @@ SWLog::getSystemLog()->logDebug("libsword: SWMgr::createAllModules");
 
 				// add all basic strip filters for for the modtype
 				// TODO: addStripFilters(newmod, section);
-				AddStripFilters(newmod, section);
+				addStripFilters(newmod, section);
 
 				// Any module-specific processing specified in module config
 				// as entries LocalStripFilter=
@@ -1483,11 +1483,11 @@ SWLog::getSystemLog()->logDebug("libsword: SWMgr::createAllModules");
 				AddStripFilters(newmod, section, section.lower_bound("LocalStripFilter"), section.upper_bound("LocalStripFilter"));
 
 				// TODO: addRawFilters(newmod, section);
-				AddRawFilters(newmod, section);
+				addRawFilters(newmod, section);
 				// TODO: addRenderFilters(newmod, section);
-				AddRenderFilters(newmod, section);
+				addRenderFilters(newmod, section);
 				// TODO: addEncodingFilters(newmod, section);
-				AddEncodingFilters(newmod, section);
+				addEncodingFilters(newmod, section);
 				
 				// place our module in module container, removing first if one
 				// already exists by our same name

@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * gbfhtmlhref.h -	Definition of GBFHTMLHREF
+ * gbfhtmlhref.h -	class GBFHTMLHREF: a RenderFilter for rendering
+ * 			HTMLHREF from modules marked up in GBF
  *
  * $Id$
  *

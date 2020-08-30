@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * zipcomprs.h -	definition of Class ZipCompress used for data
- *			compression
+ * zipcomprs.h -	class ZipCompress: an SWCompress implemention which
+ * 			uses zip compression
  *
  * $Id$
  *
@@ -34,7 +34,6 @@ class FileDesc;
 
 class SWDLLEXPORT ZipCompress : public SWCompress {
 
-protected:
 public:
 	ZipCompress();
 	virtual ~ZipCompress();

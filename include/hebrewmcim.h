@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * hebrewmcim.h -	Definition of HebrewMCIM
+ * hebrewmcim.h -	class HebrewMCIM: a InputMethod for Hebrew
+ * 			Michigan / Claremont input standard
  *
  * $Id$
  *
@@ -40,6 +41,7 @@ SWORD_NAMESPACE_START
 
 class SWDLLEXPORT HebrewMCIM : public SWInputMethod {
 
+private:
 	void init();
 	int subst[255];
 	map<int, int> subst2[12];

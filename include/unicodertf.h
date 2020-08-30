@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * unicodertf.h -	Definition of UnicodeRTF
+ * unicodertf.h -	class UnicodeRTF: an encoding filter which converts
+ * 			UTF8 into RTF Unicode tags
  *
  * $Id$
  *

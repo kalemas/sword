@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * utilxml.h -	definition of class that deal with xml constructs 
+ * utilxml.h -	class XMLTag: utility class which helps work with XML tags
  *
  * $Id$
  *
@@ -36,6 +36,7 @@ typedef std::list<SWBuf> StringList;
 /** Simple XML helper class.
 */
 class SWDLLEXPORT XMLTag {
+
 private:
 	mutable char *buf;
 	char *name;

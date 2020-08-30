@@ -1,6 +1,7 @@
 /***************************************************************************
  *
- * gbffootnotes.h -	Definition of GBFFootnotes
+ * gbffootnotes.h -	class GBFFootnotes: an OptionFilter for handling
+ * 			footnotes in modules marked up in GBF
  *
  * $Id$
  *

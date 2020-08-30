@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * osisplain.h -	Definition of OSISPlain
+ * osisplain.h -	class OSISPlain: a StripFilter for modules marked up
+ * 			in OSIS
  *
  * $Id$
  *
@@ -28,7 +29,7 @@
 
 SWORD_NAMESPACE_START
 
-/** this filter converts OSIS text to plain text
+/** this filter converts OSIS text to plain text; primary stripFilter for OSIS
  */
 class SWDLLEXPORT OSISPlain : public SWBasicFilter {
 public:

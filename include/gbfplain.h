@@ -1,6 +1,6 @@
 /***************************************************************************
  *
- * gbfplain.h -	Definition of GBFPlain
+ * gbfplain.h -	class GBFPlain: a StripFilter for modules marked up in GBF
  *
  * $Id$
  *

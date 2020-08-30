@@ -1,7 +1,9 @@
 /******************************************************************************
  *
- * osisreferencelinks.h -	SWFilter descendant to toggle OSIS reference
- *				links with specified type/subType
+ * osisreferencelinks.h -	class OSISReferenceLinks: an OptionFilter to
+ * 				handle reference links having
+ * 				specified type/subType in modules marked up
+ * 				in OSIS
  *
  * $Id$
  *

@@ -1,6 +1,8 @@
 /******************************************************************************
  *
- * utf8latin1.h -	 Definition of UTF8Latin1
+ * utf8latin1.h -	class UTF8Latin1: an EncodingFilter to convert UTF8
+ * 			text into Latin1 where possible; otherwise show
+ * 			a replacement character
  *
  * $Id$
  *
@@ -30,7 +32,10 @@ SWORD_NAMESPACE_START
 /** This filter converts UTF-8 encoded text to Latin-1
  */
 class SWDLLEXPORT UTF8Latin1 : public SWFilter {
+
+private:
 	char replacementChar;
+
 public:
 	UTF8Latin1(char rchar = '?');
 	virtual char processText(SWBuf &text, const SWKey *key = 0, const SWModule *module = 0);

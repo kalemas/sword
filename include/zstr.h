@@ -1,8 +1,7 @@
 /*****************************************************************************
  *
- * zstr.h -	code for class 'zStr'- a module that reads compressed text
- *		files and provides lookup and parsing functions based on
- *		class StrKey
+ * zstr.h -	class zStr: a helper class which provides support for
+ *		compressed module drivers which use a string for their key
  *
  * $Id$
  *

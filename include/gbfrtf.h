@@ -1,6 +1,7 @@
 /***************************************************************************
  *
- * gbfrtf.h -	Definition of GBFRTF
+ * gbfrtf.h -	class GBFRTF: a RenderFilter to render RTF from modules
+ * 		marked up in GBF
  *
  * $Id$
  *

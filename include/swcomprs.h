@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * swcomprs.h -		definition of Class SWCompress used for data
+ * swcomprs.h -		class SWCompress: used for data
  *			compression
  *
  * $Id$

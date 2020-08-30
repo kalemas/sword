@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * swbuf.h -	code for SWBuf used as a transport and utility for data buffers
+ * swbuf.h -	class SWBuf: a rich buffer / string class providing optimized
+ * 		implementations of many basic string operations
  *
  * $Id$
  *
@@ -44,6 +45,8 @@ SWORD_NAMESPACE_START
 *	it will crash your program. You need to perform the checks yourself!
 */
 class SWDLLEXPORT SWBuf {
+
+private:
 	char *buf;
 	char *end;
 	char *endAlloc;

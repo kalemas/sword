@@ -1,7 +1,9 @@
 /******************************************************************************
  *
- * stringmgr.h -	A class which provides string handling functions which
- *			can be reimplemented by frontends
+ * stringmgr.h -	class StringMgr: base of string functions. Can be
+ * 			subclassed and methods re-implemented your favorite
+ * 			String library with Unicode support, e.g, ICU,
+ * 			Qt, Java.
  *
  * $Id$
  *
@@ -31,8 +33,8 @@
 
 SWORD_NAMESPACE_START
 
-/** StringMgr is a way to provide UTf8 handling by the Sword frontend
- * Each platform, if it's up-to-date, should provide functions to handle unicode and utf8. This class makes it possible to implement Unicode support on the user-side and not in Sword itself.
+/** StringMgr provide UTF8 handling
+ * This class makes it possible to implement Unicode support on the client-side and not in SWORD itself.
  */
 class SWDLLEXPORT StringMgr {
 private:

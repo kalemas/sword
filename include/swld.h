@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * swld.h -	code for base class 'SWLD'.  SWLD is the basis for all
+ * swld.h -	class SWLD: the basis for all
  *		types of Lexicon and Dictionary modules (hence the 'LD').
  *
  * $Id$

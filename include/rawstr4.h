@@ -1,9 +1,7 @@
 /*****************************************************************************
  *
- * rawstr4.h -	code for class 'RawStr4'- a module that reads raw text
- *		files: ot and nt using indexs ??.bks ??.cps ??.vss
- *		and provides lookup and parsing functions based on
- *		class StrKey
+ * rawstr4.h -	class RawStr4: a helper class for module drivers with string
+ * 		keys uncompressed requiring 4 bytes for their entry size
  *
  * $Id$
  *
@@ -35,6 +33,8 @@ class FileDesc;
 class SWBuf;
 
 class SWDLLEXPORT RawStr4 {
+
+private:
 	static int instance;		// number of instantiated RawStr4 objects or derivitives
 	char *path;
 	bool caseSensitive;
@@ -47,6 +47,7 @@ protected:
 	FileDesc *datfd;
 	void doSetText(const char *key, const char *buf, long len = -1);
 	void doLinkEntry(const char *destkey, const char *srckey);
+
 public:
 	static const char nl;
 	RawStr4(const char *ipath, int fileMode = -1, bool caseSensitive = false);

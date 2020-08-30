@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * utf8nfc.h -	Definition of UTF8NFC
+ * utf8nfc.h -	class UTF8NFC: a Filter to normalize a UTF8 text stream into
+ * 		Normal Form Composed Unicode (NFC)
  *
  * $Id$
  *
@@ -32,12 +33,14 @@
 
 SWORD_NAMESPACE_START
 
-/** This filter normalizes UTF-8 encoded text
+/** This filter normalizes UTF-8 encoded text to NFC (Normal Form Composed)
  */
 class SWDLLEXPORT UTF8NFC : public SWFilter {
+
 private:
 	UConverter* conv;
 	UErrorCode err;
+
 public:
 	UTF8NFC();
 	~UTF8NFC();

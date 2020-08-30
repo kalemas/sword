@@ -1,8 +1,7 @@
 /******************************************************************************
  *
- * swkey.h -	code for base class 'swkey'.  swkey is the basis for all
- *		types of keys for indexing into modules (e.g. verse, word,
- *		place, etc.)
+ * swkey.h -	class SWKey:  SWKey is the basis for all indexing into modules
+ * 		(e.g. verses, table of contents tree, strings, etc.)
  *
  * $Id$
  *

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * xzcomprs.h -		XzCompress, a driver class that provides xz (LZMA2)
- *			compression
+ * xzcomprs.h -		class XzCompress: an SWCompress class which provides
+ * 			xz (LZMA2) compression
  *
  * $Id$
  *
@@ -33,7 +33,9 @@ SWORD_NAMESPACE_START
 
 class SWDLLEXPORT XzCompress : public SWCompress {
 
-protected:
+private:
+	SW_u64 memlimit; // memory usage limit during decompression
+
 public:
 	XzCompress();
 	virtual ~XzCompress();
@@ -41,8 +43,6 @@ public:
 	virtual void encode(void);
 	virtual void decode(void);
 	virtual void setLevel(int l);
-private:
-	SW_u64 memlimit; // memory usage limit during decompression
 };
 
 SWORD_NAMESPACE_END

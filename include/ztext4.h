@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * ztext4.h -	code for class 'zText4'- a module that reads compressed text
- *		files: ot and nt using indexs ??.vss
+ * ztext4.h -	class zText4: a module driver which supports compressed
+ *		Bibles supporting large 4 byte entry sizes
  *
  * $Id$
  *
@@ -36,8 +36,9 @@ SWORD_NAMESPACE_START
 * This class handles compressed modules.
 * It should not be used in frontends, unless you are doing very special things.
 */
-class SWDLLEXPORT zText4:public zVerse4, public SWText {
+class SWDLLEXPORT zText4 : public zVerse4, public SWText {
 
+private:
 	VerseKey *lastWriteKey;
 	bool sameBlock(VerseKey * lastWriteKey, VerseKey * key);
 	int blockType;

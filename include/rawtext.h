@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * rawtext.h -	code for class 'RawText'- a module that reads raw text files:
- *		ot and nt using indexs ??.bks ??.cps ??.vss
+ * rawtext.h -	class RawText: a module driver for Bible modules stored
+ * 		uncompressed with entry sizes specified with 2 bytes
  *
  * $Id$
  *
@@ -36,7 +36,7 @@ class RawStr;
 class SWDLLEXPORT RawText : public SWText, public RawVerse {
 
 public:
-	RawText(const char *ipath, const char *iname = 0, const char *idesc = 0, SWDisplay * idisp = 0, SWTextEncoding encoding = ENC_UNKNOWN, SWTextDirection dir = DIRECTION_LTR, SWTextMarkup markup = FMT_UNKNOWN, const char* ilang = 0, const char *versification = "KJV");
+	RawText(const char *ipath, const char *iname = 0, const char *idesc = 0, SWDisplay *idisp = 0, SWTextEncoding encoding = ENC_UNKNOWN, SWTextDirection dir = DIRECTION_LTR, SWTextMarkup markup = FMT_UNKNOWN, const char *ilang = 0, const char *versification = "KJV");
 	virtual ~RawText();
 	virtual SWBuf &getRawEntryBuf() const;
 	virtual void increment(int steps = 1);

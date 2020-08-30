@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * teirtf.h -	Definition of TEIRTF
+ * teirtf.h -	class TEIRTF: a RenderFilter to render RTF from modules marked
+ * 		up in TEI
  *
  * $Id$
  *
@@ -30,6 +31,7 @@ SWORD_NAMESPACE_START
 /** this filter converts TEI text to RTF text
  */
 class SWDLLEXPORT TEIRTF : public SWBasicFilter {
+
 private:
 
 protected:
@@ -45,6 +47,7 @@ protected:
 		return new MyUserData(module, key);
 	}
 	virtual bool handleToken(SWBuf &buf, const char *token, BasicFilterUserData *userData);
+
 public:
 	TEIRTF();
 };

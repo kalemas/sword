@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * entriesblk.h -	Definition of EntriesBlock
+ * entriesblk.h -	class EntriesBlock: a helper class for module drivers
+ * 			which support compressed blocks of multiple entries
  *
  * $Id$
  *

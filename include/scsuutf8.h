@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * scsuutf8.h - SWFilter descendant to convert a SCSU character to UTF-8
+ * scsuutf8.h - class SCSUUTF8: an Encoding filter which converts SCSU to UTF8
  *
  * $Id$
  *

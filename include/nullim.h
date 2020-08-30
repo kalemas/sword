@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * nullim.h -	Definition of NullIM
+ * nullim.h -	class NullIM: an InputMethod which simply returns the key typed
  *
  * $Id$
  *

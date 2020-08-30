@@ -1,6 +1,8 @@
 /******************************************************************************
  *
- * osisredletterwords.h -	Definition of OSISRedLetterWords
+ * osisredletterwords.h -	class OSISRedLetterWords: an OptionFilter to
+ * 				handle Red Letter Words of Christ for modules
+ * 				marked up in OSIS
  *
  * $Id$
  *
@@ -27,7 +29,7 @@
 
 SWORD_NAMESPACE_START
 
-/** This Filter shows/hides headings in a OSIS text
+/** This Filter shows/hides red letters for words of Christ in an OSIS text
  */
 class SWDLLEXPORT OSISRedLetterWords : public SWOptionFilter {
 public:

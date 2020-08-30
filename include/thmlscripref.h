@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlscripref.h -	Definition of ThMLScripRef
+ * thmlscripref.h -	class ThMLScripRef: an OptionFilter to handle
+ * 			cross-references in modules marked up in ThML
  *
  * $Id$
  *

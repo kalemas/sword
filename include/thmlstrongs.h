@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlstrongs.h -	Definition of ThMLStrongs
+ * thmlstrongs.h -	class ThMLStrongs: an OptionFilter to handle Strongs
+ * 			information on words in modules marked up in ThML
  *
  * $Id$
  *

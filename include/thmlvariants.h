@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * thmlvariants.h -	Definition of ThMLVariants
+ * thmlvariants.h -	class ThMLVariants: an OptionFilter to handle variants
+ * 			in modules marked up in ThML
  *
  * $Id$
  *

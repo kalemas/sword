@@ -1,6 +1,8 @@
 /***************************************************************************
  *
- * osisstrongs.h -	Definition of OSISStrongs
+ * osisstrongs.h -	class OSISStrongs: an OptionFilter to handle
+ * 			Strongs numbers on words in modules marked up
+ * 			is OSIS
  *
  * $Id$
  *

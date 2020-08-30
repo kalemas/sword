@@ -1,6 +1,8 @@
 /******************************************************************************
  *
- * osismorphsegmentation.h -	Definition of OSISMorphSegmentation
+ * osismorphsegmentation.h -	class OSISMorphSegmentation: and OptionFilter
+ * 				to hand word morpheme segmentation in modules
+ * 				marked up in OSIS
  *
  * $Id$
  *

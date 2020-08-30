@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * installmgr.h -	Definition of InstallMgr
+ * installmgr.h -	class InstallMgr: primary class to access all
+ * 			module installation functionality
  *
  * $Id$
  *

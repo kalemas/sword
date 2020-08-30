@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * swcom.h -	code for base class 'SWCom'.  SWCom is the basis for all
- *		types of commentary modules.
- *		It is traditionally close to the same as the SWText
- *		module type, but has defaults set which more
+ * swcom.h -	class SWCom: the basis for all types of commentary modules.
+ *		It is traditionally nearly the same as the SWText driver for
+ *		Bible modules, but has defaults set which more
  *		closely represent how a commentary will be used and how
  *		the bulk of our commentaries expect to be used.  For example,
  *		most commentaries consist of entries for a range of text
@@ -49,6 +48,7 @@ class SWKey;
  */
 class SWDLLEXPORT SWCom : public SWModule {
 
+private:
 	mutable VerseKey *tmpVK1;
 	mutable VerseKey *tmpVK2;
 	mutable bool tmpSecond;

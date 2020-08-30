@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * markupfiltmgr.h -	definition of class SWMarkupMgr, subclass of
- *			used to transcode all module text to a requested
- *			markup
+ * markupfiltmgr.h -	class SWMarkupMgr: a FilterManager which applied
+ * 			the appropriate Markup and Encoding filters to obtain
+ * 			a requested Render markup and encoding
  *
  * Copyright 2001-2013 CrossWire Bible Society (http://www.crosswire.org)
  *	CrossWire Bible Society

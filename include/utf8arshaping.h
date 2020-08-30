@@ -1,6 +1,8 @@
 /******************************************************************************
  *
- * utf8arshaping.h -	Definition of UTF8arShaping
+ * utf8arshaping.h -	class UTF8arShaping: a Filter which can
+ * 			be used to improve Arabic shaping of character in a
+ * 			text stream
  *
  * $Id$
  *

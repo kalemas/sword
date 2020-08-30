@@ -1,6 +1,8 @@
 /***************************************************************************
  *
- * gbfwordjs.h -	Definition of GBFWordJS
+ * gbfwordjs.h -	class GBFWordJS: an OptionFilter to inject
+ * 			JavaScript (mostly onclick events) for modules
+ * 			marked up in GBF
  *
  * $Id$
  *

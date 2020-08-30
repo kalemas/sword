@@ -46,35 +46,39 @@
 
 SWORD_NAMESPACE_START
 
-class sapphire {
+class Sapphire {
 
+private:
 	// These variables comprise the state of the state machine.
 	unsigned char cards[256];	// A permutation of 0-255.
 	unsigned char rotor,		// Index that rotates smoothly
-		ratchet,				// Index that moves erratically
-		avalanche,			// Index heavily data dependent
-		last_plain,			// Last plain text byte
-		last_cipher;			// Last cipher text byte
+		ratchet,		// Index that moves erratically
+		avalanche,		// Index heavily data dependent
+		last_plain,		// Last plain text byte
+		last_cipher;		// Last cipher text byte
 
 	// This function is used by initialize(), which is called by the
 	// constructor.
-	unsigned char keyrand (int limit, unsigned char *user_key,
-	unsigned char keysize, unsigned char *rsum,
-	unsigned *keypos); public:sapphire (unsigned char
-		*key = NULL,				// Calls initialize if a real
+	unsigned char keyrand(int limit, unsigned char *user_key,
+		unsigned char keysize, unsigned char *rsum,
+		unsigned *keypos);
+public:
+	Sapphire(unsigned char *key = NULL,	// Calls initialize if a real
 		unsigned char keysize = 0);	// key is provided.  If none
-								// is provided, call initialize
-								// before encrypt or decrypt.
-	~sapphire ();			// Destroy cipher state information.
-	void initialize (unsigned char *key,	// User key is used to set
-		unsigned char keysize);			// up state information.
-	void hash_init (void);	// Set up default hash.
-	unsigned char encrypt (unsigned char b = 0);	// Encrypt byte
-										// or get a random byte.
-	unsigned char decrypt (unsigned char b);	// Decrypt byte.
-	void hash_final (unsigned char *hash,	// Copy hash value to hash
+						// is provided, call initialize
+						// before encrypt or decrypt.
+
+	~Sapphire();				// Destroy cipher state information.
+
+	void initialize(unsigned char *key,	// User key is used to set
+		unsigned char keysize);		// up state information.
+	void hash_init(void);			// Set up default hash.
+	unsigned char encrypt(unsigned char b = 0);	// Encrypt byte
+							// or get a random byte.
+	unsigned char decrypt(unsigned char b);	// Decrypt byte.
+	void hash_final(unsigned char *hash,	// Copy hash value to hash
 		unsigned char hashlength = 20);	// Hash length (16-32)
-	void burn (void);		// Destroy cipher state information.
+	void burn(void);			// Destroy cipher state information.
 };
 
 

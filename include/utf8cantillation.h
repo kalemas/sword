@@ -1,6 +1,7 @@
 /******************************************************************************
  *
- * utf8cantillation.h -	Definition of UTF8Cantillation
+ * utf8cantillation.h -	class UTF8Cantillation: an OptionFilter to handle
+ * 			cantillation marks in UTF8 text
  *
  * $Id$
  *

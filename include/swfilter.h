@@ -1,7 +1,10 @@
 /******************************************************************************
  *
- * swfilter.h -		definition of class SWFilter used to filter text between
- *			different formats
+ * swfilter.h -		class SWFilter: the base for all Filters in SWORD
+ * 			a Filter manipulates the text stream in some way,
+ * 			usually converting text between different markups,
+ * 			encoding, to show or hide text features
+ * 			for the user, or to strip markup for searching
  *
  * $Id$
  *

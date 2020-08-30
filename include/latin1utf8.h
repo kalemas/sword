@@ -1,6 +1,7 @@
 /***************************************************************************
  *
- * latin1utf8.h -	Definition of Latin1UTF8
+ * latin1utf8.h -	class Latin1UTF8: an EncodingFilter to convert
+ * 			Latin1 text to UTF8
  *
  * $Id$
  *

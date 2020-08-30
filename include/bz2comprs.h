@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * bz2comprs.h -	Bzip2Compress, a driver class that provides bzip2
+ * bz2comprs.h -	class Bzip2Compress, a driver class that provides bzip2
  *			compression (Burrows–Wheeler with Huffman coding)
  *
  * $Id$

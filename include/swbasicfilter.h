@@ -1,9 +1,10 @@
 /******************************************************************************
  *
- * swbasicfilter.h -	definition of class SWBasicFilter.  An SWFilter
- *					impl that provides some basic methods that
- *					many filter will need and can use as a starting
- *					point
+ * swbasicfilter.h -	class SWBasicFilter: a starting point SWFilter which
+ * 			provides a SAX-like processing features for more
+ * 			easily writing other filters.
+ * 			provides some basic methods that make filter writing
+ * 			easier
  *
  * $Id$
  *

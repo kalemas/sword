@@ -1,9 +1,7 @@
 /*****************************************************************************
  *
- * rawstr.h -	code for class 'RawStr'- a module that reads raw text
- *		files: ot and nt using indexs ??.bks ??.cps ??.vss
- *		and provides lookup and parsing functions based on
- *		class StrKey
+ * rawstr.h -	class RawStr: a helper class for modules with string
+ *		keys, uncompressed, with entry sizes specified by to 2 bytes
  *
  * $Id$
  *
@@ -35,6 +33,8 @@ class SWBuf;
 class FileDesc;
 
 class SWDLLEXPORT RawStr {
+
+private:
 	static int instance;		// number of instantiated RawStr objects or derivitives
 	char *path;
 	bool caseSensitive;
