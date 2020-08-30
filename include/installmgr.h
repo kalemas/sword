@@ -281,8 +281,11 @@ public:
 	/************************************************************************
 	 * getModuleStatus - compare the modules of two SWMgrs and return a
 	 * 	vector describing the status of each.  See MODSTAT_*
+	 * @param base The base SWMgr to compare-- usually represents what is currently installed
+	 * @param other The other SWMgr to compare to base-- usually represents an install source's SWMgr
+	 * @param utilModule whether to show user modules or utility modules; user modules is the default
 	 */
-	static std::map<SWModule *, int> getModuleStatus(const SWMgr &base, const SWMgr &other);
+	static std::map<SWModule *, int> getModuleStatus(const SWMgr &base, const SWMgr &other, bool utilModules = false);
 
 	/************************************************************************
 	 * isDefaultModule - allows an installation to provide a set of modules

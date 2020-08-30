@@ -353,8 +353,16 @@ public:
 	 * @param modName the name of the module to retrieve
 	 * @return the module, if found, otherwise 0
 	 */
-	SWModule *getModule(const char *modName) { ModMap::iterator it = getModules().find(modName); return ((it != getModules().end()) ? it->second : 0); }
-	const SWModule *getModule(const char *modName) const { ModMap::const_iterator it = getModules().find(modName); return ((it != getModules().end()) ? it->second : 0); }
+	SWModule *getModule(const char *modName) {
+		ModMap::iterator it = getModules().find(modName);
+		if (it == getModules().end()) it = getUtilModules().find(modName);
+		return ((it != getUtilModules().end()) ? it->second : 0);
+	}
+	const SWModule *getModule(const char *modName) const {
+		ModMap::const_iterator it = getModules().find(modName);
+		if (it == getModules().end()) it = getUtilModules().find(modName);
+		return ((it != getUtilModules().end()) ? it->second : 0);
+	}
 
 
 	/** Constructs an instance of SWMgr

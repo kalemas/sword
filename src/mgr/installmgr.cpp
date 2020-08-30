@@ -588,7 +588,7 @@ bool InstallMgr::isDefaultModule(const char *modName) {
  * getModuleStatus - compare the modules of two SWMgrs and return a 
  * 	vector describing the status of each.  See MODSTAT_*
  */
-map<SWModule *, int> InstallMgr::getModuleStatus(const SWMgr &base, const SWMgr &other) {
+map<SWModule *, int> InstallMgr::getModuleStatus(const SWMgr &base, const SWMgr &other, bool utilModules) {
 	map<SWModule *, int> retVal;
 	SWBuf targetVersion;
 	SWBuf sourceVersion;
@@ -597,7 +597,7 @@ map<SWModule *, int> InstallMgr::getModuleStatus(const SWMgr &base, const SWMgr 
 	bool keyPresent;
 	int modStat;
 	
-	for (ModMap::const_iterator mod = other.Modules.begin(); mod != other.Modules.end(); mod++) {
+	for (ModMap::const_iterator mod = (!utilModules ? other.getModules().begin() : other.getUtilModules().begin()); mod != (!utilModules ? other.getModules().end() : other.getUtilModules().end()); ++mod) {
 	
 		modStat = 0;
 

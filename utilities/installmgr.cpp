@@ -255,13 +255,11 @@ void syncConfig() {
 
 void uninstallModule(const char *modName) {
 	init();
-	SWModule *module;
-	ModMap::iterator it = mgr->Modules.find(modName);
-	if (it == mgr->Modules.end()) {
+	SWModule *module = mgr->getModule(modName);
+	if (!module) {
 		fprintf(stderr, "Couldn't find module [%s] to remove\n", modName);
 		finish(-2);
 	}
-	module = it->second;
 	installMgr->removeModule(mgr, module->getName());
 	cout << "Removed module: [" << modName << "]\n";
 }
@@ -293,11 +291,11 @@ void refreshRemoteSource(const char *sourceName) {
 }
 
 
-void listModules(SWMgr *otherMgr = 0, bool onlyNewAndUpdates = false) {
+void listModules(SWMgr *otherMgr = 0, bool onlyNewAndUpdates = false, bool utilModules = false) {
 	init();
 	SWModule *module;
 	if (!otherMgr) otherMgr = mgr;
-	std::map<SWModule *, int> mods = InstallMgr::getModuleStatus(*mgr, *otherMgr);
+	std::map<SWModule *, int> mods = InstallMgr::getModuleStatus(*mgr, *otherMgr, utilModules);
 	for (std::map<SWModule *, int>::iterator it = mods.begin(); it != mods.end(); it++) {
 		module = it->first;
 		SWBuf version = module->getConfigEntry("Version");
@@ -313,7 +311,7 @@ void listModules(SWMgr *otherMgr = 0, bool onlyNewAndUpdates = false) {
 }
 
 
-void remoteListModules(const char *sourceName, bool onlyNewAndUpdated = false) {
+void remoteListModules(const char *sourceName, bool onlyNewAndUpdated = false, bool utilModules = false) {
 	init();
 	cout << "Available Modules:\n(be sure to refresh remote source (-r) first for most current list)\n\n";
 	InstallSourceMap::iterator source = installMgr->sources.find(sourceName);
@@ -321,7 +319,7 @@ void remoteListModules(const char *sourceName, bool onlyNewAndUpdated = false) {
 		fprintf(stderr, "Couldn't find remote source [%s]\n", sourceName);
 		finish(-3);
 	}
-	listModules(source->second->getMgr(), onlyNewAndUpdated);
+	listModules(source->second->getMgr(), onlyNewAndUpdated, utilModules);
 }
 
 
@@ -369,13 +367,11 @@ void remoteInstallModule(const char *sourceName, const char *modName) {
 	}
 	InstallSource *is = source->second;
 	SWMgr *rmgr = is->getMgr();
-	SWModule *module;
-	ModMap::iterator it = rmgr->Modules.find(modName);
-	if (it == rmgr->Modules.end()) {
+	SWModule *module = rmgr->getModule(modName);
+	if (!module) {
 		fprintf(stderr, "Remote source [%s] does not make available module [%s]\n", sourceName, modName);
 		finish(-4);
 	}
-	module = it->second;
 
 	int error = installMgr->installModule(mgr, 0, module->getName(), is);
 	if (error) {
@@ -387,13 +383,11 @@ void remoteInstallModule(const char *sourceName, const char *modName) {
 void localDirInstallModule(const char *dir, const char *modName) {
 	init();
 	SWMgr lmgr(dir);
-	SWModule *module;
-	ModMap::iterator it = lmgr.Modules.find(modName);
-	if (it == lmgr.Modules.end()) {
+	SWModule *module = lmgr.getModule(modName);
+	if (!module) {
 		fprintf(stderr, "Module [%s] not available at path [%s]\n", modName, dir);
 		finish(-4);
 	}
-	module = it->second;
 	int error = installMgr->installModule(mgr, dir, module->getName());
 	if (error) {
 		cout << "\nError installing module: [" << module->getName() << "] (write permissions?)\n";
@@ -422,11 +416,14 @@ void usage(const char *progName, const char *error) {
 		"\t\t\t\t\t\tNOTE: also creates if none exists\n"
 		"\t -s\t\t\t\tlist remote sources\n"
 		"\t -r  <remoteSrcName>\t\trefresh remote source\n"
-		"\t -rl <remoteSrcName>\t\tlist available modules from remote source\n"
-		"\t -rd <remoteSrcName>\t\tlist new/updated modules from remote source\n"
+		"\t -rl <remoteSrcName>\t\tlist available user modules from remote source\n"
+		"\t -rlu <remoteSrcName>\t\tlist available utility modules from remote source\n"
+		"\t -rd <remoteSrcName>\t\tlist new/updated user modules from remote source\n"
+		"\t -rdu <remoteSrcName>\t\tlist new/updated utility modules from remote source\n"
 		"\t -rdesc <remoteSrcName> <modName>\tdescribe module from remote source\n"
 		"\t -ri <remoteSrcName> <modName>\tinstall module from remote source\n"
-		"\t -l\t\t\t\tlist installed modules\n"
+		"\t -l\t\t\t\tlist installed user modules\n"
+		"\t -lu\t\t\t\tlist installed utility modules\n"
 		"\t -u <modName>\t\t\tuninstall module\n"
 		"\t -ll <path>\t\t\tlist available modules at local path\n"
 		"\t -li <path> <modName>\t\tinstall module from local path\n"
@@ -456,9 +453,13 @@ int main(int argc, char **argv) {
 		else if (!strcmp(argv[i], "-init")) {
 			initConfig();
 		}
-		else if (!strcmp(argv[i], "-l")) {	// list installed modules
-			cout << "Installed Modules:\n\n";
+		else if (!strcmp(argv[i], "-l")) {	// list installed user modules
+			cout << "Installed User Modules:\n\n";
 			listModules();
+		}
+		else if (!strcmp(argv[i], "-lu")) {	// list installed utility modules
+			cout << "Installed Utility Modules:\n\n";
+			listModules(0, false, true);
 		}
 		else if (!strcmp(argv[i], "-ll")) {	// list from local directory
 			if (i+1 < argc) localDirListModules(argv[++i]);
@@ -486,13 +487,21 @@ int main(int argc, char **argv) {
 			if (i+1 < argc) refreshRemoteSource(argv[++i]);
 			else usage(*argv, "-r requires <remoteSrcName>");
 		}
-		else if (!strcmp(argv[i], "-rl")) {	// list remote modules
+		else if (!strcmp(argv[i], "-rl")) {	// list remote user modules
 			if (i+1 < argc) remoteListModules(argv[++i]);
 			else usage(*argv, "-rl requires <remoteSrcName>");
 		}
-		else if (!strcmp(argv[i], "-rd")) {	// list differences between remote source and installed modules
+		else if (!strcmp(argv[i], "-rlu")) {	// list remote utility modules
+			if (i+1 < argc) remoteListModules(argv[++i], false, true);
+			else usage(*argv, "-rlu requires <remoteSrcName>");
+		}
+		else if (!strcmp(argv[i], "-rd")) {	// list differences between remote source and installed user modules
 			if (i+1 < argc) remoteListModules(argv[++i], true);
 			else usage(*argv, "-rd requires <remoteSrcName>");
+		}
+		else if (!strcmp(argv[i], "-rdu")) {	// list differences between remote source and installed utility modules
+			if (i+1 < argc) remoteListModules(argv[++i], true, true);
+			else usage(*argv, "-rdu requires <remoteSrcName>");
 		}
 		else if (!strcmp(argv[i], "-rdesc")) {	// describe remove module
 			if (i+2 < argc) {

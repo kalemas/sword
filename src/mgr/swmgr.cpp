@@ -1497,7 +1497,8 @@ SWLog::getSystemLog()->logDebug("libsword: SWMgr::createAllModules");
 				}
 				
 				// if it's not a utility module save it to Modules
-				if (strcmp("Utility", newmod->getType())) {
+				if (	SWBuf("Utility") != newmod->getType() &&
+					SWBuf("Utility") != newmod->getConfigEntry("Category")) {
 					Modules[newmod->getName()] = newmod;
 				}
 				else	utilModules[newmod->getName()] = newmod;
