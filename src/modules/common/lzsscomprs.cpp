@@ -357,7 +357,7 @@ void LZSSCompress::Private::DeleteNode(short int Node)
 /******************************************************************************
  * LZSSCompress::encode	- This function "encodes" the input stream into the
  *						output stream.
- *						The GetChars() and SendChars() functions are
+ *						The getChars() and sendChars() functions are
  *						used to separate this method from the actual
  *						i/o.
  * 		NOTE:			must set zlen for parent class to know length of
@@ -603,7 +603,7 @@ void LZSSCompress::encode(void)
 /******************************************************************************
  * LZSSCompress::decode	- This function "decodes" the input stream into the
  *						output stream.
- *						The GetChars() and SendChars() functions are
+ *						The getChars() and sendChars() functions are
  *						used to separate this method from the actual
  *						i/o.
  */
