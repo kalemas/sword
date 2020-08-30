@@ -128,11 +128,14 @@ int main(int argc, char **argv)
 		listKey = target->search(argv[4], SEARCH_TYPE, flags, scope, 0, &percentUpdate, &lineLen);
 		std::cerr << std::endl;
 	}
+
+	// Simply print of all results
+	std::cout << "\n" << listKey.getShortRangeText() << "\n" << std::endl;
 // we don't want to sort by verse if we've been given scores
 //	listKey.sort();
 	for (listKey = TOP; !listKey.popError(); listKey.nextElement()) {
 		SWKey *k = listKey.getElement();
-		std::cout << k->getRangeText();
+		std::cout << k->getShortRangeText();
 //		std::cout << (const char *)listKey;
 		if (k->userData) std::cout << " : " << (SW_u64)k->userData << "%";
 		std::cout << std::endl;

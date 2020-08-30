@@ -92,6 +92,7 @@ class SWOptionFilter;
  */
 class SWDLLEXPORT SWMgr {
 private:
+	ModMap utilModules;
 	bool mgrModeMultiMod;
 	bool augmentHome;
 	void commonInit(SWConfig *iconfig, SWConfig *isysconfig, bool autoload, SWFilterMgr *filterMgr, bool multiMod = false);
@@ -341,6 +342,12 @@ public:
 	 */
 	ModMap &getModules();
 	const ModMap &getModules() const { return const_cast<SWMgr *>(this)->getModules(); }
+
+	/** Utility modules are not meant for user to see as general addins, but instead are
+	 * modules which provide utility tools for frontends which may wish to use them.
+	 */
+	ModMap &getUtilModules();
+	const ModMap &getUtilModules() const { return const_cast<SWMgr *>(this)->getUtilModules(); }
 
 	/** Gets a specific module by name.  e.g. SWModule *kjv = myManager.getModule("KJV");
 	 * @param modName the name of the module to retrieve

@@ -1496,7 +1496,11 @@ SWLog::getSystemLog()->logDebug("libsword: SWMgr::createAllModules");
 					delete oldmod;
 				}
 				
-				Modules[newmod->getName()] = newmod;
+				// if it's not a utility module save it to Modules
+				if (strcmp("Utility", newmod->getType())) {
+					Modules[newmod->getName()] = newmod;
+				}
+				else	utilModules[newmod->getName()] = newmod;
 			}
 		}
 	}
@@ -1510,13 +1514,18 @@ void SWMgr::deleteAllModules() {
 	for (it = getModules().begin(); it != getModules().end(); ++it) {
 		delete (*it).second;
 	}
+	for (it = getUtilModules().begin(); it != getUtilModules().end(); ++it) {
+		delete (*it).second;
+	}
 
 	Modules.clear();
+	utilModules.clear();
 }
 
 
 void SWMgr::deleteModule(const char *modName) {
 	ModMap::iterator it = Modules.find(modName);
+	if (it == Modules.end()) it = utilModules.find(modName);
 	if (it != Modules.end()) {
 		delete (*it).second;
 		Modules.erase(it);
@@ -1536,6 +1545,7 @@ signed char SWMgr::setCipherKey(const char *modName, const char *key) {
 	// check if module exists
 	else {
 		it2 = Modules.find(modName);
+		if (it2 == Modules.end()) it2 = utilModules.find(modName);
 		if (it2 != Modules.end()) {
 			SWFilter *cipherFilter = new CipherFilter(key);
 			cipherFilters.insert(FilterMap::value_type(modName, cipherFilter));
@@ -1549,6 +1559,7 @@ signed char SWMgr::setCipherKey(const char *modName, const char *key) {
 
 
 ModMap &SWMgr::getModules() { return Modules; }
+ModMap &SWMgr::getUtilModules() { return utilModules; }
 
 SWBuf SWMgr::getHomeDir() { return FileMgr::getSystemFileMgr()->getHomeDir(); }
 

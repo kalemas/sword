@@ -1,7 +1,7 @@
 /***************************************************************************
  *
  * cipherfil.h -	class CipherFilter: an EncodingFilter which can
- * 			encipher an decipher a text stream based on
+ * 			encipher and decipher a text stream based on
  * 			a CipherKey
  *
  * $Id$
