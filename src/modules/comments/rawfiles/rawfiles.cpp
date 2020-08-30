@@ -1,8 +1,7 @@
 /******************************************************************************
  *
- *  rawfiles.cpp -	code for class 'RawFiles'- a module that produces HTML
- *			HREFs pointing to actual text desired.  Uses standard
- *			files:	ot and nt using indexs ??.bks ??.cps ??.vss
+ *  rawfiles.cpp -	code for class 'RawFiles'- a module that reads and writes
+ *			entries each to separate files on the filesystem
  *
  * $Id$
  *
