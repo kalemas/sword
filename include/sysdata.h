@@ -41,6 +41,10 @@ typedef signed int SW_s32;
 typedef unsigned int SW_u32;
 
 #ifdef OS_ANDROID
+__extension__ typedef __signed__ long long SW_s64;
+__extension__ typedef unsigned long long SW_u64;
+//typedef __s64 SW_s64;
+//typedef __u64 SW_u64;
 #elif defined(__GNUC__)
 __extension__ typedef __signed__ long long SW_s64;
 __extension__ typedef unsigned long long SW_u64;
