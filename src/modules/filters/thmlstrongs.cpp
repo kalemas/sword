@@ -94,6 +94,8 @@ char ThMLStrongs::processText(SWBuf &text, const SWKey *key, const SWModule *mod
 						module->getEntryAttributes()["Word"][wordstr]["PartCount"] = "1";
 						module->getEntryAttributes()["Word"][wordstr]["Lemma"] = val;
 						module->getEntryAttributes()["Word"][wordstr]["LemmaClass"] = "strong";
+						module->getEntryAttributes()["Word"][wordstr]["Lemma.1"] = val;
+						module->getEntryAttributes()["Word"][wordstr]["LemmaClass.1"] = "strong";
 						tmp = "";
 						tmp.append(text.c_str()+textStart, (int)(textEnd - textStart));
 						module->getEntryAttributes()["Word"][wordstr]["Text"] = tmp;
@@ -105,6 +107,8 @@ char ThMLStrongs::processText(SWBuf &text, const SWKey *key, const SWModule *mod
 						sprintf(wordstr, "%03d", word);
 						module->getEntryAttributes()["Word"][wordstr]["Morph"] = val;
 						module->getEntryAttributes()["Word"][wordstr]["MorphClass"] = "OLBMorph";
+						module->getEntryAttributes()["Word"][wordstr]["Morph.1"] = val;
+						module->getEntryAttributes()["Word"][wordstr]["MorphClass.1"] = "OLBMorph";
 */
 						word--;	// for now, completely ignore this word attribute.
 					}
@@ -133,6 +137,7 @@ char ThMLStrongs::processText(SWBuf &text, const SWKey *key, const SWModule *mod
 								strcpy(val, "robinson");
 							}
 							module->getEntryAttributes()["Word"][wordstr]["MorphClass"] = val;
+							module->getEntryAttributes()["Word"][wordstr]["MorphClass.1"] = val;
 						}
 						if (!strncmp(ch, "value=\"", 7)) {
 							valto = val;
@@ -141,6 +146,7 @@ char ThMLStrongs::processText(SWBuf &text, const SWKey *key, const SWModule *mod
 							*valto = 0;
 							sprintf(wordstr, "%03d", word-1);
 							module->getEntryAttributes()["Word"][wordstr]["Morph"] = val;
+							module->getEntryAttributes()["Word"][wordstr]["Morph.1"] = val;
 						}
 					}
 					newText = true;

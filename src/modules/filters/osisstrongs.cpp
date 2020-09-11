@@ -138,13 +138,11 @@ char OSISStrongs::processText(SWBuf &text, const SWKey *key, const SWModule *mod
 							morphClass += mClass;
 							morph += mp;
 							mp.replaceBytes("+", ' ');
-							if (count > 1) {
-								SWBuf tmp;
-								tmp.setFormatted("Morph.%d", i+1);
-								module->getEntryAttributes()["Word"][wordstr][tmp] = mp;
-								tmp.setFormatted("MorphClass.%d", i+1);
-								module->getEntryAttributes()["Word"][wordstr][tmp] = mClass;
-							}
+							SWBuf tmp;
+							tmp.setFormatted("Morph.%d", i+1);
+							module->getEntryAttributes()["Word"][wordstr][tmp] = mp;
+							tmp.setFormatted("MorphClass.%d", i+1);
+							module->getEntryAttributes()["Word"][wordstr][tmp] = mClass;
 						} while (++i < count);
 					}
 
@@ -182,13 +180,11 @@ char OSISStrongs::processText(SWBuf &text, const SWKey *key, const SWModule *mod
 							lemma += l;
 							l.replaceBytes("+", ' ');
 							lemmaClass += lClass;
-							if (count > 1) {
-								SWBuf tmp;
-								tmp.setFormatted("Lemma.%d", i+1);
-								module->getEntryAttributes()["Word"][wordstr][tmp] = l;
-								tmp.setFormatted("LemmaClass.%d", i+1);
-								module->getEntryAttributes()["Word"][wordstr][tmp] = lClass;
-							}
+							SWBuf tmp;
+							tmp.setFormatted("Lemma.%d", i+1);
+							module->getEntryAttributes()["Word"][wordstr][tmp] = l;
+							tmp.setFormatted("LemmaClass.%d", i+1);
+							module->getEntryAttributes()["Word"][wordstr][tmp] = lClass;
 						} while (++i < count);
 						module->getEntryAttributes()["Word"][wordstr]["PartCount"].setFormatted("%d", count);
 					}
@@ -205,11 +201,9 @@ char OSISStrongs::processText(SWBuf &text, const SWKey *key, const SWModule *mod
 							mp += attrib;
 							src += mp;
 							mp.replaceBytes("+", ' ');
-							if (count > 1) {
-								SWBuf tmp;
-								tmp.setFormatted("Src.%d", i+1);
-								module->getEntryAttributes()["Word"][wordstr][tmp] = mp;
-							}
+							SWBuf tmp;
+							tmp.setFormatted("Src.%d", i+1);
+							module->getEntryAttributes()["Word"][wordstr][tmp] = mp;
 						} while (++i < count);
 					}
 
