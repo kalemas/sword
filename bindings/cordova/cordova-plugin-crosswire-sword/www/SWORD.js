@@ -413,6 +413,13 @@ SWMgr.prototype.setGlobalOption = function(option, value, callback) {
 	);
 }
 
+SWMgr.prototype.getPrefixPath = function(callback) {
+	exec(callback?callback:function() {},
+		function(err) { utils.alert('[ERROR] problem: ' + err); },
+		"SWORD", "SWMgr_getPrefixPath", []
+	);
+}
+
 function HTTPUtils() {}
 
 HTTPUtils.prototype.METHOD_GET  =  0;
@@ -431,7 +438,6 @@ HTTPUtils.prototype.makeRequest = function(url, postData, callback, method) {
 
 
 /*
-	public native String      getPrefixPath();
 	public native String      getConfigPath();
 	public native String      getGlobalOption(String option);
 	public native String      getGlobalOptionTip(String option);

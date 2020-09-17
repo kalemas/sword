@@ -451,6 +451,10 @@ Log.d(TAG, "... finished renderChapter");
 			String translated = mgr.translate(text, locale);
 			callbackContext.success(translated);
 		}
+		else if (action.equals("SWMgr_getPrefixPath")) {
+			String prefixPath = mgr.getPrefixPath();
+			callbackContext.success(prefixPath);
+		}
 		else if (action.equals("SWMgr_setGlobalOption")) {
 			String option = args.getString(0);
 			String value = args.getString(1);

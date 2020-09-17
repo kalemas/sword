@@ -290,6 +290,17 @@ debugPrint("initMgr, mgr: " + String(describing: mgr))
         let retVal = translated == nil ? nil : String(cString:translated!)
         self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: retVal), callbackId: command.callbackId)
     }
+    
+
+    @objc(SWMgr_getPrefixPath:)
+    func SWMgr_getPrefixPath(command: CDVInvokedUrlCommand) {
+
+        initMgr()
+
+        let prefixPath = org_crosswire_sword_SWMgr_getPrefixPath(mgr)
+        let retVal = prefixPath == nil ? nil : String(cString:prefixPath!)
+        self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: retVal), callbackId: command.callbackId)
+    }
 
     
     @objc(echo:)
