@@ -78,14 +78,14 @@
 SWORD_NAMESPACE_START
 
 
-int FileMgr::CREAT = O_CREAT;
-int FileMgr::APPEND = O_APPEND;
-int FileMgr::TRUNC = O_TRUNC;
-int FileMgr::RDONLY = O_RDONLY;
-int FileMgr::RDWR = O_RDWR;
-int FileMgr::WRONLY = O_WRONLY;
-int FileMgr::IREAD = S_IREAD;
-int FileMgr::IWRITE = S_IWRITE;
+unsigned int FileMgr::CREAT = O_CREAT;
+unsigned int FileMgr::APPEND = O_APPEND;
+unsigned int FileMgr::TRUNC = O_TRUNC;
+unsigned int FileMgr::RDONLY = O_RDONLY;
+unsigned int FileMgr::RDWR = O_RDWR;
+unsigned int FileMgr::WRONLY = O_WRONLY;
+unsigned int FileMgr::IREAD = S_IREAD;
+unsigned int FileMgr::IWRITE = S_IWRITE;
 
 
 // ---------------- statics -----------------

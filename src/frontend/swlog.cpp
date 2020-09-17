@@ -37,11 +37,11 @@ SWORD_NAMESPACE_START
 
 SWLog *SWLog::systemLog = 0;
 
-const int SWLog::LOG_ERROR     = 1;
-const int SWLog::LOG_WARN      = 2;
-const int SWLog::LOG_INFO      = 3;
-const int SWLog::LOG_TIMEDINFO = 4;
-const int SWLog::LOG_DEBUG     = 5;
+const char SWLog::LOG_ERROR     = 1;
+const char SWLog::LOG_WARN      = 2;
+const char SWLog::LOG_INFO      = 3;
+const char SWLog::LOG_TIMEDINFO = 4;
+const char SWLog::LOG_DEBUG     = 5;
 
 SWLog *SWLog::getSystemLog() {
 	static class __staticSystemLog {

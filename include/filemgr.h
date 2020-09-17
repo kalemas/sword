@@ -69,14 +69,14 @@ class SWDLLEXPORT FileMgr : public SWCacher {
 protected:
 	static FileMgr *systemFileMgr;
 public:
-	static int CREAT;
-	static int APPEND;
-	static int TRUNC;
-	static int RDONLY;
-	static int RDWR;
-	static int WRONLY;
-	static int IREAD;
-	static int IWRITE;
+	static unsigned int CREAT;
+	static unsigned int APPEND;
+	static unsigned int TRUNC;
+	static unsigned int RDONLY;
+	static unsigned int RDWR;
+	static unsigned int WRONLY;
+	static unsigned int IREAD;
+	static unsigned int IWRITE;
 
 	/** Maximum number of open files set in the constructor.
 	* determines the max number of real system files that
@@ -105,6 +105,7 @@ public:
 	* @return FileDesc object for the requested file.
 	*/
 	FileDesc *open(const char *path, int mode, bool tryDowngrade);
+	FileDesc *open(const char *path, unsigned int mode, bool tryDowngrade) { return this->open(path, (int)mode, tryDowngrade); }
 
 	/** Open a file and return a FileDesc for it.
 	* The file itself will only be opened when FileDesc::getFd() is called.
@@ -114,6 +115,7 @@ public:
 	* @param tryDowngrade
 	* @return FileDesc object for the requested file.
 	*/
+	FileDesc *open(const char *path, unsigned int mode, unsigned int perms = IREAD | IWRITE, bool tryDowngrade = false) { return this->open(path, (int)mode, (int)perms, tryDowngrade); }
 	FileDesc *open(const char *path, int mode, int perms = IREAD | IWRITE, bool tryDowngrade = false);
 
 	/** Close a given file and delete its FileDesc object.

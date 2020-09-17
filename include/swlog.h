@@ -38,11 +38,11 @@ protected:
 
 public:
 
-	static const int LOG_ERROR;
-	static const int LOG_WARN;
-	static const int LOG_INFO;
-	static const int LOG_TIMEDINFO;
-	static const int LOG_DEBUG;
+	static const char LOG_ERROR;
+	static const char LOG_WARN;
+	static const char LOG_INFO;
+	static const char LOG_TIMEDINFO;
+	static const char LOG_DEBUG;
 
 	static SWLog *getSystemLog();
 	static void setSystemLog(SWLog *newLogger);
