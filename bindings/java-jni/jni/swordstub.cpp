@@ -429,7 +429,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_getModInfo
 	init(env);
 
 	int size = 0;
-	for (sword::ModMap::iterator it = mgr->Modules.begin(); it != mgr->Modules.end(); ++it) {
+	for (sword::ModMap::iterator it = mgr->getModules().begin(); it != mgr->getModules().end(); ++it) {
 //		if ((!(it->second->getConfigEntry("CipherKey"))) || (*(it->second->getConfigEntry("CipherKey"))))
 			size++;
 	}
@@ -451,7 +451,7 @@ SWLog::getSystemLog()->logDebug("getModInfoList returning %d length array\n", si
 	jobjectArray ret = (jobjectArray) env->NewObjectArray(size, clazzModInfo, NULL);
 
 	int i = 0;
-	for (sword::ModMap::iterator it = mgr->Modules.begin(); it != mgr->Modules.end(); ++it) {
+	for (sword::ModMap::iterator it = mgr->getModules().begin(); it != mgr->getModules().end(); ++it) {
 		SWModule *module = it->second;
 
 		SWBuf type = module->getType();
@@ -1884,12 +1884,10 @@ JNIEXPORT jint JNICALL Java_org_crosswire_android_sword_InstallMgr_uninstallModu
 
 SWLog::getSystemLog()->logDebug("uninstallModule %s\n", modName);
 
-	SWModule *module;
-	ModMap::iterator it = mgr->Modules.find(modName);
-	if (it == mgr->Modules.end()) {
+	const SWModule *module = mgr->getModule(modName);
+	if (!module) {
 		return -2;
 	}
-	module = it->second;
 	int retVal = installMgr->removeModule(mgr, module->getName());
 
 	env->ReleaseStringUTFChars(modNameJS, modName);
@@ -2073,18 +2071,15 @@ SWLog::getSystemLog()->logDebug("remoteInstallModule: sourceName: %s\n", sourceN
 
 	InstallSource *is = source->second;
 	SWMgr *rmgr = is->getMgr();
-	SWModule *module;
 
 	const char *modName = env->GetStringUTFChars(modNameJS, NULL);
 SWLog::getSystemLog()->logDebug("remoteInstallModule: modName: %s\n", modName);
-	ModMap::iterator it = rmgr->Modules.find(modName);
+	const SWModule *module = rmgr->getModule(modName);
 	env->ReleaseStringUTFChars(modNameJS, modName);
 
-	if (it == rmgr->Modules.end()) {
+	if (!module) {
 		return -4;
 	}
-
-	module = it->second;
 
 	int error = installMgr->installModule(mgr, 0, module->getName(), is);
 
