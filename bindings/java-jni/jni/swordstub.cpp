@@ -60,26 +60,26 @@ using namespace sword;
 
 namespace {
 bool firstInit = true;
-JavaVM *javaVM = 0;
-WebMgr *mgr = 0;
-InstallMgr *installMgr = 0;
-LocaleMgr *localeMgr = 0;
+JavaVM *javaVM = nullptr;
+WebMgr *mgr = nullptr;
+InstallMgr *installMgr = nullptr;
 
 #ifdef BIBLESYNC
-BibleSync *bibleSync = 0;
+BibleSync *bibleSync = nullptr;
 using std::string;
-jobject bibleSyncListener = 0;
-JNIEnv *bibleSyncListenerEnv = 0;
+jobject bibleSyncListener = nullptr;
+JNIEnv *bibleSyncListenerEnv = nullptr;
 #endif
-static SWBuf STORAGE_BASE;
+SWBuf STORAGE_BASE;
 const char *SDCARD_PATH = "/sdcard/sword";
 const char *AND_BIBLE_MODULES_PATH = "/sdcard/Android/data/net.bible.android.activity/files";
 //ANativeActivity *_activity;
 
 // this method converts a UTF8 encoded SWBuf to a Java String, avoiding a bug in jni NewStringUTF
-jstring strToUTF8Java(JNIEnv *env, SWBuf str) {
-	jbyteArray array = env->NewByteArray(str.size());
-	env->SetByteArrayRegion(array, 0, str.size(), (const jbyte *)str.c_str());
+jstring strToUTF8Java(JNIEnv *env, const SWBuf &str) {
+	const SWBuf safeStr = assureValidUTF8(str.c_str());
+	jbyteArray array = env->NewByteArray(safeStr.size());
+	env->SetByteArrayRegion(array, 0, safeStr.size(), (const jbyte *)safeStr.c_str());
 	jstring strEncode = env->NewStringUTF("UTF-8");
 	jclass cls = env->FindClass("java/lang/String");
 	jmethodID ctor = env->GetMethodID(cls, "<init>", "([BLjava/lang/String;)V");
@@ -98,7 +98,7 @@ public:
 	jobject callback;
 	unsigned long last;
 
-	InstallStatusReporter() : env(0), callback(0), last(0) {
+	InstallStatusReporter() : env(nullptr), callback(nullptr), last(0) {
 	}
 
 	void init(JNIEnv *env, jobject callback) {
@@ -107,7 +107,7 @@ public:
 		last = 0xffffffff;
 	}
 
-	virtual void update(unsigned long totalBytes, unsigned long completedBytes) {
+	void update(unsigned long totalBytes, unsigned long completedBytes) override {
 
 		// assert we have a callback
 		if (!callback) return;
@@ -116,28 +116,28 @@ public:
 			last = completedBytes;
 			jclass cls = env->GetObjectClass(callback);
 			jmethodID mid = env->GetMethodID(cls, "update", "(JJ)V");
-			if (mid != 0) {
+			if (mid) {
 				env->CallVoidMethod(callback, mid, (jlong)totalBytes, (jlong)completedBytes);
 			}
 			env->DeleteLocalRef(cls);
 		}
 	}
 
-	virtual void preStatus(long totalBytes, long completedBytes, const char *message) {
+	void preStatus(long totalBytes, long completedBytes, const char *message) override {
 
 		// assert we have a callback
 		if (!callback) return;
 
 		jclass cls = env->GetObjectClass(callback);
 		jmethodID mid = env->GetMethodID(cls, "preStatus", "(JJLjava/lang/String;)V");
-		if (mid != 0) {
-			jstring msg = strToUTF8Java(env, assureValidUTF8(message));
+		if (mid != nullptr) {
+			jstring msg = strToUTF8Java(env, message);
 			env->CallVoidMethod(callback, mid, (jlong)totalBytes, (jlong)completedBytes, msg);
 			env->DeleteLocalRef(msg);
 		}
 		env->DeleteLocalRef(cls);
 	}
-} *installStatusReporter = 0;
+} *installStatusReporter = nullptr;
 bool disclaimerConfirmed = false;
 
 class AndroidLogger : public SWLog {
@@ -151,7 +151,7 @@ public:
 		levelMapping[SWLog::LOG_TIMEDINFO] = ANDROID_LOG_INFO;
 		levelMapping[SWLog::LOG_DEBUG] = ANDROID_LOG_DEBUG;
 	}
-	virtual void logMessage(const char *message, int level) const {
+	void logMessage(const char *message, int level) const override {
 		SWBuf msg = message;
 		if (msg.size() > 512) msg.setSize(512);
 		__android_log_write(levelMapping[level], "libsword.so", msg.c_str());
@@ -160,23 +160,23 @@ public:
 
 class AndroidStringMgr : public StringMgr {
 public:
-	virtual char *upperUTF8(char *buf, unsigned int maxLen = 0) const {
+	char *upperUTF8(char *buf, unsigned int maxLen = 0) const override {
 		if (!maxLen) maxLen = strlen(buf)+1;
-		JNIEnv *myThreadsEnv = 0;
+		JNIEnv *myThreadsEnv = nullptr;
 
 		// double check it's all ok
 		int getEnvStat = javaVM->GetEnv((void**)&myThreadsEnv, JNI_VERSION_1_6);
 		// should never happen
 		if (getEnvStat == JNI_EDETACHED) {
 			std::cout << "GetEnv: not attached" << std::endl;
-			if (javaVM->AttachCurrentThread(&myThreadsEnv, NULL) != 0) {
+			if (javaVM->AttachCurrentThread(&myThreadsEnv, nullptr) != 0) {
 				std::cout << "Failed to attach" << std::endl;
 			}
 		}
 
 		if (myThreadsEnv) {
-			SWBuf validBuf = assureValidUTF8(buf);
-			long bufLen = validBuf.size();
+			const SWBuf validBuf = assureValidUTF8(buf);
+			unsigned long bufLen = validBuf.size();
 			jbyteArray array = myThreadsEnv->NewByteArray(bufLen);
 			myThreadsEnv->SetByteArrayRegion(array, 0, bufLen, (const jbyte *)validBuf.c_str());
 			jstring strEncode = myThreadsEnv->NewStringUTF("UTF-8");
@@ -184,9 +184,9 @@ public:
 			jmethodID ctor = myThreadsEnv->GetMethodID(cls, "<init>", "([BLjava/lang/String;)V");
 			jstring object = (jstring) myThreadsEnv->NewObject(cls, ctor, array, strEncode);
 			jmethodID toUpperCase = myThreadsEnv->GetMethodID(cls, "toUpperCase", "()Ljava/lang/String;");
-			jstring objectUpper = (jstring)myThreadsEnv->CallObjectMethod(object, toUpperCase, NULL);
+			jstring objectUpper = (jstring)myThreadsEnv->CallObjectMethod(object, toUpperCase);
 
-			const char *ret = (objectUpper?myThreadsEnv->GetStringUTFChars(objectUpper, NULL):0);
+			const char *ret = (objectUpper?myThreadsEnv->GetStringUTFChars(objectUpper, nullptr):nullptr);
 			if (ret) {
 				unsigned long retLen = strlen(ret);
 				if (retLen >= maxLen) retLen = maxLen-1;
@@ -206,7 +206,7 @@ public:
 		return buf;
 	}
 protected:
-	virtual bool supportsUnicode() const { return true; }
+	bool supportsUnicode() const override { return true; }
 };
 
 static void init(JNIEnv *env) {
@@ -255,19 +255,19 @@ SWLog::getSystemLog()->logDebug("libsword: init() saving basic: %s", confPath.c_
 SWLog::getSystemLog()->logDebug("libsword: extraConfig %s at path: %s", exists?"Exists":"Absent", confPath.c_str());
 
 SWLog::getSystemLog()->logDebug("libsword: init() creating WebMgr using path: %s", baseDir.c_str());
-		mgr = new WebMgr(baseDir, exists?confPath.c_str():0);
+		mgr = new WebMgr(baseDir, exists?confPath.c_str():nullptr);
 
 SWLog::getSystemLog()->logDebug("libsword: init() augmenting modules from: %s", AND_BIBLE_MODULES_PATH);
 		// for And Bible modules
 		mgr->augmentModules(AND_BIBLE_MODULES_PATH, true);
 		// if our basedir isn't the sdcard, let's augment the sdcard
-		if (strcmp(baseDir.c_str(), SDCARD_PATH)) {
+		if (strcmp(baseDir.c_str(), SDCARD_PATH)) { // NOLINT(bugprone-suspicious-string-compare)
 SWLog::getSystemLog()->logDebug("libsword: init() augmenting modules from: %s", SDCARD_PATH);
 			mgr->augmentModules(SDCARD_PATH, true);
 		}
 		// if our basedir isn't the private storage base, let's augment the private
-		// storage base in case a prevous version of the app stored modules there.
-		if (strcmp(baseDir.c_str(), STORAGE_BASE)) {
+		// storage base in case a previous version of the app stored modules there.
+		if (strcmp(baseDir.c_str(), STORAGE_BASE)) { // NOLINT(bugprone-suspicious-string-compare)
 SWLog::getSystemLog()->logDebug("libsword: init() augmenting modules from: %s", STORAGE_BASE.c_str());
 			mgr->augmentModules(STORAGE_BASE, true);
 		}
@@ -283,7 +283,7 @@ SWLog::getSystemLog()->logDebug("libsword: init() end.");
 	}
 }
 
-static void initInstall(JNIEnv *env, jobject progressReporter = 0) {
+void initInstall(JNIEnv *env, jobject progressReporter = nullptr) {
 
 	if (!installStatusReporter) {
 		installStatusReporter = new InstallStatusReporter();
@@ -321,9 +321,9 @@ SWLog::getSystemLog()->logDebug("initInstall: instantiated InstallMgr with baseD
 #ifdef BIBLESYNC
 void bibleSyncCallback(char cmd, string pkt_uuid, string bible, string ref, string alt, string group, string domain, string info, string dump) {
 SWLog::getSystemLog()->logDebug("bibleSync callback msg: %c; pkt_uuid: %s; bible: %s; ref: %s; alt: %s; group: %s; domain: %s; info: %s; dump: %s", cmd, pkt_uuid.c_str(), bible.c_str(), ref.c_str(), alt.c_str(), group.c_str(), domain.c_str(), info.c_str(), dump.c_str());
-	if (::bibleSyncListener) {
+	if (bibleSyncListener) {
 		SWLog::getSystemLog()->logDebug("bibleSync listener is true");
-		jclass cls = bibleSyncListenerEnv->GetObjectClass(::bibleSyncListener);
+		jclass cls = bibleSyncListenerEnv->GetObjectClass(bibleSyncListener);
 		switch (cmd) {
 			// error
 			case 'E':
@@ -345,7 +345,7 @@ SWLog::getSystemLog()->logDebug("bibleSync callback msg: %c; pkt_uuid: %s; bible
 					SWLog::getSystemLog()->logDebug("bibleSync listener mid is available");
 					jstring user = strToUTF8Java(bibleSyncListenerEnv, group.c_str());
 					jstring msg = strToUTF8Java(bibleSyncListenerEnv, alt.c_str());
-					bibleSyncListenerEnv->CallVoidMethod(::bibleSyncListener, mid, user, msg);
+					bibleSyncListenerEnv->CallVoidMethod(bibleSyncListener, mid, user, msg);
 					bibleSyncListenerEnv->DeleteLocalRef(user);
 					bibleSyncListenerEnv->DeleteLocalRef(msg);
 				}
@@ -359,11 +359,14 @@ SWLog::getSystemLog()->logDebug("bibleSync callback msg: %c; pkt_uuid: %s; bible
 				if (mid) {
 					SWLog::getSystemLog()->logDebug("bibleSync listener mid is available");
 					jstring msg = strToUTF8Java(bibleSyncListenerEnv, ref.c_str());
-					bibleSyncListenerEnv->CallVoidMethod(::bibleSyncListener, mid, msg);
+					bibleSyncListenerEnv->CallVoidMethod(bibleSyncListener, mid, msg);
 					bibleSyncListenerEnv->DeleteLocalRef(msg);
 				}
 				break;
 			}
+			default:
+				SWLog::getSystemLog()->logDebug("bibleSync listener got unhandled cmd: '%c'", cmd);
+				break;
 		}
 		SWLog::getSystemLog()->logDebug("bibleSync listener deleting local ref to cls");
 		bibleSyncListenerEnv->DeleteLocalRef(cls);
@@ -379,8 +382,7 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWMgr_version
 
 	init(env);
 
-	SWVersion v;
-	return strToUTF8Java(env, (const char *)v.currentVersion);
+	return strToUTF8Java(env, SWVersion::currentVersion.getText());
 }
 
 
@@ -394,15 +396,15 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_reInit
 
 	jclass swmgrClass = env->GetObjectClass(me);
 	jmethodID getStorageBasePath = env->GetMethodID(swmgrClass, "getStorageBasePath", "()Ljava/lang/String;");
-	jstring basePathJS = (jstring)env->CallObjectMethod(me, getStorageBasePath, NULL);
+	jstring basePathJS = (jstring)env->CallObjectMethod(me, getStorageBasePath);
 
-	const char *basePath = (basePathJS?env->GetStringUTFChars(basePathJS, NULL):0);
+	const char *basePath = (basePathJS?env->GetStringUTFChars(basePathJS, nullptr):nullptr);
 	STORAGE_BASE = basePath;
 	env->ReleaseStringUTFChars(basePathJS, basePath);
 	SWLog::getSystemLog()->logDebug("setting STORAGE_BASE to: %s", STORAGE_BASE.c_str());
 
 	delete mgr;
-	mgr = 0;
+	mgr = nullptr;
 }
 
 
@@ -429,7 +431,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_getModInfo
 	init(env);
 
 	int size = 0;
-	for (sword::ModMap::iterator it = mgr->getModules().begin(); it != mgr->getModules().end(); ++it) {
+	for (sword::ModMap::const_iterator it = mgr->getModules().begin(); it != mgr->getModules().end(); ++it) {
 //		if ((!(it->second->getConfigEntry("CipherKey"))) || (*(it->second->getConfigEntry("CipherKey"))))
 			size++;
 	}
@@ -448,11 +450,11 @@ SWLog::getSystemLog()->logDebug("getModInfoList returning %d length array\n", si
 	jfieldID cipherKeyID= env->GetFieldID(clazzModInfo, "cipherKey",   "Ljava/lang/String;");
 	jfieldID featuresID = env->GetFieldID(clazzModInfo, "features",    "[Ljava/lang/String;");
 
-	jobjectArray ret = (jobjectArray) env->NewObjectArray(size, clazzModInfo, NULL);
+	jobjectArray ret = (jobjectArray) env->NewObjectArray(size, clazzModInfo, nullptr);
 
 	int i = 0;
-	for (sword::ModMap::iterator it = mgr->getModules().begin(); it != mgr->getModules().end(); ++it) {
-		SWModule *module = it->second;
+	for (sword::ModMap::const_iterator it = mgr->getModules().begin(); it != mgr->getModules().end(); ++it) {
+		const SWModule *module = it->second;
 
 		SWBuf type = module->getType();
 		SWBuf cat = module->getConfigEntry("Category");
@@ -462,29 +464,29 @@ SWLog::getSystemLog()->logDebug("getModInfoList returning %d length array\n", si
 		jobject modInfo = env->AllocObject(clazzModInfo); 
 
 		jstring val;
-		val = strToUTF8Java(env, assureValidUTF8(module->getName()));        env->SetObjectField(modInfo, nameID     , val); env->DeleteLocalRef(val);
-		val = strToUTF8Java(env, assureValidUTF8(module->getDescription())); env->SetObjectField(modInfo, descID     , val); env->DeleteLocalRef(val);
-		val = strToUTF8Java(env, assureValidUTF8(type.c_str()));             env->SetObjectField(modInfo, catID      , val); env->DeleteLocalRef(val);
-		val = strToUTF8Java(env, assureValidUTF8(module->getLanguage()));    env->SetObjectField(modInfo, langID     , val); env->DeleteLocalRef(val);
-		val = strToUTF8Java(env, assureValidUTF8(version.c_str()));          env->SetObjectField(modInfo, versionID  , val); env->DeleteLocalRef(val);
-		val = strToUTF8Java(env, assureValidUTF8(""));                       env->SetObjectField(modInfo, deltaID    , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, module->getName());        env->SetObjectField(modInfo, nameID     , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, module->getDescription()); env->SetObjectField(modInfo, descID     , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, type);                         env->SetObjectField(modInfo, catID      , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, module->getLanguage());    env->SetObjectField(modInfo, langID     , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, version);                      env->SetObjectField(modInfo, versionID  , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, "");                       env->SetObjectField(modInfo, deltaID    , val); env->DeleteLocalRef(val);
 		const char *cipherKey = module->getConfigEntry("CipherKey");
 		if (cipherKey) {
-			val = strToUTF8Java(env, assureValidUTF8(cipherKey));        env->SetObjectField(modInfo, cipherKeyID, val); env->DeleteLocalRef(val);
+			val = strToUTF8Java(env, cipherKey);        env->SetObjectField(modInfo, cipherKeyID, val); env->DeleteLocalRef(val);
 		}
-		else                                                                env->SetObjectField(modInfo, cipherKeyID, NULL);
+		else                                                                env->SetObjectField(modInfo, cipherKeyID, (jobject) nullptr);
 
 		ConfigEntMap::const_iterator start = module->getConfig().lower_bound("Feature");
 		ConfigEntMap::const_iterator end   = module->getConfig().upper_bound("Feature");
 
 		int featureCount = 0;
-		for (ConfigEntMap::const_iterator it = start; it != end; ++it) {
+		for (ConfigEntMap::const_iterator fit = start; fit != end; ++fit) {
 			++featureCount;
 		}
-		jobjectArray features = (jobjectArray) env->NewObjectArray(featureCount, clazzString, NULL);
+		jobjectArray features = (jobjectArray) env->NewObjectArray(featureCount, clazzString, nullptr);
 		featureCount = 0;
-		for (ConfigEntMap::const_iterator it = start; it != end; ++it) {
-			env->SetObjectArrayElement(features, featureCount++, strToUTF8Java(env, assureValidUTF8(it->second)));
+		for (ConfigEntMap::const_iterator fit = start; fit != end; ++fit) {
+			env->SetObjectArrayElement(features, featureCount++, strToUTF8Java(env, fit->second));
 		}
 		env->SetObjectField(modInfo, featuresID, features);
 		env->DeleteLocalRef(features);
@@ -494,6 +496,9 @@ SWLog::getSystemLog()->logDebug("getModInfoList returning %d length array\n", si
 		env->DeleteLocalRef(modInfo);
 
 	}
+
+	env->DeleteLocalRef(ret);
+
 	return ret;
 }
 
@@ -507,9 +512,9 @@ JNIEXPORT jobject JNICALL Java_org_crosswire_android_sword_SWMgr_getModuleByName
 
 	init(env);
 
-	jobject retVal = 0;
+	jobject retVal = nullptr;
 
-	const char *modName = env->GetStringUTFChars(modNameJS, NULL);
+	const char *modName = env->GetStringUTFChars(modNameJS, nullptr);
 	sword::SWModule *module = mgr->getModule(modName);
 	env->ReleaseStringUTFChars(modNameJS, modName);
 
@@ -520,9 +525,9 @@ JNIEXPORT jobject JNICALL Java_org_crosswire_android_sword_SWMgr_getModuleByName
 		jfieldID fieldID;
 		jclass clazzSWModule = env->FindClass("org/crosswire/android/sword/SWModule");
 		retVal = env->AllocObject(clazzSWModule); 
-		fieldID = env->GetFieldID(clazzSWModule, "name", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, assureValidUTF8(module->getName())));
-		fieldID = env->GetFieldID(clazzSWModule, "description", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, assureValidUTF8(module->getDescription())));
-		fieldID = env->GetFieldID(clazzSWModule, "category", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, assureValidUTF8(type.c_str())));
+		fieldID = env->GetFieldID(clazzSWModule, "name", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, module->getName()));
+		fieldID = env->GetFieldID(clazzSWModule, "description", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, module->getDescription()));
+		fieldID = env->GetFieldID(clazzSWModule, "category", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, type.c_str()));
 	}
 	return retVal;
 }
@@ -538,8 +543,8 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_setGlobalOption
 
 	init(env);
 
-	const char *option = env->GetStringUTFChars(optionJS, NULL);
-	const char *value  = env->GetStringUTFChars(valueJS, NULL);
+	const char *option = env->GetStringUTFChars(optionJS, nullptr);
+	const char *value  = env->GetStringUTFChars(valueJS, nullptr);
 
 	mgr->setGlobalOption(option, value);
 
@@ -558,13 +563,13 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWMgr_getGlobalOption
 
 	init(env);
 
-	const char *option = env->GetStringUTFChars(optionJS, NULL);
+	const char *option = env->GetStringUTFChars(optionJS, nullptr);
 
 	SWBuf value = mgr->getGlobalOption(option);
 
 	env->ReleaseStringUTFChars(optionJS, option);
 
-	return strToUTF8Java(env, assureValidUTF8(value));
+	return strToUTF8Java(env, value);
 }
 
 
@@ -578,13 +583,13 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWMgr_getGlobalOption
 
 	init(env);
 
-	const char *option = env->GetStringUTFChars(optionJS, NULL);
+	const char *option = env->GetStringUTFChars(optionJS, nullptr);
 
 	SWBuf value = mgr->getGlobalOptionTip(option);
 
 	env->ReleaseStringUTFChars(optionJS, option);
 
-	return strToUTF8Java(env, assureValidUTF8(value));
+	return strToUTF8Java(env, value);
 }
 
 
@@ -598,18 +603,18 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWMgr_filterText
 
 	init(env);
 
-	const char *filterName = env->GetStringUTFChars(filterNameJS, NULL);
-	const char *text  = env->GetStringUTFChars(textJS, NULL);
+	const char *filterName = env->GetStringUTFChars(filterNameJS, nullptr);
+	const char *text  = env->GetStringUTFChars(textJS, nullptr);
 
 	SWBuf buf = text;
 	// hmmm, in the future, provide a param to specify filter value maybe?
 	mgr->setGlobalOption("Greek Accents", "Off");
-	char errStatus = mgr->filterText(filterName, buf);
+	mgr->filterText(filterName, buf);
 
 	env->ReleaseStringUTFChars(textJS, text);
 	env->ReleaseStringUTFChars(filterNameJS, filterName);
 
-	return strToUTF8Java(env, assureValidUTF8(buf));
+	return strToUTF8Java(env, buf);
 }
 
 
@@ -625,16 +630,16 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_getGlobalO
 
 	sword::StringList options = mgr->getGlobalOptions();
 	int count = 0;
-	for (sword::StringList::iterator it = options.begin(); it != options.end(); ++it) {
+	for (sword::StringList::const_iterator it = options.begin(); it != options.end(); ++it) {
 		count++;
 	}
 
 	jclass clazzString = env->FindClass("java/lang/String");
-	jobjectArray ret = (jobjectArray) env->NewObjectArray(count, clazzString, NULL);
+	jobjectArray ret = (jobjectArray) env->NewObjectArray(count, clazzString, nullptr);
 
 	count = 0;
-	for (sword::StringList::iterator it = options.begin(); it != options.end(); ++it) {
-		jstring s = strToUTF8Java(env, assureValidUTF8(*it));
+	for (sword::StringList::const_iterator it = options.begin(); it != options.end(); ++it) {
+		jstring s = strToUTF8Java(env, *it);
 		env->SetObjectArrayElement(ret, count++, s);
 		env->DeleteLocalRef(s);
 	}
@@ -667,16 +672,16 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_getExtraCo
 			count++;
 		}
 		SWLog::getSystemLog()->logDebug("libsword: %d sections found in extraConfig", count);
-		ret = (jobjectArray) env->NewObjectArray(count, clazzString, NULL);
+		ret = (jobjectArray) env->NewObjectArray(count, clazzString, nullptr);
 		count = 0;
 		for (sit = config.getSections().begin(); sit != config.getSections().end(); ++sit) {
-			jstring s = strToUTF8Java(env, assureValidUTF8(sit->first.c_str()));
+			jstring s = strToUTF8Java(env, sit->first);
 			env->SetObjectArrayElement(ret, count++, s);
 			env->DeleteLocalRef(s);
 		}
 	}
 	else {
-		ret = (jobjectArray) env->NewObjectArray(0, clazzString, NULL);
+		ret = (jobjectArray) env->NewObjectArray(0, clazzString, nullptr);
 	}
 
 	return ret;
@@ -693,7 +698,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_getExtraCo
 
 	init(env);
 
-	const char *s = env->GetStringUTFChars(section, NULL);
+	const char *s = env->GetStringUTFChars(section, nullptr);
 
 	SWBuf mySection = s;
 
@@ -713,20 +718,20 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_getExtraCo
 			for (it = sit->second.begin(); it != sit->second.end(); ++it) {
 				count++;
 			}
-			ret = (jobjectArray) env->NewObjectArray(count, clazzString, NULL);
+			ret = (jobjectArray) env->NewObjectArray(count, clazzString, nullptr);
 			count = 0;
 			for (it = sit->second.begin(); it != sit->second.end(); ++it) {
-			   	jstring s = strToUTF8Java(env, assureValidUTF8(it->first.c_str()));
-				env->SetObjectArrayElement(ret, count++, s);
-				env->DeleteLocalRef(s);
+			   	jstring ss = strToUTF8Java(env, it->first);
+				env->SetObjectArrayElement(ret, count++, ss);
+				env->DeleteLocalRef(ss);
 			}
 		}
 		else {
-			ret = (jobjectArray) env->NewObjectArray(0, clazzString, NULL);
+			ret = (jobjectArray) env->NewObjectArray(0, clazzString, nullptr);
 		}
 	}
 	else {
-		ret = (jobjectArray) env->NewObjectArray(0, clazzString, NULL);
+		ret = (jobjectArray) env->NewObjectArray(0, clazzString, nullptr);
 	}
 
 	return ret;
@@ -743,19 +748,19 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWMgr_getExtraConfigV
 
 	init(env);
 
-	const char *s = env->GetStringUTFChars(section, NULL);
+	const char *s = env->GetStringUTFChars(section, nullptr);
 
 	SWBuf mySection = s;
 
 	env->ReleaseStringUTFChars(section, s);
 
-	const char *k = env->GetStringUTFChars(key, NULL);
+	const char *k = env->GetStringUTFChars(key, nullptr);
 
 	SWBuf myKey = k;
 
 	env->ReleaseStringUTFChars(key, k);
 
-	jstring ret = 0;
+	jstring ret = nullptr;
 
 	SWBuf baseDir = STORAGE_BASE;
 	SWBuf confPath = baseDir + "/extraConfig.conf";
@@ -766,7 +771,7 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWMgr_getExtraConfigV
 		if (sit != config.getSections().end()) {
 			ConfigEntMap::const_iterator it = sit->second.find(myKey.c_str());
 			if (it != sit->second.end()) {
-				ret = strToUTF8Java(env, assureValidUTF8(it->second.c_str()));
+				ret = strToUTF8Java(env, it->second.c_str());
 			}
 		}
 	}
@@ -785,19 +790,19 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_setExtraConfigValu
 
 	init(env);
 
-	const char *s = env->GetStringUTFChars(section, NULL);
+	const char *s = env->GetStringUTFChars(section, nullptr);
 
 	SWBuf mySection = s;
 
 	env->ReleaseStringUTFChars(section, s);
 
-	const char *k = env->GetStringUTFChars(key, NULL);
+	const char *k = env->GetStringUTFChars(key, nullptr);
 
 	SWBuf myKey = k;
 
 	env->ReleaseStringUTFChars(key, k);
 
-	const char *v = env->GetStringUTFChars(value, NULL);
+	const char *v = env->GetStringUTFChars(value, nullptr);
 
 	SWBuf myValue = v;
 
@@ -824,7 +829,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_addExtraCo
 
 	init(env);
 
-	const char *b = env->GetStringUTFChars(blob, NULL);
+	const char *b = env->GetStringUTFChars(blob, nullptr);
 
 	SWBuf myBlob = b;
 
@@ -840,7 +845,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_addExtraCo
 	FileMgr::removeFile(tmpConfPath.c_str());
 	FileDesc *fd = FileMgr::getSystemFileMgr()->open(tmpConfPath.c_str(), FileMgr::CREAT|FileMgr::WRONLY, FileMgr::IREAD|FileMgr::IWRITE);
 	fd->getFd();
-	fd->write(myBlob.c_str(), myBlob.size());
+	fd->write(myBlob.c_str(), (long)myBlob.size());
 	FileMgr::getSystemFileMgr()->close(fd);
 
 	SWConfig newConfig(tmpConfPath.c_str());
@@ -849,10 +854,10 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_addExtraCo
 	for (sit = newConfig.getSections().begin(); sit != newConfig.getSections().end(); ++sit) {
 		count++;
 	}
-	ret = (jobjectArray) env->NewObjectArray(count, clazzString, NULL);
+	ret = (jobjectArray) env->NewObjectArray(count, clazzString, nullptr);
 	count = 0;
 	for (sit = newConfig.getSections().begin(); sit != newConfig.getSections().end(); ++sit) {
-		jstring s = strToUTF8Java(env, assureValidUTF8(sit->first.c_str()));
+		jstring s = strToUTF8Java(env, sit->first.c_str());
 		env->SetObjectArrayElement(ret, count++, s);
 		env->DeleteLocalRef(s);
 	}
@@ -879,19 +884,19 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_putResource
 
 	init(env);
 
-	const char *s = env->GetStringUTFChars(pathJS, NULL);
+	const char *s = env->GetStringUTFChars(pathJS, nullptr);
 
 	SWBuf path = s;
 
 	env->ReleaseStringUTFChars(pathJS, s);
 
-	s = env->GetStringUTFChars(dataJS, NULL);
+	s = env->GetStringUTFChars(dataJS, nullptr);
 
 	SWBuf data = s;
 
 	env->ReleaseStringUTFChars(dataJS, s);
 
-	s = env->GetStringUTFChars(typeJS, NULL);
+	s = env->GetStringUTFChars(typeJS, nullptr);
 
 	SWBuf type = s;
 
@@ -903,7 +908,7 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_putResource
 	FileMgr::removeFile(fullPath.c_str());
 	FileDesc *fd = FileMgr::getSystemFileMgr()->open(fullPath.c_str(), FileMgr::CREAT|FileMgr::WRONLY, FileMgr::IREAD|FileMgr::IWRITE);
 	fd->getFd();
-	fd->write(data.c_str(), data.size());
+	fd->write(data.c_str(), (long)data.size());
 	FileMgr::getSystemFileMgr()->close(fd);
 }
 
@@ -918,22 +923,22 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_getGlobalO
 
 	init(env);
 
-	const char *option = env->GetStringUTFChars(optionJS, NULL);
+	const char *option = env->GetStringUTFChars(optionJS, nullptr);
 
 	sword::StringList options = mgr->getGlobalOptionValues(option);
 
 	env->ReleaseStringUTFChars(optionJS, option);
 
 	int count = 0;
-	for (sword::StringList::iterator it = options.begin(); it != options.end(); ++it) {
+	for (sword::StringList::const_iterator it = options.begin(); it != options.end(); ++it) {
 		count++;
 	}
 	jclass clazzString = env->FindClass("java/lang/String");
-	jobjectArray ret = (jobjectArray) env->NewObjectArray(count, clazzString, NULL);
+	jobjectArray ret = (jobjectArray) env->NewObjectArray(count, clazzString, nullptr);
 
 	count = 0;
-	for (sword::StringList::iterator it = options.begin(); it != options.end(); ++it) {
-		jstring s = strToUTF8Java(env, assureValidUTF8(*it));
+	for (sword::StringList::const_iterator it = options.begin(); it != options.end(); ++it) {
+		jstring s = strToUTF8Java(env, *it);
 		env->SetObjectArrayElement(ret, count++, s);
 		env->DeleteLocalRef(s);
 	}
@@ -952,8 +957,8 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_setCipherKey
 
 	init(env);
 
-	const char *modName = env->GetStringUTFChars(modNameJS, NULL);
-	const char *key     = env->GetStringUTFChars(keyJS, NULL);
+	const char *modName = env->GetStringUTFChars(modNameJS, nullptr);
+	const char *key     = env->GetStringUTFChars(keyJS, nullptr);
 
 	mgr->setCipherKey(modName, key);
 
@@ -988,16 +993,16 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_getAvailab
 
 	sword::StringList localeNames = LocaleMgr::getSystemLocaleMgr()->getAvailableLocales();
 	int count = 0;
-	for (sword::StringList::iterator it = localeNames.begin(); it != localeNames.end(); ++it) {
+	for (sword::StringList::const_iterator it = localeNames.begin(); it != localeNames.end(); ++it) {
 		count++;
 	}
 
 	jclass clazzString = env->FindClass("java/lang/String");
-	jobjectArray ret = (jobjectArray) env->NewObjectArray(count, clazzString, NULL);
+	jobjectArray ret = (jobjectArray) env->NewObjectArray(count, clazzString, nullptr);
 
 	count = 0;
-	for (sword::StringList::iterator it = localeNames.begin(); it != localeNames.end(); ++it) {
-		jstring s = strToUTF8Java(env, assureValidUTF8(*it));
+	for (sword::StringList::const_iterator it = localeNames.begin(); it != localeNames.end(); ++it) {
+		jstring s = strToUTF8Java(env, *it);
 		env->SetObjectArrayElement(ret, count++, s);
 		env->DeleteLocalRef(s);
 	}
@@ -1015,7 +1020,7 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_setDefaultLocale
 
 	init(env);
 
-	const char *localeName = env->GetStringUTFChars(localeNameJS, NULL);
+	const char *localeName = env->GetStringUTFChars(localeNameJS, nullptr);
 
 	LocaleMgr::getSystemLocaleMgr()->setDefaultLocaleName(localeName);
 
@@ -1030,10 +1035,10 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_setDefaultLocale
  */
 JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWMgr_translate
 		(JNIEnv *env, jobject me, jstring textJS, jstring localeNameJS) {
-	const char *text = env->GetStringUTFChars(textJS, NULL);
-	const char *localeName = env->GetStringUTFChars(localeNameJS, NULL);
+	const char *text = env->GetStringUTFChars(textJS, nullptr);
+	const char *localeName = env->GetStringUTFChars(localeNameJS, nullptr);
 
-	SWBuf translation = assureValidUTF8(LocaleMgr::getSystemLocaleMgr()->translate(text, (localeName && strcmp(localeName, "null"))?localeName:0));
+	SWBuf translation = assureValidUTF8(LocaleMgr::getSystemLocaleMgr()->translate(text, (localeName && strcmp(localeName, "null"))?localeName:nullptr)); // NOLINT(bugprone-suspicious-string-compare)
 
 	env->ReleaseStringUTFChars(localeNameJS, localeName);
 	env->ReleaseStringUTFChars(textJS, text);
@@ -1050,27 +1055,29 @@ SWModule *getModule
 
 	init(env);
 
-	SWModule *module = 0;
+	SWModule *module = nullptr;
 	jclass clazzSWModule = env->FindClass("org/crosswire/android/sword/SWModule");
 	jfieldID fieldID = env->GetFieldID(clazzSWModule, "name", "Ljava/lang/String;");
 	jfieldID sourceFieldID = env->GetFieldID(clazzSWModule, "remoteSourceName", "Ljava/lang/String;");
 	jstring modNameJS = (jstring)env->GetObjectField(me, fieldID);
 	jstring sourceNameJS = (jstring)env->GetObjectField(me, sourceFieldID);
-	const char *modName = (modNameJS?env->GetStringUTFChars(modNameJS, NULL):0);
-	const char *sourceName = (sourceNameJS?env->GetStringUTFChars(sourceNameJS, NULL):0);
+	const char *modName = (modNameJS?env->GetStringUTFChars(modNameJS, nullptr):nullptr);
+	const char *sourceName = (sourceNameJS?env->GetStringUTFChars(sourceNameJS, nullptr):nullptr);
 SWLog::getSystemLog()->logDebug("libsword: lookup up module %s from source: %s", modName?modName:"<null>", sourceName?sourceName:"<null>");
 
 	if (sourceName && *sourceName) {
 		initInstall(env);
-		InstallSourceMap::iterator source = installMgr->sources.find(sourceName);
+		InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName);
 		if (source != installMgr->sources.end()) {
-			SWMgr *mgr = source->second->getMgr();
-			module = mgr->getModule(modName);
+			SWMgr *smgr = source->second->getMgr();
+			module = smgr->getModule(modName);
 		}
 	}
 	else module = mgr->getModule(modName);
+
 	if (modName) env->ReleaseStringUTFChars(modNameJS, modName);
 	if (sourceName) env->ReleaseStringUTFChars(sourceNameJS, sourceName);
+
 	return module;
 }
 
@@ -1087,15 +1094,15 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWModule_setKeyText
 	SWModule *module = getModule(env, me);
 
 	if (module) {
-		const char *keyText = env->GetStringUTFChars(keyTextJS, NULL);
+		const char *keyText = env->GetStringUTFChars(keyTextJS, nullptr);
 SWLog::getSystemLog()->logDebug("setKeyText(%s, %s)", module->getName(), keyText);
-		sword::SWKey *key = module->getKey();
-		sword::VerseKey *vkey = SWDYNAMIC_CAST(VerseKey, key);
+		SWKey *key = module->getKey();
+		VerseKey *vkey = SWDYNAMIC_CAST(VerseKey, key);
 		if (vkey && (*keyText=='+' ||*keyText=='-')) {
 			if (!stricmp(keyText+1, "book")) {
 				int newBook = vkey->getBook() + ((*keyText=='+')?1:-1);
 SWLog::getSystemLog()->logDebug("setting book to %d", newBook);
-				vkey->setBook(newBook);
+				vkey->setBook((signed char)newBook);
 				env->ReleaseStringUTFChars(keyTextJS, keyText);
 				return;
 			}
@@ -1124,9 +1131,9 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWModule_getKeyText
 
 	SWModule *module = getModule(env, me);
 
-	jstring retVal = 0;
+	jstring retVal = nullptr;
 	if (module) {
-		retVal = strToUTF8Java(env, assureValidUTF8(module->getKeyText()));
+		retVal = strToUTF8Java(env, module->getKeyText());
 	}
 	return retVal;
 }
@@ -1144,9 +1151,9 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWModule_getRenderTex
 
 	SWModule *module = getModule(env, me);
 
-	jstring retVal = 0;
+	jstring retVal = nullptr;
 	if (module) {
-		retVal = strToUTF8Java(env, assureValidUTF8(module->renderText()));
+		retVal = strToUTF8Java(env, module->renderText());
 	}
 	return retVal;
 }
@@ -1164,9 +1171,9 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWModule_getRenderHea
 
 	SWModule *module = getModule(env, me);
 
-	jstring retVal = 0;
+	jstring retVal = nullptr;
 	if (module) {
-		retVal = strToUTF8Java(env, assureValidUTF8(((const char *)(module->getRenderHeader() ? module->getRenderHeader():""))));
+		retVal = strToUTF8Java(env, ((const char *)(module->getRenderHeader() ? module->getRenderHeader():"")));
 	}
 	return retVal;
 }
@@ -1233,14 +1240,14 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_getEntr
 
 	init(env);
 
-	const char *level1 = env->GetStringUTFChars(level1JS, NULL);
-	const char *level2 = env->GetStringUTFChars(level2JS, NULL);
-	const char *level3 = env->GetStringUTFChars(level3JS, NULL);
+	const char *level1 = env->GetStringUTFChars(level1JS, nullptr);
+	const char *level2 = env->GetStringUTFChars(level2JS, nullptr);
+	const char *level3 = env->GetStringUTFChars(level3JS, nullptr);
 	bool filtered = (filteredJS == JNI_TRUE);
 SWLog::getSystemLog()->logDebug("calling getEntryAttributes(%s, %s, %s, %s", level1, level2, level3, (filtered?"true":"false"));
 
 	jclass clazzString = env->FindClass("java/lang/String");
-	jobjectArray ret = 0;
+	jobjectArray ret = nullptr;
 
 	SWModule *module = getModule(env, me);
 
@@ -1250,9 +1257,9 @@ SWLog::getSystemLog()->logDebug("calling getEntryAttributes(%s, %s, %s, %s", lev
 		vector<SWBuf> results;
 
 		sword::AttributeTypeList &entryAttribs = module->getEntryAttributes();
-		sword::AttributeTypeList::iterator i1Start, i1End;
-		sword::AttributeList::iterator i2Start, i2End;
-		sword::AttributeValue::iterator i3Start, i3End;
+		sword::AttributeTypeList::const_iterator i1Start, i1End;
+		sword::AttributeList::const_iterator i2Start, i2End;
+		sword::AttributeValue::const_iterator i3Start, i3End;
 
 		if ((level1) && (*level1) && *level1 != '-') {
 			i1Start = entryAttribs.find(level1);
@@ -1315,7 +1322,7 @@ SWLog::getSystemLog()->logDebug("calling getEntryAttributes(%s, %s, %s, %s", lev
 			}
 		}
 
-		ret = (jobjectArray) env->NewObjectArray(results.size(), clazzString, NULL);
+		ret = (jobjectArray) env->NewObjectArray(results.size(), clazzString, nullptr);
 
 SWLog::getSystemLog()->logDebug("getEntryAttributes: size returned: %d", results.size());
 
@@ -1323,10 +1330,10 @@ SWLog::getSystemLog()->logDebug("getEntryAttributes: size returned: %d", results
 			jstring s;
 			if (filtered) {
 				SWBuf rendered = module->renderText(results[i].c_str());
-				s = strToUTF8Java(env, assureValidUTF8(rendered.c_str()));
+				s = strToUTF8Java(env, rendered.c_str());
 			}
 			else {
-				s = strToUTF8Java(env, assureValidUTF8(results[i].c_str()));
+				s = strToUTF8Java(env, results[i].c_str());
 			}
 			env->SetObjectArrayElement(ret, i, s);
 			env->DeleteLocalRef(s);
@@ -1337,7 +1344,7 @@ SWLog::getSystemLog()->logDebug("getEntryAttributes: size returned: %d", results
 	env->ReleaseStringUTFChars(level2JS, level2);
 	env->ReleaseStringUTFChars(level1JS, level1);
 
-	return (ret) ? ret : (jobjectArray) env->NewObjectArray(0, clazzString, NULL);
+	return (ret) ? ret : (jobjectArray) env->NewObjectArray(0, clazzString, nullptr);
 }
 
 
@@ -1351,15 +1358,15 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_parseKe
 
 	init(env);
 
-	const char *keyListText = env->GetStringUTFChars(keyListTextJS, NULL);
+	const char *keyListText = env->GetStringUTFChars(keyListTextJS, nullptr);
 
 	SWModule *module = getModule(env, me);
 	jclass clazzString = env->FindClass("java/lang/String");
-	jobjectArray ret;
+	jobjectArray ret = nullptr;
 
 	if (module) {
-		sword::SWKey *k = module->getKey();
-		sword::VerseKey *parser = SWDYNAMIC_CAST(VerseKey, k);
+		SWKey *k = module->getKey();
+		VerseKey *parser = SWDYNAMIC_CAST(VerseKey, k);
 		if (parser) {
 			sword::ListKey result;
 			result = parser->parseVerseList(keyListText, *parser, true);
@@ -1367,21 +1374,27 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_parseKe
 			for (result = sword::TOP; !result.popError(); result++) {
 				count++;
 			}
-			ret = (jobjectArray) env->NewObjectArray(count, clazzString, NULL);
+			ret = (jobjectArray) env->NewObjectArray(count, clazzString, nullptr);
 
 			count = 0;
 			for (result = sword::TOP; !result.popError(); result++) {
-				jstring s = strToUTF8Java(env, assureValidUTF8((const char *)result));
+				jstring s = strToUTF8Java(env, result.getText());
 				env->SetObjectArrayElement(ret, count++, s);
 				env->DeleteLocalRef(s);
 			}
 		}
 		else	{
-			ret = (jobjectArray) env->NewObjectArray(1, clazzString, NULL);
-			jstring s = strToUTF8Java(env, assureValidUTF8(keyListText));
+			ret = (jobjectArray) env->NewObjectArray(1, clazzString, nullptr);
+			jstring s = strToUTF8Java(env, keyListText);
 			env->SetObjectArrayElement(ret, 0, s);
 			env->DeleteLocalRef(s);
 		}
+	}
+	else	{
+		ret = (jobjectArray) env->NewObjectArray(1, clazzString, nullptr);
+		jstring s = strToUTF8Java(env, keyListText);
+		env->SetObjectArrayElement(ret, 0, s);
+		env->DeleteLocalRef(s);
 	}
 
 	env->ReleaseStringUTFChars(keyListTextJS, keyListText);
@@ -1427,7 +1440,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_getKeyC
 
 
 	jclass clazzString = env->FindClass("java/lang/String");
-	jobjectArray ret;
+	jobjectArray ret = nullptr;
 
 	SWModule *module = getModule(env, me);
 
@@ -1437,30 +1450,30 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_getKeyC
 
 		sword::VerseKey *vkey = SWDYNAMIC_CAST(VerseKey, key);
 		if (vkey) {
-			ret = (jobjectArray) env->NewObjectArray(11, clazzString, NULL);
+			ret = (jobjectArray) env->NewObjectArray(11, clazzString, nullptr);
 			SWBuf num;
 			num.appendFormatted("%d", vkey->getTestament());
-			env->SetObjectArrayElement(ret, 0, strToUTF8Java(env, assureValidUTF8(num.c_str())));
+			env->SetObjectArrayElement(ret, 0, strToUTF8Java(env, num));
 			num = "";
 			num.appendFormatted("%d", vkey->getBook());
-			env->SetObjectArrayElement(ret, 1, strToUTF8Java(env, assureValidUTF8(num.c_str())));
+			env->SetObjectArrayElement(ret, 1, strToUTF8Java(env, num));
 			num = "";
 			num.appendFormatted("%d", vkey->getChapter());
-			env->SetObjectArrayElement(ret, 2, strToUTF8Java(env, assureValidUTF8(num.c_str())));
+			env->SetObjectArrayElement(ret, 2, strToUTF8Java(env, num));
 			num = "";
 			num.appendFormatted("%d", vkey->getVerse());
-			env->SetObjectArrayElement(ret, 3, strToUTF8Java(env, assureValidUTF8(num.c_str())));
+			env->SetObjectArrayElement(ret, 3, strToUTF8Java(env, num));
 			num = "";
 			num.appendFormatted("%d", vkey->getChapterMax());
-			env->SetObjectArrayElement(ret, 4, strToUTF8Java(env, assureValidUTF8(num.c_str())));
+			env->SetObjectArrayElement(ret, 4, strToUTF8Java(env, num));
 			num = "";
 			num.appendFormatted("%d", vkey->getVerseMax());
-			env->SetObjectArrayElement(ret, 5, strToUTF8Java(env, assureValidUTF8(num.c_str())));
-			env->SetObjectArrayElement(ret, 6, strToUTF8Java(env, assureValidUTF8(vkey->getBookName())));
-			env->SetObjectArrayElement(ret, 7, strToUTF8Java(env, assureValidUTF8(vkey->getOSISRef())));
-			env->SetObjectArrayElement(ret, 8, strToUTF8Java(env, assureValidUTF8(vkey->getShortText())));
-			env->SetObjectArrayElement(ret, 9, strToUTF8Java(env, assureValidUTF8(vkey->getBookAbbrev())));
-			env->SetObjectArrayElement(ret, 10, strToUTF8Java(env, assureValidUTF8(vkey->getOSISBookName())));
+			env->SetObjectArrayElement(ret, 5, strToUTF8Java(env, num));
+			env->SetObjectArrayElement(ret, 6, strToUTF8Java(env, vkey->getBookName()));
+			env->SetObjectArrayElement(ret, 7, strToUTF8Java(env, vkey->getOSISRef()));
+			env->SetObjectArrayElement(ret, 8, strToUTF8Java(env, vkey->getShortText()));
+			env->SetObjectArrayElement(ret, 9, strToUTF8Java(env, vkey->getBookAbbrev()));
+			env->SetObjectArrayElement(ret, 10, strToUTF8Java(env, vkey->getOSISBookName()));
 		}
 		else {
 			TreeKeyIdx *tkey = SWDYNAMIC_CAST(TreeKeyIdx, key);
@@ -1472,11 +1485,11 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_getKeyC
 					while (tkey->nextSibling());
 					tkey->parent();
 				}
-				ret = (jobjectArray) env->NewObjectArray(count, clazzString, NULL);
+				ret = (jobjectArray) env->NewObjectArray(count, clazzString, nullptr);
 				count = 0;
 				if (tkey->firstChild()) {
 					do {
-						jstring s = strToUTF8Java(env, assureValidUTF8(tkey->getLocalName()));
+						jstring s = strToUTF8Java(env, tkey->getLocalName());
 						env->SetObjectArrayElement(ret, count++, s);
 						env->DeleteLocalRef(s);
 					}
@@ -1486,6 +1499,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_getKeyC
 			}
 		}
 	}
+	else ret = (jobjectArray) env->NewObjectArray(0, clazzString, nullptr);
 	return ret;
 }
 
@@ -1516,7 +1530,7 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWModule_getKeyParent
 			}
 		}
 	}
-	return strToUTF8Java(env, assureValidUTF8(retVal));
+	return strToUTF8Java(env, retVal);
 }
 
 
@@ -1596,7 +1610,7 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWModule_getStripText
 		retVal = module->stripText();
 	}
 
-	return strToUTF8Java(env, assureValidUTF8(retVal));
+	return strToUTF8Java(env, retVal);
 }
 
 
@@ -1619,7 +1633,7 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWModule_getRawEntry
 		retVal = module->getRawEntry();
 	}
 
-	return strToUTF8Java(env, assureValidUTF8(retVal));
+	return strToUTF8Java(env, retVal);
 }
 
 
@@ -1634,7 +1648,7 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWModule_setRawEntry
 	init(env);
 
 
-	const char *newEntryText = env->GetStringUTFChars(newEntryTextJS, NULL);
+	const char *newEntryText = env->GetStringUTFChars(newEntryTextJS, nullptr);
 
 	SWModule *module = getModule(env, me);
 
@@ -1657,9 +1671,9 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWModule_getConfigEnt
 	init(env);
 
 
-	jstring retVal = 0;
+	jstring retVal = nullptr;
 
-	const char *configKey = env->GetStringUTFChars(configKeyJS, NULL);
+	const char *configKey = env->GetStringUTFChars(configKeyJS, nullptr);
 SWLog::getSystemLog()->logDebug("getConfigEntry(%s)\n", configKey);
 
 	SWModule *module = getModule(env, me);
@@ -1677,7 +1691,7 @@ SWLog::getSystemLog()->logDebug("getConfigEntry, found module.");
 				RTFHTML().processText(confValue);
 			}
 //SWLog::getSystemLog()->logDebug("getConfigEntry, configValue: %s", confValue.c_str());
-			retVal = strToUTF8Java(env, assureValidUTF8(confValue.c_str()));
+			retVal = strToUTF8Java(env, confValue.c_str());
 		}
 	}
 
@@ -1747,7 +1761,7 @@ void percentUpdate(char percent, void *userData) {
 
 	if (percent != p->last) {
 		p->last = percent;
-		if (p->mid != 0) {
+		if (p->mid != nullptr) {
 			p->env->CallVoidMethod(p->progressReporter, p->mid, (jint)percent);
 		}
 	}
@@ -1766,11 +1780,11 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_search
 
 	const int MAX_RETURN_COUNT = 999999;
 
-	const char *expression = env->GetStringUTFChars(expressionJS, NULL);
-	const char *scope = scopeJS ? env->GetStringUTFChars(scopeJS, NULL) : 0;
+	const char *expression = env->GetStringUTFChars(expressionJS, nullptr);
+	const char *scope = scopeJS ? env->GetStringUTFChars(scopeJS, nullptr) : nullptr;
 
 	jclass clazzSearchHit = env->FindClass("org/crosswire/android/sword/SWModule$SearchHit");
-	jobjectArray ret = 0;
+	jobjectArray ret = nullptr;
 
 	SWModule *module = getModule(env, me);
 
@@ -1778,22 +1792,22 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_search
 	pu *peeuuu = new pu(env, progressReporter);
 
 	if (module) {
-		sword::ListKey lscope;
-		sword::ListKey result;
+		ListKey lscope;
+		ListKey result;
 
 		if ((scope) && (strlen(scope)) > 0) {
-			sword::SWKey *p = module->createKey();
-			sword::VerseKey *parser = SWDYNAMIC_CAST(VerseKey, p);
+			SWKey *p = module->createKey();
+			VerseKey *parser = SWDYNAMIC_CAST(VerseKey, p);
 			if (!parser) {
 				delete p;
 				parser = new VerseKey();
 			}
 			*parser = module->getKeyText();
 			lscope = parser->parseVerseList(scope, *parser, true);
-			result = module->search(expression, srchType, flags, &lscope, 0, &percentUpdate, peeuuu);
+			result = module->search(expression, srchType, flags, &lscope, nullptr, &percentUpdate, peeuuu);
 			delete parser;
 		}
-		else	result = module->search(expression, srchType, flags, 0, 0, &percentUpdate, peeuuu);
+		else	result = module->search(expression, srchType, flags, nullptr, nullptr, &percentUpdate, peeuuu);
 
 		delete peeuuu;
 
@@ -1802,7 +1816,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_search
 
 		if (count > MAX_RETURN_COUNT) count = MAX_RETURN_COUNT;
 
-		ret = (jobjectArray) env->NewObjectArray(count, clazzSearchHit, NULL);
+		ret = (jobjectArray) env->NewObjectArray(count, clazzSearchHit, nullptr);
 
 		// if we're sorted by score, let's re-sort by verse, because Java can always re-sort by score
 		result = sword::TOP;
@@ -1810,19 +1824,18 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_search
 			result.sort();
 
 		int i = 0;
-		jstring modName = strToUTF8Java(env, assureValidUTF8(module->getName()));
+		jstring modName = strToUTF8Java(env, module->getName());
 		jfieldID fieldIDModName = env->GetFieldID(clazzSearchHit, "modName", "Ljava/lang/String;");
 		jfieldID fieldIDKey     = env->GetFieldID(clazzSearchHit, "key"    , "Ljava/lang/String;");
 		jfieldID fieldIDScore   = env->GetFieldID(clazzSearchHit, "score"  , "J");
 		for (result = sword::TOP; !result.popError(); result++) {
-			jfieldID fieldID;
-			jobject searchHit = env->AllocObject(clazzSearchHit); 
+			jobject searchHit = env->AllocObject(clazzSearchHit);
 
 			env->SetObjectField(searchHit, fieldIDModName, modName);
-			jstring key = strToUTF8Java(env, assureValidUTF8((const char *)result));
+			jstring key = strToUTF8Java(env, result.getText());
 			env->SetObjectField(searchHit, fieldIDKey, key);
 			env->DeleteLocalRef(key);
-			env->SetLongField(searchHit, fieldIDScore, (long)result.getElement()->userData);
+			env->SetLongField(searchHit, fieldIDScore, (jlong)result.getElement()->userData);
 
 			env->SetObjectArrayElement(ret, i++, searchHit);
 			env->DeleteLocalRef(searchHit);
@@ -1834,7 +1847,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_search
 	if (scope) env->ReleaseStringUTFChars(scopeJS, scope);
 	env->ReleaseStringUTFChars(expressionJS, expression);
 
-	return (ret) ? ret : (jobjectArray) env->NewObjectArray(0, clazzSearchHit, NULL);
+	return (ret) ? ret : (jobjectArray) env->NewObjectArray(0, clazzSearchHit, nullptr);
 }
 
 
@@ -1851,7 +1864,7 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_InstallMgr_reInit
 		(JNIEnv *env, jobject me) {
 
 	delete installMgr;
-	installMgr = 0;
+	installMgr = nullptr;
 }
 
 
@@ -1880,17 +1893,19 @@ JNIEXPORT jint JNICALL Java_org_crosswire_android_sword_InstallMgr_uninstallModu
 	init(env);
 	initInstall(env);
 
-	const char *modName = env->GetStringUTFChars(modNameJS, NULL);
+	const char *modName = env->GetStringUTFChars(modNameJS, nullptr);
 
 SWLog::getSystemLog()->logDebug("uninstallModule %s\n", modName);
 
 	const SWModule *module = mgr->getModule(modName);
+
+	env->ReleaseStringUTFChars(modNameJS, modName);
+
 	if (!module) {
 		return -2;
 	}
 	int retVal = installMgr->removeModule(mgr, module->getName());
 
-	env->ReleaseStringUTFChars(modNameJS, modName);
 
 	return retVal;
 }
@@ -1910,14 +1925,14 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_InstallMgr_getRe
 	jobjectArray ret;
 
 	int count = 0;
-	for (InstallSourceMap::iterator it = installMgr->sources.begin(); it != installMgr->sources.end(); ++it) {
+	for (InstallSourceMap::const_iterator it = installMgr->sources.begin(); it != installMgr->sources.end(); ++it) {
 		count++;
 	}
 SWLog::getSystemLog()->logDebug("getRemoteSources: count: %d\n", count);
-	ret = (jobjectArray) env->NewObjectArray(count, clazzString, NULL);
+	ret = (jobjectArray) env->NewObjectArray(count, clazzString, nullptr);
 	count = 0;
-	for (InstallSourceMap::iterator it = installMgr->sources.begin(); it != installMgr->sources.end(); ++it) {
-		jstring s = strToUTF8Java(env, assureValidUTF8(it->second->caption.c_str()));
+	for (InstallSourceMap::const_iterator it = installMgr->sources.begin(); it != installMgr->sources.end(); ++it) {
+		jstring s = strToUTF8Java(env, it->second->caption);
 		env->SetObjectArrayElement(ret, count++, s);
 		env->DeleteLocalRef(s);
 	}
@@ -1936,14 +1951,16 @@ JNIEXPORT jint JNICALL Java_org_crosswire_android_sword_InstallMgr_refreshRemote
 
 	initInstall(env);
 
-	const char *sourceName = env->GetStringUTFChars(sourceNameJS, NULL);
+	const char *sourceName = env->GetStringUTFChars(sourceNameJS, nullptr);
 
-	InstallSourceMap::iterator source = installMgr->sources.find(sourceName);
+	InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName);
+
+	env->ReleaseStringUTFChars(sourceNameJS, sourceName);
+
 	if (source == installMgr->sources.end()) {
 		return -3;
 	}
 
-	env->ReleaseStringUTFChars(sourceNameJS, sourceName);
 
 	return installMgr->refreshRemoteSource(source->second);
 }
@@ -1961,7 +1978,7 @@ SWLog::getSystemLog()->logDebug("getRemoteModInfoList\n");
 	init(env);
 	initInstall(env);
 
-	const char *sourceName = env->GetStringUTFChars(sourceNameJS, NULL);
+	const char *sourceName = env->GetStringUTFChars(sourceNameJS, nullptr);
 SWLog::getSystemLog()->logDebug("sourceName: %s\n", sourceName);
 
 	jclass clazzModInfo = env->FindClass("org/crosswire/android/sword/SWMgr$ModInfo");
@@ -1975,28 +1992,33 @@ SWLog::getSystemLog()->logDebug("sourceName: %s\n", sourceName);
 	jfieldID deltaID    = env->GetFieldID(clazzModInfo, "delta",       "Ljava/lang/String;");
 	jfieldID cipherKeyID= env->GetFieldID(clazzModInfo, "cipherKey",   "Ljava/lang/String;");
 	jfieldID featuresID = env->GetFieldID(clazzModInfo, "features",    "[Ljava/lang/String;");
-
-	InstallSourceMap::iterator source = installMgr->sources.find(sourceName);
+	jobjectArray ret = nullptr;
+	InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName);
 	if (source == installMgr->sources.end()) {
 SWLog::getSystemLog()->logDebug("remoteListModules returning 0 length array\n");
-		return (jobjectArray) env->NewObjectArray(0, clazzModInfo, NULL);
+		ret = (jobjectArray) env->NewObjectArray(0, clazzModInfo, nullptr);
+
+		env->ReleaseStringUTFChars(sourceNameJS, sourceName);
+		env->DeleteLocalRef(ret);
+
+		return ret;
 	}
 SWLog::getSystemLog()->logDebug("found source: %s\n", sourceName);
 
-	map<SWModule *, int> modStats = installMgr->getModuleStatus(*mgr, *source->second->getMgr());
+	map<SWModule *, int> modStats = InstallMgr::getModuleStatus(*mgr, *source->second->getMgr());
 
 	int size = 0;
-	for (map<SWModule *, int>::iterator it = modStats.begin(); it != modStats.end(); ++it) {
+	for (map<SWModule *, int>::const_iterator it = modStats.begin(); it != modStats.end(); ++it) {
 		size++;
 	}
 
 SWLog::getSystemLog()->logDebug("remoteListModules returning %d length array\n", size);
-	jobjectArray ret = (jobjectArray) env->NewObjectArray(size, clazzModInfo, NULL);
+	ret = (jobjectArray) env->NewObjectArray(size, clazzModInfo, nullptr);
 
 	int i = 0;
-	for (map<SWModule *, int>::iterator it = modStats.begin(); it != modStats.end(); ++it) {
+	for (map<SWModule *, int>::const_iterator it = modStats.begin(); it != modStats.end(); ++it) {
 		SWModule *module = it->first;
-		int status = it->second;
+		unsigned int status = it->second;
 
 		SWBuf version   = module->getConfigEntry("Version");
 		SWBuf statusString = " ";
@@ -2010,29 +2032,29 @@ SWLog::getSystemLog()->logDebug("remoteListModules returning %d length array\n",
 		jobject modInfo = env->AllocObject(clazzModInfo); 
 
 		jstring val;
-		val = strToUTF8Java(env, assureValidUTF8(module->getName()));        env->SetObjectField(modInfo, nameID     , val); env->DeleteLocalRef(val);
-		val = strToUTF8Java(env, assureValidUTF8(module->getDescription())); env->SetObjectField(modInfo, descID     , val); env->DeleteLocalRef(val);
-		val = strToUTF8Java(env, assureValidUTF8(type.c_str()));             env->SetObjectField(modInfo, catID      , val); env->DeleteLocalRef(val);
-		val = strToUTF8Java(env, assureValidUTF8(module->getLanguage()));    env->SetObjectField(modInfo, langID     , val); env->DeleteLocalRef(val);
-		val = strToUTF8Java(env, assureValidUTF8(version.c_str()));          env->SetObjectField(modInfo, versionID  , val); env->DeleteLocalRef(val);
-		val = strToUTF8Java(env, assureValidUTF8(statusString.c_str()));     env->SetObjectField(modInfo, deltaID    , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, module->getName());        env->SetObjectField(modInfo, nameID     , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, module->getDescription()); env->SetObjectField(modInfo, descID     , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, type);             env->SetObjectField(modInfo, catID      , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, module->getLanguage());    env->SetObjectField(modInfo, langID     , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, version);          env->SetObjectField(modInfo, versionID  , val); env->DeleteLocalRef(val);
+		val = strToUTF8Java(env, statusString);     env->SetObjectField(modInfo, deltaID    , val); env->DeleteLocalRef(val);
 		const char *cipherKey = module->getConfigEntry("CipherKey");
 		if (cipherKey) {
-			val = strToUTF8Java(env, assureValidUTF8(cipherKey));            env->SetObjectField(modInfo, cipherKeyID, val); env->DeleteLocalRef(val);
+			val = strToUTF8Java(env, cipherKey);            env->SetObjectField(modInfo, cipherKeyID, val); env->DeleteLocalRef(val);
 		}
-		else                                                                env->SetObjectField(modInfo, cipherKeyID, NULL);
+		else                                                                env->SetObjectField(modInfo, cipherKeyID, (jobject)nullptr);
 
 		ConfigEntMap::const_iterator start = module->getConfig().lower_bound("Feature");
 		ConfigEntMap::const_iterator end   = module->getConfig().upper_bound("Feature");
 
 		int featureCount = 0;
-		for (ConfigEntMap::const_iterator it = start; it != end; ++it) {
+		for (ConfigEntMap::const_iterator fit = start; fit != end; ++fit) {
 			++featureCount;
 		}
-		jobjectArray features = (jobjectArray) env->NewObjectArray(featureCount, clazzString, NULL);
+		jobjectArray features = (jobjectArray) env->NewObjectArray(featureCount, clazzString, nullptr);
 		featureCount = 0;
-		for (ConfigEntMap::const_iterator it = start; it != end; ++it) {
-			val = strToUTF8Java(env, assureValidUTF8(it->second));
+		for (ConfigEntMap::const_iterator fit = start; fit != end; ++fit) {
+			val = strToUTF8Java(env, fit->second);
 			env->SetObjectArrayElement(features, featureCount++, val);
 			env->DeleteLocalRef(val);
 		}
@@ -2045,6 +2067,7 @@ SWLog::getSystemLog()->logDebug("remoteListModules returning %d length array\n",
 	}
 
 	env->ReleaseStringUTFChars(sourceNameJS, sourceName);
+	env->DeleteLocalRef(ret);
 
 	return ret;
 }
@@ -2060,9 +2083,9 @@ JNIEXPORT jint JNICALL Java_org_crosswire_android_sword_InstallMgr_remoteInstall
 	init(env);
 	initInstall(env, progressReporter);
 
-	const char *sourceName = env->GetStringUTFChars(sourceNameJS, NULL);
+	const char *sourceName = env->GetStringUTFChars(sourceNameJS, nullptr);
 SWLog::getSystemLog()->logDebug("remoteInstallModule: sourceName: %s\n", sourceName);
-	InstallSourceMap::iterator source = installMgr->sources.find(sourceName);
+	InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName);
 	env->ReleaseStringUTFChars(sourceNameJS, sourceName);
 
 	if (source == installMgr->sources.end()) {
@@ -2072,7 +2095,7 @@ SWLog::getSystemLog()->logDebug("remoteInstallModule: sourceName: %s\n", sourceN
 	InstallSource *is = source->second;
 	SWMgr *rmgr = is->getMgr();
 
-	const char *modName = env->GetStringUTFChars(modNameJS, NULL);
+	const char *modName = env->GetStringUTFChars(modNameJS, nullptr);
 SWLog::getSystemLog()->logDebug("remoteInstallModule: modName: %s\n", modName);
 	const SWModule *module = rmgr->getModule(modName);
 	env->ReleaseStringUTFChars(modNameJS, modName);
@@ -2081,12 +2104,12 @@ SWLog::getSystemLog()->logDebug("remoteInstallModule: modName: %s\n", modName);
 		return -4;
 	}
 
-	int error = installMgr->installModule(mgr, 0, module->getName(), is);
+	int error = installMgr->installModule(mgr, nullptr, module->getName(), is);
 
 	if (progressReporter) {
 		jclass cls = env->GetObjectClass(progressReporter);
 		jmethodID mid = env->GetMethodID(cls, "preStatus", "(JJLjava/lang/String;)V");
-		if (mid != 0) {
+		if (mid) {
 			jstring msg = strToUTF8Java(env, "Complete");
 			env->CallVoidMethod(progressReporter, mid, (jlong)0, (jlong)0, msg);
 			env->DeleteLocalRef(msg);
@@ -2106,26 +2129,26 @@ SWLog::getSystemLog()->logDebug("remoteInstallModule: modName: %s\n", modName);
 JNIEXPORT jobject JNICALL Java_org_crosswire_android_sword_InstallMgr_getRemoteModuleByName
 		(JNIEnv *env, jobject me, jstring sourceNameJS, jstring modNameJS) {
 
-	jobject retVal = 0;
+	jobject retVal = nullptr;
 
 	initInstall(env);
 
-	const char *sourceNameC = env->GetStringUTFChars(sourceNameJS, NULL);
+	const char *sourceNameC = env->GetStringUTFChars(sourceNameJS, nullptr);
 	SWBuf sourceName = sourceNameC;
 SWLog::getSystemLog()->logDebug("getRemoteModuleByName: sourceName: %s\n", sourceName.c_str());
-	InstallSourceMap::iterator source = installMgr->sources.find(sourceName.c_str());
+	InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName.c_str());
 	env->ReleaseStringUTFChars(sourceNameJS, sourceNameC);
 
 	if (source == installMgr->sources.end()) {
 SWLog::getSystemLog()->logDebug("Couldn't find remote source [%s]\n", sourceName.c_str());
-		return 0;
+		return nullptr;
 	}
 
-	SWMgr *mgr = source->second->getMgr();
+	SWMgr *smgr = source->second->getMgr();
 
-	const char *modNameC = env->GetStringUTFChars(modNameJS, NULL);
+	const char *modNameC = env->GetStringUTFChars(modNameJS, nullptr);
 	SWBuf modName = modNameC;
-	sword::SWModule *module = mgr->getModule(modName.c_str());
+	sword::SWModule *module = smgr->getModule(modName.c_str());
 	env->ReleaseStringUTFChars(modNameJS, modNameC);
 
 	if (module) {
@@ -2136,10 +2159,10 @@ SWLog::getSystemLog()->logDebug("Found remote module [%s]: %s\n", sourceName.c_s
 		jfieldID fieldID;
 		jclass clazzSWModule = env->FindClass("org/crosswire/android/sword/SWModule");
 		retVal = env->AllocObject(clazzSWModule); 
-		fieldID = env->GetFieldID(clazzSWModule, "name", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, assureValidUTF8(module->getName())));
-		fieldID = env->GetFieldID(clazzSWModule, "description", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, assureValidUTF8(module->getDescription())));
-		fieldID = env->GetFieldID(clazzSWModule, "category", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, assureValidUTF8(type.c_str())));
-		fieldID = env->GetFieldID(clazzSWModule, "remoteSourceName", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, sourceNameJS);
+		fieldID = env->GetFieldID(clazzSWModule, "name", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, module->getName()));
+		fieldID = env->GetFieldID(clazzSWModule, "description", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, module->getDescription()));
+		fieldID = env->GetFieldID(clazzSWModule, "category", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, type));
+		fieldID = env->GetFieldID(clazzSWModule, "remoteSourceName", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, sourceName));
 SWLog::getSystemLog()->logDebug("returning remote module [%s]: %s\n", sourceName.c_str(), modName.c_str());
 	}
 
@@ -2176,7 +2199,7 @@ SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() begin");
 SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() bibleSync not active; message not sent.");
 		return;
 	}
-	const char *osisRefString = env->GetStringUTFChars(osisRefJS, NULL);
+	const char *osisRefString = env->GetStringUTFChars(osisRefJS, nullptr);
 	SWBuf modName = "Bible";
 	SWBuf osisRef = osisRefString;
 	const char *modNamePrefix = osisRef.stripPrefix(':');
@@ -2198,7 +2221,7 @@ SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() finished with 
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/crosswire/android/sword/SWMgr/BibleSyncListener;)V
  */
 JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_startBibleSync
-  (JNIEnv *env, jobject me, jstring appNameJS, jstring userNameJS, jstring passphraseJS, jobject bibleSyncListener) {
+  (JNIEnv *env, jobject me, jstring appNameJS, jstring userNameJS, jstring passphraseJS, jobject bibleSyncListenerMe) {
 
 	SWLog::getSystemLog()->logDebug("startBibleSync() start");
 	// only one thread
@@ -2206,15 +2229,15 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_startBibleSync
 	if (starting) return;
 	starting = true;
 	// kill any previous loop
-	if (::bibleSyncListener) bibleSyncListener = 0;
+	if (bibleSyncListener) bibleSyncListener = nullptr;
 #ifdef BIBLESYNC
-	const char *paramString = env->GetStringUTFChars(appNameJS, NULL);
+	const char *paramString = env->GetStringUTFChars(appNameJS, nullptr);
 	SWBuf appName = paramString;
 	env->ReleaseStringUTFChars(appNameJS, paramString);
-	paramString = env->GetStringUTFChars(userNameJS, NULL);
+	paramString = env->GetStringUTFChars(userNameJS, nullptr);
 	SWBuf userName = paramString;
 	env->ReleaseStringUTFChars(userNameJS, paramString);
-	paramString = env->GetStringUTFChars(passphraseJS, NULL);
+	paramString = env->GetStringUTFChars(passphraseJS, nullptr);
 	SWBuf passphrase = paramString;
 	env->ReleaseStringUTFChars(passphraseJS, paramString);
 
@@ -2224,26 +2247,26 @@ SWLog::getSystemLog()->logDebug("startBibleSync() sleeping 3 seconds");
 		sleep(3);
 	}
 
-	::bibleSyncListener = bibleSyncListener;
-	::bibleSyncListenerEnv = env;
+	bibleSyncListener = bibleSyncListenerMe;
+	bibleSyncListenerEnv = env;
 	SWLog::getSystemLog()->logDebug("startBibleSync - calling init");
 
 	if (!bibleSync) {
 SWLog::getSystemLog()->logDebug("bibleSync initializing c-tor");
-		bibleSync = new BibleSync(appName.c_str(), (const char *)SWVersion().currentVersion, userName.c_str());
+		bibleSync = new BibleSync(appName.c_str(), SWVersion::currentVersion.getText(), userName.c_str());
 SWLog::getSystemLog()->logDebug("bibleSync initializing setMode");
 		bibleSync->setMode(BSP_MODE_PERSONAL, bibleSyncCallback, passphrase.c_str());
 	}
 	SWLog::getSystemLog()->logDebug("startBibleSync - starting while listener");
 	starting = false;
-	while(::bibleSyncListener) {
+	while (bibleSyncListener) {
 		SWLog::getSystemLog()->logDebug("bibleSyncListener - while loop iteration");
 		BibleSync::Receive(bibleSync);
 		SWLog::getSystemLog()->logDebug("bibleSyncListener - sleeping for 2 seconds");
 		sleep(2);
 	}
 	delete bibleSync;
-	bibleSync = 0;
+	bibleSync = nullptr;
 #else
 	SWLog::getSystemLog()->logDebug("registerBibleSyncListener: !!! BibleSync disabled in native code.");
 #endif
@@ -2261,10 +2284,10 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_stopBibleSync
 SWLog::getSystemLog()->logDebug("stopBibleSync()");
 #ifdef BIBLESYNC
 	// if we have a listen loop going, just break the loop; the bibleSync cleanup will happen there
-	if (::bibleSyncListener) ::bibleSyncListener = 0;
+	if (bibleSyncListener) bibleSyncListener = nullptr;
 	else if (bibleSync) {
 		delete bibleSync;
-		bibleSync = 0;
+		bibleSync = nullptr;
 	}
 #else
 SWLog::getSystemLog()->logDebug("registerBibleSyncListener: !!! BibleSync disabled in native code.");
