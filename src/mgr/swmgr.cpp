@@ -1182,7 +1182,7 @@ void SWMgr::addGlobalOptionFilters(SWModule *module, ConfigEntMap &section) {
 
 
 char SWMgr::filterText(const char *filterName, SWBuf &text, const SWKey *key, const SWModule *module) {
-	char retVal = -1;
+	signed char retVal = -1;
 	// why didn't we use find here?
 	for (OptionFilterMap::iterator it = optionFilters.begin(); it != optionFilters.end(); it++) {
 		if ((*it).second->getOptionName()) {

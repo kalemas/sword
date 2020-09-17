@@ -66,12 +66,12 @@ namespace {
 }
 
 
-const int InstallMgr::MODSTAT_OLDER            = 0x001;
-const int InstallMgr::MODSTAT_SAMEVERSION      = 0x002;
-const int InstallMgr::MODSTAT_UPDATED          = 0x004;
-const int InstallMgr::MODSTAT_NEW              = 0x008;
-const int InstallMgr::MODSTAT_CIPHERED         = 0x010;
-const int InstallMgr::MODSTAT_CIPHERKEYPRESENT = 0x020;
+const unsigned int InstallMgr::MODSTAT_OLDER            = 0x001;
+const unsigned int InstallMgr::MODSTAT_SAMEVERSION      = 0x002;
+const unsigned int InstallMgr::MODSTAT_UPDATED          = 0x004;
+const unsigned int InstallMgr::MODSTAT_NEW              = 0x008;
+const unsigned int InstallMgr::MODSTAT_CIPHERED         = 0x010;
+const unsigned int InstallMgr::MODSTAT_CIPHERKEYPRESENT = 0x020;
 bool      InstallMgr::userDisclaimerConfirmed  = false;
 
 
