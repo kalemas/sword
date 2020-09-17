@@ -698,7 +698,7 @@ static int FtpOpenPort(netbuf *nControl, netbuf **nData, int mode, int dir)
         struct sockaddr_in in;
     } sin;
     struct linger lng = { 0, 0 };
-    unsigned int l;
+    socklen_t l;
     int on=1;
     netbuf *ctrl;
     char *cp;
@@ -843,7 +843,7 @@ static int FtpAcceptConnection(netbuf *nData, netbuf *nControl)
 {
     int sData;
     struct sockaddr addr;
-    unsigned int l;
+    socklen_t l;
     int i;
     struct timeval tv;
     fd_set mask;
