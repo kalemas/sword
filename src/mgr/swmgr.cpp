@@ -1526,16 +1526,21 @@ void SWMgr::deleteAllModules() {
 
 void SWMgr::deleteModule(const char *modName) {
 	ModMap::iterator it = Modules.find(modName);
-	if (it == Modules.end()) it = utilModules.find(modName);
 	if (it != Modules.end()) {
 		delete (*it).second;
 		Modules.erase(it);
+	}
+	else {
+		it = utilModules.find(modName);
+		if (it != utilModules.end()) {
+			delete (*it).second;
+			utilModules.erase(it);
+		}
 	}
 }
 
 signed char SWMgr::setCipherKey(const char *modName, const char *key) {
 	FilterMap::iterator it;
-	ModMap::iterator it2;
 
 	// check for filter that already exists
 	it = cipherFilters.find(modName);
@@ -1545,13 +1550,12 @@ signed char SWMgr::setCipherKey(const char *modName, const char *key) {
 	}
 	// check if module exists
 	else {
-		it2 = Modules.find(modName);
-		if (it2 == Modules.end()) it2 = utilModules.find(modName);
-		if (it2 != Modules.end()) {
+		SWModule *mod = getModule(modName);
+		if (mod) {
 			SWFilter *cipherFilter = new CipherFilter(key);
 			cipherFilters.insert(FilterMap::value_type(modName, cipherFilter));
 			cleanupFilters.push_back(cipherFilter);
-			(*it2).second->addRawFilter(cipherFilter);
+			mod->addRawFilter(cipherFilter);
 			return 0;
 		}
 	}
