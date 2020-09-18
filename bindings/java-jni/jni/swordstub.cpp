@@ -497,7 +497,7 @@ SWLog::getSystemLog()->logDebug("getModInfoList returning %d length array\n", si
 
 	}
 
-	env->DeleteLocalRef(ret);
+//	env->DeleteLocalRef(ret);
 
 	return ret;
 }
@@ -1999,7 +1999,7 @@ SWLog::getSystemLog()->logDebug("remoteListModules returning 0 length array\n");
 		ret = (jobjectArray) env->NewObjectArray(0, clazzModInfo, nullptr);
 
 		env->ReleaseStringUTFChars(sourceNameJS, sourceName);
-		env->DeleteLocalRef(ret);
+//		env->DeleteLocalRef(ret);
 
 		return ret;
 	}
@@ -2067,7 +2067,7 @@ SWLog::getSystemLog()->logDebug("remoteListModules returning %d length array\n",
 	}
 
 	env->ReleaseStringUTFChars(sourceNameJS, sourceName);
-	env->DeleteLocalRef(ret);
+//	env->DeleteLocalRef(ret);
 
 	return ret;
 }
