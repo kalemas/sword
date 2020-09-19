@@ -235,7 +235,7 @@ public:
 	 * Sets this module's key to provided keyText without disturbing any settings on the a key itself
 	 * This is simply a shortcut for the common module->getKey()->setText(keyText);
 	 *
-	 * @param ikey key with which to set this module
+	 * @param keyText key with which to set this module
 	 * @return error status
 	 */
 	inline char setKeyText(const char *keyText) { getKey()->setText(keyText); return key->getError(); }

@@ -847,7 +847,7 @@ static int FtpAcceptConnection(netbuf *nData, netbuf *nControl)
     int i;
     struct timeval tv;
     fd_set mask;
-    int rv;
+    int rv = 0;
 
     FD_ZERO(&mask);
     FD_SET(nControl->handle, &mask);

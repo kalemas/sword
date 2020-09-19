@@ -49,10 +49,8 @@ public:
 	virtual ~SWLD();
 	virtual SWKey *createKey() const;
 
-	/** Sets/gets module KeyText, getting from saved text if key is persistent
+	/** gets module KeyText, getting from saved key if key is persistent
 	*
-	* @param ikeytext value which to set keytext;
-	*  [0] - only get
 	* @return pointer to keytext
 	*/
 	virtual const char *getKeyText() const;

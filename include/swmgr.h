@@ -464,7 +464,7 @@ public:
 	virtual StringList getGlobalOptionValues(const char *option);
 
 	/** Filters a buffer thru a named filter
-	 * @param filterName
+	 * @param filterName name of filter which the buffer should be filtered through
 	 * @param text buffer to filter
 	 * @param key context key if filter needs this for processing
 	 * @param module context module if filter needs this for processing

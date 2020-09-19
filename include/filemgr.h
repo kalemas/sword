@@ -101,7 +101,7 @@ public:
 	* The file itself will only be opened when FileDesc::getFd() is called.
 	* @param path Filename.
 	* @param mode File access mode.
-	* @param tryDowngrade
+	* @param tryDowngrade if we can't open the file for permissions requested, try to open the file with less permissions
 	* @return FileDesc object for the requested file.
 	*/
 	FileDesc *open(const char *path, int mode, bool tryDowngrade);
@@ -130,7 +130,7 @@ public:
 	virtual long resourceConsumption();
 
 	/** Get an environment variable from the OS
-	* @param variableName
+	* @param variableName the name of the env variable to retrieve
 	*
 	* @return variable value from the OS
 	*/

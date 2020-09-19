@@ -283,7 +283,7 @@ public:
 	 * 	vector describing the status of each.  See MODSTAT_*
 	 * @param base The base SWMgr to compare-- usually represents what is currently installed
 	 * @param other The other SWMgr to compare to base-- usually represents an install source's SWMgr
-	 * @param utilModule whether to show user modules or utility modules; user modules is the default
+	 * @param utilModules whether to show user modules or utility modules; user modules is the default
 	 */
 	static std::map<SWModule *, int> getModuleStatus(const SWMgr &base, const SWMgr &other, bool utilModules = false);
 

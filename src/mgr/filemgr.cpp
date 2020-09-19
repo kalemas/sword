@@ -516,7 +516,7 @@ int FileMgr::removeFile(const char *fName) {
 
 
 char FileMgr::getLine(FileDesc *fDesc, SWBuf &line) {
-	int len;
+	int len = 0;
 	bool more = true;
 	char chunk[255];
 

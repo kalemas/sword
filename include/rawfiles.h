@@ -54,17 +54,18 @@ public:
 	* @param path The first parameter is path of the new module
 	* @return error
 	*/
-	static char createModule(const char *);
+	static char createModule(const char *path);
 
 	/** Modify the current module entry text
 	* - only if module @ref isWritable
-	* @return *this
+	* @param inbuf the text of the entry to set
+	* @param len optional len to set the modules entry.  If not passed, strlen will be performed on @ref inbuf
 	*/
 	virtual void setEntry(const char *inbuf, long len = -1);	// Modify current module entry
 
 	/** Link the current module entry to another module entry
 	* - only if module @ref isWritable
-	* @return *this
+	* @param linkKey the entry key to which this current entry should be linked.
 	*/
 	virtual void linkEntry(const SWKey *linkKey);	// Link current module entry to other module entry
 
