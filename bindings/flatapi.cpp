@@ -269,7 +269,7 @@ public:
 
 	~HandleSWMgr() {
 		clearModInfo();
-		for (std::map<SWModule *, HandleSWModule *>::iterator it = moduleHandles.begin(); it != moduleHandles.end(); ++it) {
+		for (std::map<SWModule *, HandleSWModule *>::const_iterator it = moduleHandles.begin(); it != moduleHandles.end(); ++it) {
 			delete it->second;
 		}
 		delete mgr;
@@ -313,7 +313,7 @@ public:
 
 	~HandleInstMgr() {
 		clearModInfo();
-		for (std::map<SWModule *, HandleSWModule *>::iterator it = moduleHandles.begin(); it != moduleHandles.end(); ++it) {
+		for (std::map<SWModule *, HandleSWModule *>::const_iterator it = moduleHandles.begin(); it != moduleHandles.end(); ++it) {
 			delete it->second;
 		}
 		delete installMgr;
@@ -536,9 +536,9 @@ const char ** SWDLLEXPORT org_crosswire_sword_SWModule_getEntryAttribute
 	std::vector<SWBuf> results;
 
 	sword::AttributeTypeList &entryAttribs = module->getEntryAttributes();
-	sword::AttributeTypeList::iterator i1Start, i1End;
-	sword::AttributeList::iterator i2Start, i2End;
-	sword::AttributeValue::iterator i3Start, i3End;
+	sword::AttributeTypeList::const_iterator i1Start, i1End;
+	sword::AttributeList::const_iterator i2Start, i2End;
+	sword::AttributeValue::const_iterator i3Start, i3End;
 
 	if ((level1) && (*level1) && *level1 != '-') {
 		i1Start = entryAttribs.find(level1);
@@ -1118,14 +1118,14 @@ const struct org_crosswire_sword_ModInfo * SWDLLEXPORT org_crosswire_sword_SWMgr
 	hmgr->clearModInfo();
 
 	int size = 0;
-	for (sword::ModMap::iterator it = mgr->Modules.begin(); it != mgr->Modules.end(); ++it) {
+	for (sword::ModMap::const_iterator it = mgr->getModules().begin(); it != mgr->getModules().end(); ++it) {
 		if ((!(it->second->getConfigEntry("CipherKey"))) || (*(it->second->getConfigEntry("CipherKey"))))
 			size++;
 	}
 
 	struct org_crosswire_sword_ModInfo *milist = (struct org_crosswire_sword_ModInfo *)calloc(size+1, sizeof(struct org_crosswire_sword_ModInfo));
 	int i = 0;
-	for (sword::ModMap::iterator it = mgr->Modules.begin(); it != mgr->Modules.end(); ++it) {
+	for (sword::ModMap::const_iterator it = mgr->getModules().begin(); it != mgr->getModules().end(); ++it) {
 		module = it->second;
 		SWBuf type = module->getType();
 		SWBuf cat = module->getConfigEntry("Category");
@@ -1274,12 +1274,12 @@ const char ** SWDLLEXPORT org_crosswire_sword_SWMgr_getGlobalOptions
 
 	sword::StringList options = mgr->getGlobalOptions();
 	int count = 0;
-	for (sword::StringList::iterator it = options.begin(); it != options.end(); ++it) {
+	for (sword::StringList::const_iterator it = options.begin(); it != options.end(); ++it) {
 		count++;
 	}
 	retVal = (const char **)calloc(count+1, sizeof(const char *));
 	count = 0;
-	for (sword::StringList::iterator it = options.begin(); it != options.end(); ++it) {
+	for (sword::StringList::const_iterator it = options.begin(); it != options.end(); ++it) {
 		stdstr((char **)&(retVal[count++]), it->c_str());
 	}
 
@@ -1460,12 +1460,12 @@ const char ** SWDLLEXPORT org_crosswire_sword_SWMgr_getGlobalOptionValues
 
 	sword::StringList options = mgr->getGlobalOptionValues(option);
 	int count = 0;
-	for (sword::StringList::iterator it = options.begin(); it != options.end(); ++it) {
+	for (sword::StringList::const_iterator it = options.begin(); it != options.end(); ++it) {
 		count++;
 	}
 	retVal = (const char **)calloc(count+1, sizeof(const char *));
 	count = 0;
-	for (sword::StringList::iterator it = options.begin(); it != options.end(); ++it) {
+	for (sword::StringList::const_iterator it = options.begin(); it != options.end(); ++it) {
 		stdstr((char **)&(retVal[count++]), it->c_str());
 	}
 
@@ -1513,12 +1513,12 @@ const char ** SWDLLEXPORT org_crosswire_sword_SWMgr_getAvailableLocales
 	sword::StringList localeNames = LocaleMgr::getSystemLocaleMgr()->getAvailableLocales();
 	const char **retVal = 0;
 	int count = 0;
-	for (sword::StringList::iterator it = localeNames.begin(); it != localeNames.end(); ++it) {
+	for (sword::StringList::const_iterator it = localeNames.begin(); it != localeNames.end(); ++it) {
 		count++;
 	}
 	retVal = (const char **)calloc(count+1, sizeof(const char *));
 	count = 0;
-	for (sword::StringList::iterator it = localeNames.begin(); it != localeNames.end(); ++it) {
+	for (sword::StringList::const_iterator it = localeNames.begin(); it != localeNames.end(); ++it) {
 		stdstr((char **)&(retVal[count++]), it->c_str());
 	}
 
@@ -1637,12 +1637,10 @@ int SWDLLEXPORT org_crosswire_sword_InstallMgr_uninstallModule
 	GETINSTMGR(hInstallMgr, -1);
 	GETSWMGR(hSWMgr_removeFrom, -1);
 
-	SWModule *module;
-	ModMap::iterator it = mgr->Modules.find(modName);
-	if (it == mgr->Modules.end()) {
+	SWModule *module = mgr->getModule(modName);
+	if (!module) {
 		return -2;
 	}
-	module = it->second;
 	return installMgr->removeModule(mgr, module->getName());
 }
 
@@ -1660,12 +1658,12 @@ const char ** SWDLLEXPORT org_crosswire_sword_InstallMgr_getRemoteSources
 	sword::StringList vals = LocaleMgr::getSystemLocaleMgr()->getAvailableLocales();
 	const char **retVal = 0;
 	int count = 0;
-	for (InstallSourceMap::iterator it = installMgr->sources.begin(); it != installMgr->sources.end(); ++it) {
+	for (InstallSourceMap::const_iterator it = installMgr->sources.begin(); it != installMgr->sources.end(); ++it) {
 		count++;
 	}
 	retVal = (const char **)calloc(count+1, sizeof(const char *));
 	count = 0;
-	for (InstallSourceMap::iterator it = installMgr->sources.begin(); it != installMgr->sources.end(); ++it) {
+	for (InstallSourceMap::const_iterator it = installMgr->sources.begin(); it != installMgr->sources.end(); ++it) {
 		stdstr((char **)&(retVal[count++]), it->second->caption.c_str());
 	}
 
@@ -1683,7 +1681,7 @@ int SWDLLEXPORT org_crosswire_sword_InstallMgr_refreshRemoteSource
 
 	GETINSTMGR(hInstallMgr, -1);
 
-	InstallSourceMap::iterator source = installMgr->sources.find(sourceName);
+	InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName);
 	if (source == installMgr->sources.end()) {
 		return -3;
 	}
@@ -1706,7 +1704,7 @@ const struct org_crosswire_sword_ModInfo * SWDLLEXPORT org_crosswire_sword_Insta
 
 	hinstmgr->clearModInfo();
 
-	InstallSourceMap::iterator source = installMgr->sources.find(sourceName);
+	InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName);
 	if (source == installMgr->sources.end()) {
 		retVal = (struct org_crosswire_sword_ModInfo *)calloc(1, sizeof(struct org_crosswire_sword_ModInfo));
 		hinstmgr->modInfo = retVal;
@@ -1716,12 +1714,12 @@ const struct org_crosswire_sword_ModInfo * SWDLLEXPORT org_crosswire_sword_Insta
 	std::map<SWModule *, int> modStats = installMgr->getModuleStatus(*mgr, *source->second->getMgr());
 
 	int size = 0;
-	for (std::map<SWModule *, int>::iterator it = modStats.begin(); it != modStats.end(); ++it) {
+	for (std::map<SWModule *, int>::const_iterator it = modStats.begin(); it != modStats.end(); ++it) {
 		size++;
 	}
 	retVal = (struct org_crosswire_sword_ModInfo *)calloc(size+1, sizeof(struct org_crosswire_sword_ModInfo));
 	int i = 0;
-	for (std::map<SWModule *, int>::iterator it = modStats.begin(); it != modStats.end(); ++it) {
+	for (std::map<SWModule *, int>::const_iterator it = modStats.begin(); it != modStats.end(); ++it) {
 		SWModule *module = it->first;
 		int status = it->second;
 
@@ -1776,7 +1774,7 @@ int SWDLLEXPORT org_crosswire_sword_InstallMgr_remoteInstallModule
 	GETINSTMGR(hInstallMgr_from, -1);
 	GETSWMGR(hSWMgr_to, -1);
 
-	InstallSourceMap::iterator source = installMgr->sources.find(sourceName);
+	InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName);
 
 	if (source == installMgr->sources.end()) {
 		return -3;
@@ -1784,15 +1782,11 @@ int SWDLLEXPORT org_crosswire_sword_InstallMgr_remoteInstallModule
 
 	InstallSource *is = source->second;
 	SWMgr *rmgr = is->getMgr();
-	SWModule *module;
+	SWModule *module = rmgr->getModule(modName);
 
-	ModMap::iterator it = rmgr->Modules.find(modName);
-
-	if (it == rmgr->Modules.end()) {
+	if (!module) {
 		return -4;
 	}
-
-	module = it->second;
 
 	int error = installMgr->installModule(mgr, 0, module->getName(), is);
 
@@ -1809,7 +1803,7 @@ SWHANDLE SWDLLEXPORT org_crosswire_sword_InstallMgr_getRemoteModuleByName
 
 	GETINSTMGR(hInstallMgr, 0);
 
-	InstallSourceMap::iterator source = installMgr->sources.find(sourceName);
+	InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName);
 
 	if (source == installMgr->sources.end()) {
 		return 0;
