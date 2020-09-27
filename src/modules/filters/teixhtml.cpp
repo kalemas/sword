@@ -360,12 +360,15 @@ bool TEIXHTML::handleToken(SWBuf &buf, const char *token, BasicFilterUserData *u
 				u->lastHi = rend;
 				if (rend == "numbered") {
 					buf += "<ol>\n";
-					}
+				}
+				else if (rend == "lettered") {
+					buf += "<ol type=\"A\">\n";
+				}
 				else if (rend == "bulleted") {
 					buf += "<ul>\n";
 				}
 				else {
-					buf += "<span class=\"list "; 
+					buf += "<ul class=\"list "; 
 					buf += rend.c_str(); 
 					buf += "\">";
 				}
@@ -375,12 +378,14 @@ bool TEIXHTML::handleToken(SWBuf &buf, const char *token, BasicFilterUserData *u
 				if (rend == "numbered") {
 					buf += "</ol>\n>";
 				}
+				else if (rend == "lettered") {
+					buf += "</ol>\n";
+				}
 				else if (rend == "bulleted") {
 					buf += "</ul>\n";
-				
 				}
 				else {
-					buf += "</span>\n";
+					buf += "</ul>\n";
 				}
 				u->supressAdjacentWhitespace = true;
 			}
