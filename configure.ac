@@ -6,7 +6,7 @@
 # Change it immediately after a release
 
 define([svnversion], esyscmd([sh -c "svnversion -n"]))dnl
-AC_INIT(sword, 1.8.902.svnversion, sword-bugs@crosswire.org, sword, http://crosswire.org/sword)
+AC_INIT(sword, 1.8.903.svnversion, sword-bugs@crosswire.org, sword, http://crosswire.org/sword)
 AC_CONFIG_SRCDIR(sword.bmp)
 AC_PREREQ(2.52)
 AC_REVISION($Revision: 1.45 $)
