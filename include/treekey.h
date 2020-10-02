@@ -1,4 +1,4 @@
-/******************************************************************************
+ /******************************************************************************
  *
  * treekey.h -	class TreeKey: an SWKey for traversing a table of contents
  *
@@ -38,7 +38,6 @@ SWORD_NAMESPACE_START
 class SWDLLEXPORT TreeKey : public SWKey {
 
 private:
-	static SWClass classdef;
 	void init();
 
 protected:

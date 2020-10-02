@@ -74,7 +74,7 @@ SWBuf &RawFiles::getRawEntryBuf() const {
 	FileDesc *datafile;
 	long  start = 0;
 	unsigned short size = 0;
-	VerseKey *key = &getVerseKey();
+	const VerseKey *key = &getVerseKey();
 
 	findOffset(key->getTestament(), key->getTestamentIndex(), &start, &size);
 

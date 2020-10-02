@@ -70,7 +70,7 @@ bool RawCom::isWritable() const {
 SWBuf &RawCom::getRawEntryBuf() const {
 	long  start = 0;
 	unsigned short size = 0;
-	VerseKey *key = &getVerseKey();
+	const VerseKey *key = &getVerseKey();
 
 	findOffset(key->getTestament(), key->getTestamentIndex(), &start, &size);
 	entrySize = size;        // support getEntrySize call
@@ -162,8 +162,8 @@ void RawCom::deleteEntry() {
 bool RawCom::isLinked(const SWKey *k1, const SWKey *k2) const {
 	long start1, start2;
 	unsigned short size1, size2;
-	VerseKey *vk1 = &getVerseKey(k1);
-	VerseKey *vk2 = &getVerseKey(k2);
+	const VerseKey *vk1 = &getVerseKey(k1);
+	const VerseKey *vk2 = &getVerseKey(k2);
 	if (vk1->getTestament() != vk2->getTestament()) return false;
 
 	findOffset(vk1->getTestament(), vk1->getTestamentIndex(), &start1, &size1);
@@ -175,7 +175,7 @@ bool RawCom::isLinked(const SWKey *k1, const SWKey *k2) const {
 bool RawCom::hasEntry(const SWKey *k) const {
 	long start;
 	unsigned short size;
-	VerseKey *vk = &getVerseKey(k);
+	const VerseKey *vk = &getVerseKey(k);
 
 	findOffset(vk->getTestament(), vk->getTestamentIndex(), &start, &size);
 	return size;

@@ -62,7 +62,7 @@ BasicFilterUserData::BasicFilterUserData(const SWModule *module, const SWKey *ke
 	supressAdjacentWhitespace = false;
 	vkey = 0;
 	SWTRY {
-		vkey = SWDYNAMIC_CAST(VerseKey, key);
+		vkey = SWDYNAMIC_CAST(const VerseKey, key);
 	}
 	SWCATCH ( ... ) { }
 }

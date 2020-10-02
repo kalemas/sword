@@ -25,6 +25,7 @@
 #ifndef ENCFILTERMGR_H
 #define ENCFILTERMGR_H
 
+#include <swmodule.h>
 #include <swfiltermgr.h>
 
 SWORD_NAMESPACE_START

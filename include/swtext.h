@@ -43,7 +43,8 @@ private:
 	char *versification;
 
 protected:
-	VerseKey &getVerseKey(const SWKey* key=0) const;
+	const VerseKey &getVerseKey(const SWKey *key=0) const;
+	VerseKey &getVerseKey(SWKey *key=0);
 	
 public:
 	/** Initializes data for instance of SWText

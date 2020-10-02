@@ -25,6 +25,7 @@
 #ifndef SWORDDEFS_H
 #define SWORDDEFS_H
 
+// support for compilers with no namespace support
 // TODO: What is this? jansorg, why does NO_SWORD_NAMESPACE still define
 // a C++ namespace, and then force using it?  This makes no sense to me.
 // see commit 1195
@@ -41,6 +42,16 @@
 
 SWORD_NAMESPACE_START
 
+
+// support for compilers with no RTTI
+#define SWDYNAMIC_CAST(className, object) dynamic_cast<className *>(object)
+
+#ifdef NODYNCAST
+#define SWDYNAMIC_CAST(className, object) (className *)((object)?((object->getClass()->isAssignableFrom(#className))?object:0):0)
+#endif
+
+
+// support for compilers with no exception support
 #define SWTRY try
 #define SWCATCH(x) catch (x)
 
@@ -58,6 +69,7 @@ SWORD_NAMESPACE_START
 #define SWCATCH(x) if (0)
 #endif
 
+// support for export / import of symbols from shared objects
 // _declspec works in BC++ 5 and later, as well as VC++
 #if defined(_MSC_VER)
 
@@ -75,6 +87,7 @@ SWORD_NAMESPACE_START
 #    define SWDLLEXPORT_CTORFN
 #  endif
 
+// support for deprecated annotation
 #  define SWDEPRECATED __declspec(deprecated("** WARNING: deprecated method **"))
 
 
@@ -163,15 +176,6 @@ SWORD_NAMESPACE_START
 #  define SWDLLIMPORT __import
 #else
 #  define SWDLLIMPORT
-#endif
-
-
-
-#ifdef __cplusplus
-enum {DIRECTION_LTR = 0, DIRECTION_RTL, DIRECTION_BIDI};
-enum {FMT_UNKNOWN = 0, FMT_PLAIN, FMT_THML, FMT_GBF, FMT_HTML, FMT_HTMLHREF, FMT_RTF, FMT_OSIS, FMT_WEBIF, FMT_TEI, FMT_XHTML, FMT_LATEX};
-enum {ENC_UNKNOWN = 0, ENC_LATIN1, ENC_UTF8, ENC_SCSU, ENC_UTF16, ENC_RTF, ENC_HTML};
-enum {BIB_BIBTEX = 0, /* possible future formats: BIB_MARCXML, BIB_MARC21, BIB_DCMI BIB_OSISHEADER, BIB_SBL_XHTML, BIB_MLA_XHTML, BIB_APA_XHTML, BIB_CHICAGO_XHTML */};
 #endif
 
 SWORD_NAMESPACE_END

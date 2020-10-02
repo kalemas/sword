@@ -35,7 +35,7 @@ SWORD_NAMESPACE_START
 
 
 static const char *classes[] = {"TreeKeyIdx", "TreeKey", "SWKey", "SWObject", 0};
-SWClass TreeKeyIdx::classdef(classes);
+static const SWClass classdef(classes);
 
 
 TreeKeyIdx::TreeKeyIdx(const TreeKeyIdx &ikey) : currentNode() {
@@ -75,7 +75,7 @@ TreeKeyIdx::TreeKeyIdx(const char *idxPath, int fileMode) : currentNode() {
 
 
 void TreeKeyIdx::init() {
-	myclass = &classdef;
+	myClass = &classdef;
 }
 
 
@@ -573,7 +573,7 @@ int TreeKeyIdx::_compare (const TreeKeyIdx & ikey) {
 
 
 int TreeKeyIdx::compare(const SWKey &ikey) {
-	TreeKeyIdx *treeKey = SWDYNAMIC_CAST(TreeKeyIdx, (&ikey));
+	const TreeKeyIdx *treeKey = SWDYNAMIC_CAST(const TreeKeyIdx, (&ikey));
 	if (treeKey)
 		return _compare(*treeKey);
 	return SWKey::compare(ikey);

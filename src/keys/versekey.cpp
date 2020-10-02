@@ -40,7 +40,7 @@
 SWORD_NAMESPACE_START
 
 static const char *classes[] = {"VerseKey", "SWKey", "SWObject", 0};
-SWClass VerseKey::classdef(classes);
+static const SWClass classdef(classes);
 
 /******************************************************************************
  *  Initialize static members of VerseKey
@@ -54,7 +54,7 @@ int           VerseKey::instance       = 0;
  */
 
 void VerseKey::init(const char *v11n) {
-	myclass = &classdef;
+	myClass = &classdef;
 
 	instance++;
 	autonorm = 1;		// default auto normalization to true
@@ -183,12 +183,12 @@ void VerseKey::setFromOther(const VerseKey &ikey) {
 void VerseKey::positionFrom(const SWKey &ikey) {
  	error = 0;
         const SWKey *fromKey = &ikey;
-	ListKey *tryList = SWDYNAMIC_CAST(ListKey, fromKey);
+	const ListKey *tryList = SWDYNAMIC_CAST(const ListKey, fromKey);
 	if (tryList) {
-		SWKey *k = tryList->getElement();
+		const SWKey *k = tryList->getElement();
 		if (k) fromKey = k;
 	}
-	VerseKey *tryVerse = SWDYNAMIC_CAST(VerseKey, fromKey);
+	const VerseKey *tryVerse = SWDYNAMIC_CAST(const VerseKey, fromKey);
 	if (tryVerse) {
 		setFromOther(*tryVerse);
 	}
@@ -240,12 +240,12 @@ void VerseKey::copyFrom(const SWKey &ikey) {
 	// check to see if we can do a more specific copy
 	// plus some optimizations
 	const SWKey *fromKey = &ikey;
-	ListKey *tryList = SWDYNAMIC_CAST(ListKey, fromKey);
+	const ListKey *tryList = SWDYNAMIC_CAST(const ListKey, fromKey);
 	if (tryList) {
-		SWKey *k = tryList->getElement();
+		const SWKey *k = tryList->getElement();
 		if (k) fromKey = k;
 	}
-	VerseKey *tryVerse = SWDYNAMIC_CAST(VerseKey, fromKey);
+	const VerseKey *tryVerse = SWDYNAMIC_CAST(const VerseKey, fromKey);
 	if (tryVerse) {
 		copyFrom(*tryVerse);
 	}
@@ -1768,7 +1768,7 @@ void VerseKey::checkBounds() {
 int VerseKey::compare(const SWKey &ikey)
 {
 	const SWKey *testKey = &ikey;
-	const VerseKey *vkey = (const VerseKey *)SWDYNAMIC_CAST(VerseKey, testKey);
+	const VerseKey *vkey = (const VerseKey *)SWDYNAMIC_CAST(const VerseKey, testKey);
 	if (vkey) {
 		return _compare(*vkey);
 	}

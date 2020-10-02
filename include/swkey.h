@@ -95,7 +95,6 @@ class SWDLLEXPORT SWKey : public SWObject {
 
 
 	long index;
-	static SWClass classdef;
 	void init();
 
 
@@ -158,7 +157,7 @@ public:
 	 */
 	SWDEPRECATED char Error() { return popError(); }
 	virtual char popError();
-	virtual char getError() { return error; }
+	virtual char getError() const { return error; }
 	virtual void setError(char err) { error = err; }
 
 	/** Sets this SWKey with a character string

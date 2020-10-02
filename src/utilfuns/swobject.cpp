@@ -35,7 +35,7 @@ SWORD_NAMESPACE_START
 
 
 bool SWClass::isAssignableFrom(const char *className) const {
-	for (int i = 0; descends[i]; i++) {
+	for (int i = 0; descends[i]; ++i) {
 #ifndef __CYGWIN__
 		if (!sword::stricmp(descends[i], className))
 #else
@@ -44,6 +44,19 @@ bool SWClass::isAssignableFrom(const char *className) const {
 			return true;
 	}
 	return false;
+}
+
+/*
+static const char *classes[] = {"SWObject", 0};
+static const SWClass classdef(classes);
+
+SWObject::SWObject() {
+	myClass = &classdef;
+}
+*/
+
+SWObject::SWObject(const SWClass &assignClassDef) {
+	myClass = &assignClassDef;
 }
 
 

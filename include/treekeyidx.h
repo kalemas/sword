@@ -53,8 +53,6 @@ private:
 		char *userData;
 	} currentNode;
 
-	static SWClass classdef;
-
 	char *path;
 
 	FileDesc *idxfd;

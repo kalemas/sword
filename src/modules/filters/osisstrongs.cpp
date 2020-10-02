@@ -100,9 +100,9 @@ char OSISStrongs::processText(SWBuf &text, const SWKey *key, const SWModule *mod
 				if (module->isProcessEntryAttributes()) {
 					wordStart = from+1;
 					char gh = 0;
-					VerseKey *vkey = 0;
+					const VerseKey *vkey = 0;
 					if (key) {
-						vkey = SWDYNAMIC_CAST(VerseKey, key);
+						vkey = SWDYNAMIC_CAST(const VerseKey, key);
 					}
 					SWBuf lemma      = "";
 					SWBuf morph      = "";

@@ -56,7 +56,7 @@ OSISOSIS::OSISOSIS() {
 
 char OSISOSIS::processText(SWBuf &text, const SWKey *key, const SWModule *module) { 
 	char status = SWBasicFilter::processText(text, key, module);
-	VerseKey *vkey = SWDYNAMIC_CAST(VerseKey, key);
+	const VerseKey *vkey = SWDYNAMIC_CAST(const VerseKey, key);
 	if (vkey) {
 		if (vkey->getVerse()) {
 			VerseKey *tmp = (VerseKey *)vkey->clone();

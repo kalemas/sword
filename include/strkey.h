@@ -37,7 +37,6 @@ SWORD_NAMESPACE_START
 class SWDLLEXPORT StrKey : public SWKey {
 
 private:
-	static SWClass classdef;
 	void init();
 
 public:

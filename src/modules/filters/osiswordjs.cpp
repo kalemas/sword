@@ -71,9 +71,9 @@ char OSISWordJS::processText(SWBuf &text, const SWKey *key, const SWModule *modu
 		// add TR to w src in KJV then remove this next line
 		SWBuf wordSrcPrefix = (modName == "KJV")?SWBuf("TR"):modName;
 
-		VerseKey *vkey = 0;
+		const VerseKey *vkey = 0;
 		if (key) {
-			vkey = SWDYNAMIC_CAST(VerseKey, key);
+			vkey = SWDYNAMIC_CAST(const VerseKey, key);
 		}
 		
 		const SWBuf orig = text;

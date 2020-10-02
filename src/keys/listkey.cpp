@@ -32,7 +32,7 @@
 SWORD_NAMESPACE_START
 
 static const char *classes[] = {"ListKey", "SWKey", "SWObject", 0};
-SWClass ListKey::classdef(classes);
+static const SWClass classdef(classes);
 
 /******************************************************************************
  * ListKey Constructor - initializes instance of ListKey
@@ -59,7 +59,7 @@ ListKey::ListKey(ListKey const &k) : SWKey(k.keytext) {
 
 
 void ListKey::init() {
-	myclass = &classdef;
+	myClass = &classdef;
 	// this is a listkey, bound is always set
 	boundSet = true;
 }

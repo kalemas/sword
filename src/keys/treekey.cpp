@@ -29,10 +29,10 @@
 SWORD_NAMESPACE_START
 
 static const char *classes[] = {"TreeKey", "SWKey", "SWObject", 0};
-SWClass TreeKey::classdef(classes);
+static const SWClass classdef(classes);
 
 void TreeKey::init() {
-	myclass = &classdef;
+	myClass = &classdef;
 	unsnappedKeyText = "";
 	posChangeListener = 0;
 }

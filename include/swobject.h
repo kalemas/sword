@@ -27,7 +27,6 @@
 #include <defs.h>
 
 SWORD_NAMESPACE_START
-#define SWDYNAMIC_CAST(className, object) (className *)((object)?((object->getClass()->isAssignableFrom(#className))?object:0):0)
 
 /**
  * Class used for SWDYNAMIC_CAST to save the inheritance order.
@@ -53,14 +52,16 @@ public:
 class SWDLLEXPORT SWObject {
 
 protected:
-	SWClass * myclass;
+	const SWClass *myClass;
 
 public:
+//	SWObject();
+	SWObject(const SWClass &classdef);
 	/** Use this to get the class definition and inheritance order.
 	 * @return The class definition of this object
 	 */
 	const SWClass *getClass() const {
-		return myclass;
+		return myClass;
 	}
 };
 

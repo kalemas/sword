@@ -31,7 +31,7 @@
 SWORD_NAMESPACE_START
 
 static const char *classes[] = {"SWKey", "SWObject", 0};
-SWClass SWKey::classdef(classes);
+static const SWClass classdef(classes);
 SWKey::LocaleCache   SWKey::localeCache;
 
 /******************************************************************************
@@ -40,7 +40,7 @@ SWKey::LocaleCache   SWKey::localeCache;
  * ENT:	ikey - text key
  */
 
-SWKey::SWKey(const char *ikey)
+SWKey::SWKey(const char *ikey) : SWObject(classdef)
 {
 	init();
 	index     = 0;
@@ -52,7 +52,7 @@ SWKey::SWKey(const char *ikey)
 	stdstr(&keytext, ikey);
 }
 
-SWKey::SWKey(SWKey const &k)
+SWKey::SWKey(SWKey const &k) : SWObject(classdef)
 {
 	init();
 	stdstr(&localeName, k.localeName);
@@ -66,7 +66,6 @@ SWKey::SWKey(SWKey const &k)
 }
 
 void SWKey::init() {
-	myclass = &classdef;
 	boundSet = false;
 	locale = 0;
 	localeName = 0;

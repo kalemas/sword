@@ -77,7 +77,7 @@ SWBuf &zText4::getRawEntryBuf() const {
 	long  start = 0;
 	unsigned long size = 0;
 	unsigned long buffnum = 0;
-	VerseKey &key = getVerseKey();
+	const VerseKey &key = getVerseKey();
 
 	findOffset(key.getTestament(), key.getTestamentIndex(), &start, &size, &buffnum);
 	entrySize = (int)size;        // support getEntrySize call
@@ -200,8 +200,8 @@ bool zText4::isLinked(const SWKey *k1, const SWKey *k2) const {
 	long start1, start2;
 	unsigned long size1, size2;
 	unsigned long buffnum1, buffnum2;
-	VerseKey *vk1 = &getVerseKey(k1);
-	VerseKey *vk2 = &getVerseKey(k2);
+	const VerseKey *vk1 = &getVerseKey(k1);
+	const VerseKey *vk2 = &getVerseKey(k2);
 	if (vk1->getTestament() != vk2->getTestament()) return false;
 
 	findOffset(vk1->getTestament(), vk1->getTestamentIndex(), &start1, &size1, &buffnum1);
@@ -213,7 +213,7 @@ bool zText4::hasEntry(const SWKey *k) const {
 	long start;
 	unsigned long size;
 	unsigned long buffnum;
-	VerseKey *vk = &getVerseKey(k);
+	const VerseKey *vk = &getVerseKey(k);
 
 	findOffset(vk->getTestament(), vk->getTestamentIndex(), &start, &size, &buffnum);
 	return size;

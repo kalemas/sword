@@ -153,24 +153,26 @@ void RawGenBook::setEntry(const char *inbuf, long len) {
 
 
 void RawGenBook::linkEntry(const SWKey *inkey) {
-	TreeKeyIdx *srckey = 0;
+	const TreeKeyIdx *srcKey = 0;
+	TreeKeyIdx *tmpKey = 0;
 	TreeKeyIdx *key = ((TreeKeyIdx *)&(getTreeKey()));
 	// see if we have a VerseKey * or decendant
 	SWTRY {
-		srckey = SWDYNAMIC_CAST(TreeKeyIdx, inkey);
+		srcKey = SWDYNAMIC_CAST(const TreeKeyIdx, inkey);
 	}
 	SWCATCH ( ... ) {}
 	// if we don't have a VerseKey * decendant, create our own
-	if (!srckey) {
-		srckey = (TreeKeyIdx *)createKey();
-		(*srckey) = *inkey;
+	if (!srcKey) {
+		tmpKey = (TreeKeyIdx *)createKey();
+		(*tmpKey) = *inkey;
+		srcKey = tmpKey;
 	}
 
-	key->setUserData(srckey->getUserData(), 8);
+	key->setUserData(srcKey->getUserData(), 8);
 	key->save();
 
-	if (inkey != srckey) // free our key if we created a VerseKey
-		delete srckey;
+	if (tmpKey) // free our key if we created a VerseKey
+		delete tmpKey;
 }
 
 
@@ -216,11 +218,11 @@ SWKey *RawGenBook::createKey() const {
 }
 
 bool RawGenBook::hasEntry(const SWKey *k) const {
-	TreeKey &key = getTreeKey(k);
+	const TreeKey &key = getTreeKey(k);
 
 	int dsize;
 	key.getUserData(&dsize);
-	return (dsize > 7) && key.popError() == '\x00';
+	return (dsize > 7) && key.getError() == '\x00';
 }
 
 SWORD_NAMESPACE_END

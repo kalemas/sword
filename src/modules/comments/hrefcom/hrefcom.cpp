@@ -72,7 +72,7 @@ HREFCom::~HREFCom()
 SWBuf &HREFCom::getRawEntryBuf() const {
 	long  start;
 	unsigned short size;
-	VerseKey *key = 0;
+	const VerseKey *key = 0;
 
         key = &getVerseKey();
 

@@ -29,7 +29,7 @@
 SWORD_NAMESPACE_START
 
 static const char *classes[] = {"VerseTreeKey", "VerseKey", "SWKey", "SWObject", 0};
-SWClass VerseTreeKey::classdef(classes);
+static const SWClass classdef(classes);
 
 
 /******************************************************************************
@@ -76,7 +76,7 @@ VerseTreeKey::VerseTreeKey(TreeKey *treeKey, const char *min, const char *max) :
 
 void VerseTreeKey::init(TreeKey *treeKey)
 {
-	myclass = &classdef;
+	myClass = &classdef;
 	this->treeKey = (TreeKey *)treeKey->clone();
 	this->treeKey->setPositionChangeListener(this);
 	internalPosChange = false;
@@ -232,7 +232,7 @@ void VerseTreeKey::positionChanged() {
 }
 
 
-void VerseTreeKey::syncVerseToTree() {
+void VerseTreeKey::syncVerseToTree() const {
 	internalPosChange = true;
 	SWBuf path;
 	if (!getTestament()) path = "/"; // "[ Module Heading ]";
@@ -250,6 +250,11 @@ void VerseTreeKey::syncVerseToTree() {
 	internalPosChange = false;
 }
 
+
+const TreeKey *VerseTreeKey::getTreeKey() const {
+	syncVerseToTree();
+	return treeKey;
+}
 
 TreeKey *VerseTreeKey::getTreeKey() {
 	syncVerseToTree();

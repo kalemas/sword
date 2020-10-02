@@ -71,7 +71,7 @@ SWKey *SWCom::createKey() const {
 
 
 long SWCom::getIndex() const {
-	VerseKey *key = &getVerseKey();
+	const VerseKey *key = &getVerseKey();
 	entryIndex = key->getIndex();
 	return entryIndex;
 }
@@ -87,8 +87,41 @@ void SWCom::setIndex(long iindex) {
 }
 
 
-VerseKey &SWCom::getVerseKey(const SWKey *keyToConvert) const {
+const VerseKey &SWCom::getVerseKey(const SWKey *keyToConvert) const {
 	const SWKey *thisKey = keyToConvert ? keyToConvert : this->key;
+
+	const VerseKey *key = 0;
+	// see if we have a VerseKey * or decendant
+	SWTRY {
+		key = SWDYNAMIC_CAST(const VerseKey, thisKey);
+	}
+	SWCATCH ( ... ) {	}
+	if (!key) {
+		const ListKey *lkTest = 0;
+		SWTRY {
+			lkTest = SWDYNAMIC_CAST(const ListKey, thisKey);
+		}
+		SWCATCH ( ... ) {	}
+		if (lkTest) {
+			SWTRY {
+				key = SWDYNAMIC_CAST(const VerseKey, lkTest->getElement());
+			}
+			SWCATCH ( ... ) {	}
+		}
+	}
+	if (!key) {
+                VerseKey *retKey = (tmpSecond) ? tmpVK1 : tmpVK2;
+                tmpSecond = !tmpSecond;
+		retKey->setLocale(LocaleMgr::getSystemLocaleMgr()->getDefaultLocaleName());
+		(*retKey) = *(thisKey);
+		return (*retKey);
+	}
+	else	return *key;
+}
+
+
+VerseKey &SWCom::getVerseKey(SWKey *keyToConvert) {
+	SWKey *thisKey = keyToConvert ? keyToConvert : this->key;
 
 	VerseKey *key = 0;
 	// see if we have a VerseKey * or decendant

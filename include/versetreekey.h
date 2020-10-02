@@ -42,12 +42,11 @@ SWORD_NAMESPACE_START
 class SWDLLEXPORT VerseTreeKey : public VerseKey, public TreeKey::PositionChangeListener {
 
 private:
-	static SWClass classdef;
 	TreeKey *treeKey;
 //	vector<struct sbook> books;
 
 	void init(TreeKey *treeKey);
-	void syncVerseToTree();
+	void syncVerseToTree() const;
 	long lastGoodOffset;
 
 protected:
@@ -103,10 +102,11 @@ public:
 	virtual bool isTraversable() const { return true; }
 
 	virtual TreeKey *getTreeKey();
+	virtual const TreeKey *getTreeKey() const;
 
 	// TreeKey::PositionChangeListener interface
 	virtual void positionChanged();
-	bool internalPosChange;
+	mutable bool internalPosChange;
 
 	virtual void decrement(int steps = 1);
 	virtual void increment(int steps = 1);

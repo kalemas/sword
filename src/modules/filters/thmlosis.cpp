@@ -537,7 +537,7 @@ char ThMLOSIS::processText(SWBuf &text, const SWKey *key, const SWModule *module
 		}
 	}
 
-	VerseKey *vkey = SWDYNAMIC_CAST(VerseKey, key);
+	const VerseKey *vkey = SWDYNAMIC_CAST(const VerseKey, key);
 	if (vkey) {
 		SWBuf ref = "";
 		if (vkey->getVerse()) {

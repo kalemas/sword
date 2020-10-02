@@ -30,7 +30,7 @@
 SWORD_NAMESPACE_START
 
 static const char *classes[] = {"StrKey", "SWKey", "SWObject", 0};
-SWClass StrKey::classdef(classes);
+static const SWClass classdef(classes);
 
 /******************************************************************************
  * StrKey Constructor - initializes instance of StrKey
@@ -45,7 +45,7 @@ StrKey::StrKey(const char *ikey) : SWKey(ikey)
 
 
 void StrKey::init() {
-	myclass = &classdef;
+	myClass = &classdef;
 }
 
 

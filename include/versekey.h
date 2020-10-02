@@ -53,8 +53,6 @@ SWORD_NAMESPACE_START
 class SWDLLEXPORT VerseKey : public SWKey {
 
 private:
-	static SWClass classdef;
-
 	/** number of instantiated VerseKey objects or derivitives
 	*/
 	static int instance;

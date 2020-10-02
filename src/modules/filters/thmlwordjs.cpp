@@ -79,9 +79,9 @@ char ThMLWordJS::processText(SWBuf &text, const SWKey *key, const SWModule *modu
 		
 		const SWBuf orig = text;
 		const char * from = orig.c_str();
-		VerseKey *vkey = 0;
+		const VerseKey *vkey = 0;
 		if (key) {
-			vkey = SWDYNAMIC_CAST(VerseKey, key);
+			vkey = SWDYNAMIC_CAST(const VerseKey, key);
 		}
 
 		for (text = ""; *from; from++) {

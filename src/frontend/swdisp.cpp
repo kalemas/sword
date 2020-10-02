@@ -29,7 +29,9 @@
 SWORD_NAMESPACE_START
 
 static const char *classes[] = {"SWDisplay", "SWObject", 0};
-SWClass SWDisplay::classdef(classes);
+static const SWClass classdef(classes);
+
+SWDisplay::SWDisplay() : SWObject(classdef){ };
 
 /******************************************************************************
  * SWDisplay::Display - casts a module to a character pointer and displays it to
