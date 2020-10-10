@@ -47,6 +47,8 @@ SWORD_NAMESPACE_START
 #define SWDYNAMIC_CAST(className, object) dynamic_cast<className *>(object)
 
 #ifdef NODYNCAST
+// avoid redefined warnings
+#undef SWDYNAMIC_CAST
 #define SWDYNAMIC_CAST(className, object) (className *)((object)?((object->getClass()->isAssignableFrom(#className))?object:0):0)
 #endif
 

@@ -35,6 +35,9 @@ SWORD_NAMESPACE_START
 
 
 bool SWClass::isAssignableFrom(const char *className) const {
+	// skip class qualifier, like 'const VerseKey'
+	const char *space = strchr(className, ' ');
+	if (space) className = space + 1;
 	for (int i = 0; descends[i]; ++i) {
 #ifndef __CYGWIN__
 		if (!sword::stricmp(descends[i], className))
