@@ -186,6 +186,8 @@ public:
 	 */
 	static int openFile(const char *fName, int mode, int perms);
 	static int openFileReadOnly(const char *fName);
+	static void closeFile(int fd);
+	static long write(int fd, const void *buf, long count);
 
 	static int copyFile(const char *srcFile, const char *destFile);
 	static int copyDir(const char *srcDir, const char *destDir);

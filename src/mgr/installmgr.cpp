@@ -276,7 +276,7 @@ int InstallMgr::removeModule(SWMgr *manager, const char *moduleName) {
 			FileMgr::removeDir(modDir.c_str());
 			std::vector<DirEntry> dirList = FileMgr::getDirList(manager->configPath);
 			for (unsigned int i = 0; i < dirList.size(); ++i) {
-               	if (dirList[i].name.endsWith(".conf")) {
+				if (dirList[i].name.endsWith(".conf")) {
 					modFile = manager->configPath;
 					removeTrailingSlash(modFile);
 					modFile += "/";
@@ -513,8 +513,8 @@ int InstallMgr::installModule(SWMgr *destMgr, const char *fromLocation, const ch
 		if (!aborted) {
 			SWBuf confDir = sourceDir + "mods.d/";
 			std::vector<DirEntry> dirList = FileMgr::getDirList(confDir);
-               for (unsigned int i = 0; i < dirList.size() && !retVal; ++i) {
-               	if (dirList[i].name.endsWith(".conf")) {
+			for (unsigned int i = 0; i < dirList.size() && !retVal; ++i) {
+				if (dirList[i].name.endsWith(".conf")) {
 					modFile = confDir;
 					modFile += dirList[i].name;
 					SWConfig *config = new SWConfig(modFile);

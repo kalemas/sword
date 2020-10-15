@@ -36,7 +36,7 @@ namespace {
 
 	struct FtpFile {
 		const char *filename;
-		FileDesc *stream;
+		int fd;
 		SWBuf *destBuf;
 	};
 
@@ -56,10 +56,10 @@ namespace {
 
 	static int my_fwrite(void *buffer, size_t size, size_t nmemb, void *stream) {
 		struct FtpFile *out=(struct FtpFile *)stream;
-		if (out && !out->stream && !out->destBuf) {
+		if (out && !out->fd && !out->destBuf) {
 			/* open file for writing */
-			out->stream=FileMgr::getSystemFileMgr()->open(out->filename, FileMgr::CREAT|FileMgr::WRONLY);
-			if (!out->stream || out->stream->getFd() < 0)
+			out->fd = FileMgr::createPathAndFile(out->filename);
+			if (out->fd < 0)
 				return -1; /* failure, can't open file to write */
 		}
 		if (out->destBuf) {
@@ -68,7 +68,7 @@ namespace {
 			memcpy(out->destBuf->getRawData()+s, buffer, size*nmemb);
 			return (int)nmemb;
 		}
-		return (int)out->stream->write(buffer, size *nmemb);
+		return (int)FileMgr::write(out->fd, buffer, size * nmemb);
 	}
 
 
@@ -199,8 +199,8 @@ char CURLFTPTransport::getURL(const char *destPath, const char *sourceURL, SWBuf
 		}
 	}
 
-	if (ftpfile.stream)
-		FileMgr::getSystemFileMgr()->close(ftpfile.stream); /* close the local file */
+	if (ftpfile.fd > 0)
+		FileMgr::closeFile(ftpfile.fd); /* close the local file */
 
 	return retVal;
 }

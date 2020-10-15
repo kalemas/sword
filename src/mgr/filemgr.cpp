@@ -112,6 +112,10 @@ void FileMgr::setSystemFileMgr(FileMgr *newFileMgr) {
 	systemFileMgr = newFileMgr;
 }
 
+long FileMgr::write(int fd, const void *buf, long count) {
+	return ::write(fd, buf, count);
+}
+
 // --------------- end statics --------------
 
 
@@ -129,7 +133,7 @@ FileDesc::FileDesc(FileMgr *parent, const char *path, int mode, int perms, bool 
 
 FileDesc::~FileDesc() {
 	if (fd > 0)
-		::close(fd);
+		FileMgr::closeFile(fd);
 
 	if (path)
 		delete [] path;
@@ -147,7 +151,7 @@ long FileDesc::read(void *buf, long count) {
 
 
 long FileDesc::write(const void *buf, long count) {
-	return ::write(getFd(), buf, count);
+	return FileMgr::write(getFd(), buf, count);
 }
 
 
@@ -481,6 +485,11 @@ int FileMgr::createPathAndFile(const char *fName) {
 		fd = openFile(fName, O_CREAT|O_WRONLY|O_BINARY, S_IREAD|S_IWRITE|S_IRGRP|S_IROTH);
 	}
 	return fd;
+}
+
+
+void FileMgr::closeFile(int fd) {
+	::close(fd);
 }
 
 
