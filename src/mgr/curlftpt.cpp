@@ -55,7 +55,7 @@ namespace {
 
 
 	static int my_fwrite(void *buffer, size_t size, size_t nmemb, void *stream) {
-		struct FtpFile *out=(struct FtpFile *)stream;
+		struct FtpFile *out = (struct FtpFile *)stream;
 		if (out && !out->fd && !out->destBuf) {
 			/* open file for writing */
 			out->fd = FileMgr::createPathAndFile(out->filename);

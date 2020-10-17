@@ -373,10 +373,10 @@ ZEXTERN int ZEXPORT uncompress OF((Bytef *dest,   uLongf *destLen,
 }
 
 
-char ZipCompress::unTarGZ(FileDesc *fd, const char *destPath) {
+char ZipCompress::unTarGZ(int fd, const char *destPath) {
 	gzFile	f;
 
-	f = gzdopen(fd->getFd(), "rb");
+	f = gzdopen(fd, "rb");
 	if (f == NULL) {
 		SWLog::getSystemLog()->logError("Couldn't gzopen file");
 		return 1;

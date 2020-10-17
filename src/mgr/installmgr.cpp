@@ -566,9 +566,9 @@ int InstallMgr::refreshRemoteSource(InstallSource *is) {
 
 	errorCode = remoteCopy(is, "mods.d.tar.gz", archive.c_str(), false);
 	if (!errorCode) { //sucessfully downloaded the tar,gz of module configs
-		FileDesc *fd = FileMgr::getSystemFileMgr()->open(archive.c_str(), FileMgr::RDONLY);
+		int fd = FileMgr::openFileReadOnly(archive.c_str());
 		ZipCompress::unTarGZ(fd, root.c_str());
-		FileMgr::getSystemFileMgr()->close(fd);
+		FileMgr::closeFile(fd);
 	}
 	else if (errorCode > -2)	// don't try the next attempt on connection error or user requested termination
 #endif
