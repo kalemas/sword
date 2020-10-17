@@ -99,7 +99,7 @@ int untar (gzFile in, const char *dest) {
 	int    err;
 	int    getheader = 1;
 	int    remaining = 0;
-	sword::FileDesc   *outfile = NULL;
+	int    outFD = 0;
 	sword::SWBuf  fname;
 	time_t tartime;
 
@@ -140,19 +140,12 @@ int untar (gzFile in, const char *dest) {
 			case AREGTYPE:
 				remaining = getoct(buffer.header.size,12);
 				if (remaining) {
-					outfile = sword::FileMgr::getSystemFileMgr()->open(fname, sword::FileMgr::WRONLY);
-					if (!outfile || outfile->getFd() < 0) {
-						// try creating directory
-						if (strrchr(fname.c_str(), '/')) {
-							sword::FileMgr::createParent(fname);
-							outfile = sword::FileMgr::getSystemFileMgr()->open(fname, sword::FileMgr::CREAT|sword::FileMgr::WRONLY);
-						}
-					}
+					outFD = sword::FileMgr::createPathAndFile(fname);
 				}
 				else {
-					if (outfile) {
-						sword::FileMgr::getSystemFileMgr()->close(outfile);
-						outfile = NULL;
+					if (outFD > 0) {
+						sword::FileMgr::closeFile(outFD);
+						outFD = 0;
 					}
 				}
 				/*
@@ -167,21 +160,21 @@ int untar (gzFile in, const char *dest) {
 		else	{
 			unsigned int bytes = (remaining > BLOCKSIZE) ? BLOCKSIZE : remaining;
 
-			if (outfile != NULL) {
-				if (outfile->write(&buffer,sizeof(char)*bytes) != (int) bytes) {
+			if (outFD > 0) {
+				if (sword::FileMgr::write(outFD, &buffer,sizeof(char)*bytes) != (int) bytes) {
 					sword::SWLog::getSystemLog()->logError("error writing %s skipping...", fname.c_str());
-					sword::FileMgr::getSystemFileMgr()->close(outfile);
+					sword::FileMgr::closeFile(outFD);
 					sword::FileMgr::removeFile(fname);
 				}
 			}
 			remaining -= bytes;
 			if (remaining == 0) {
 				getheader = 1;
-				if (outfile != NULL) {
+				if (outFD > 0) {
 
 					// All this logic is simply the set the file timestamp
 					// ugh
-					sword::FileMgr::getSystemFileMgr()->close(outfile);
+					sword::FileMgr::closeFile(outFD);
 #ifdef WIN32
 					HANDLE hFile;
 					FILETIME ftm,ftLocal;
@@ -209,7 +202,7 @@ int untar (gzFile in, const char *dest) {
 					settime.actime = settime.modtime = tartime;
 					utime(fname.c_str(), &settime);
 #endif
-					outfile = NULL;
+					outFD = 0;
 				}
 			}
 		}
