@@ -49,8 +49,8 @@ namespace {
 	}
 
 	static int my_filewriter(netbuf *nControl, void *buffer, size_t size, void *fd) {
-		int output = (int)fd;
-		write(output, buffer, size);
+		int output = (int)(size_t)fd;
+		FileMgr::write(output, buffer, size);
 		return (int)size;
 	}
 
