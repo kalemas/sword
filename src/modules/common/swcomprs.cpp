@@ -83,7 +83,7 @@ void SWCompress::setUncompressedBuf(const char *ibuf, unsigned long *len) {
 		buf = (char *)calloc(1,1); // be sure we at least allocate an empty buf for return;
 		direct = 1;
 		decode();
-		*len = slen;
+		if (len) *len = slen;
 	}
 }
 

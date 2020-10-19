@@ -327,9 +327,9 @@ SWBuf FileMgr::getEnvValue(const char *variableName) {
 bool FileMgr::hasAccess(const char *path, int mode) {
 	return
 #ifdef WIN32
-		!_waccess((const wchar_t *)utf8ToWChar(path).getRawData(), 04);
+		!_waccess((const wchar_t *)utf8ToWChar(path).getRawData(), mode);
 #else
-		!access(path, 04);
+		!access(path, mode);
 #endif
 }
 
