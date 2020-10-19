@@ -49,7 +49,7 @@ namespace {
 	}
 
 	static int my_filewriter(netbuf *nControl, void *buffer, size_t size, void *fd) {
-		int output = (int)(size_t)fd;
+		int output = *((int *)fd);
 		FileMgr::write(output, buffer, size);
 		return (int)size;
 	}
@@ -161,7 +161,7 @@ char FTPLibFTPTransport::getURL(const char *destPath, const char *sourceURL, SWB
 	else {
 		fd = FileMgr::createPathAndFile(outFile);
 		FtpOptions(FTPLIB_CALLBACK_WRITER, (long)&my_filewriter, ftpConnection);
-		FtpOptions(FTPLIB_CALLBACK_WRITERARG, (long)fd, ftpConnection);
+		FtpOptions(FTPLIB_CALLBACK_WRITERARG, (long)&fd, ftpConnection);
 	}
 
 	FtpOptions(FTPLIB_CALLBACK, (long)&my_fprogress, ftpConnection);
