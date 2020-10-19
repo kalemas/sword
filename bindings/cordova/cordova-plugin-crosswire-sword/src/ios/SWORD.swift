@@ -818,8 +818,7 @@ debugPrint("initMgr, mgr: " + String(describing: mgr))
             self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: keyText == nil ? "" : String(cString: keyText!)), callbackId: command.callbackId)
         }
     }
-    
-    
+
 
     @objc(SWModule_setKeyText:)
     func SWModule_setKeyText(command: CDVInvokedUrlCommand) {
@@ -828,6 +827,17 @@ debugPrint("initMgr, mgr: " + String(describing: mgr))
         if (module != 0) {
             org_crosswire_sword_SWModule_setKeyText(module, keyText)
             self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: "SWModule_setKeyText"), callbackId: command.callbackId)
+        }
+    }
+
+
+    @objc(SWModule_setRawEntry:)
+    func SWModule_setRawEntry(command: CDVInvokedUrlCommand) {
+        let module = getModule(command: command)
+        let entryText = command.arguments[1] as? String ?? ""
+        if (module != 0) {
+            org_crosswire_sword_SWModule_setRawEntry(module, entryText)
+            self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: "SWModule_setEntryText"), callbackId: command.callbackId)
         }
     }
     

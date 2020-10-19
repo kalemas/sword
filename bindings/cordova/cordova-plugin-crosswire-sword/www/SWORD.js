@@ -288,6 +288,16 @@ SWModule.prototype.parseKeyList = function(keyText, callback) {
 	return retVal;
 }
 
+SWModule.prototype.setRawEntry = function(entryText, callback) {
+	var retVal = null;
+	exec(callback?callback:function(r) { retVal = r; },
+		function(err) { utils.alert('[ERROR] problem: ' + err); },
+		"SWORD", "SWModule_setRawEntry", [this.name, entryText]
+	);
+	return retVal;
+}
+
+
 function SWMgr() {
 }
 

@@ -378,6 +378,12 @@ Log.d(TAG, "... finished renderChapter");
 			result.setKeepCallback(true);
 			callbackContext.sendPluginResult(result);
 		}
+		else if (action.equals("SWModule_setRawEntry")) {
+			SWModule mod = mgr.getModuleByName(args.getString(0));
+			if (mod == null) { callbackContext.error("couldn't find module: " + args.getString(0)); return true; }
+			mod.setRawEntry(args.getString(1));
+			callbackContext.success();
+		}
 		else if (action.equals("SWMgr_startBibleSync")) {
 			final CallbackContext bibleSyncListener = callbackContext;
 			final String appName = args.getString(0);
