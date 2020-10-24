@@ -411,7 +411,7 @@ std::vector<struct DirEntry> FileMgr::getDirList(const char *dirPath, bool inclu
 				struct DirEntry i;
 				i.name = dirEntName;
 				i.isDirectory = fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
-				i.size = FileMgr::getFileSize(basePath + i.name);
+				if (!i.isDirectory && includeSize) i.size = FileMgr::getFileSize(basePath + i.name);
 				dirList.push_back(i);
 			}
 		} while (FindNextFileW(findIterator, &fileData) != 0);
