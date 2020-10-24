@@ -103,9 +103,12 @@ protected:
 	SWConfig *mysysconfig;
 	SWConfig *homeConfig;
 	/**
-	 * Deprecated. Use createAllModules instead
+	 * @deprecated. Use createAllModules instead
 	 */
 	SWDEPRECATED void CreateMods(bool multiMod = false) { createAllModules(multiMod); };
+	/**
+	 * @deprecated. Use deleteAllModules instead
+	 */
 	SWDEPRECATED void DeleteMods() { deleteAllModules(); }
 	char configType;		// 0 = file; 1 = directory
 	OptionFilterMap optionFilters;
@@ -152,7 +155,7 @@ protected:
 
 
 	/**
-	 * Deprecated.  Use addGlobalOptionFilters instead.
+	 * @deprecated Use addGlobalOptionFilters instead.
 	 */
 	SWDEPRECATED virtual void AddGlobalOptions(SWModule *module, ConfigEntMap &section, ConfigEntMap::iterator start, ConfigEntMap::iterator end) { addGlobalOptionFilters(module, section); }
 	/**
@@ -173,7 +176,7 @@ protected:
 	virtual void addGlobalOptionFilters(SWModule *module, ConfigEntMap &section);
 
 	/**
-	 * Deprecated.  Use addLocalOptionFilters instead.
+	 * @deprecated Use addLocalOptionFilters instead.
 	 */
 	SWDEPRECATED virtual void AddLocalOptions(SWModule *module, ConfigEntMap &section, ConfigEntMap::iterator start, ConfigEntMap::iterator end) { addLocalOptionFilters(module, section); }
 	/**
@@ -188,7 +191,7 @@ protected:
 	virtual void addLocalOptionFilters(SWModule *module, ConfigEntMap &section);
 
 	/**
-	 * Deprecated.  Use addEncodingFilters instead
+	 * @deprecated Use addEncodingFilters instead
 	 */
 	SWDEPRECATED virtual void AddEncodingFilters(SWModule *module, ConfigEntMap &section) { addEncodingFilters(module, section); }
 	/**
@@ -201,7 +204,7 @@ protected:
 	virtual void addEncodingFilters(SWModule *module, ConfigEntMap &section);
 
 	/**
-	 * Deprecated.  Use addRenderFilters instead.
+	 * @deprecated Use addRenderFilters instead.
 	 */
 	SWDEPRECATED virtual void AddRenderFilters(SWModule *module, ConfigEntMap &section) { addRenderFilters(module, section); }
 	/**
@@ -216,7 +219,7 @@ protected:
 	virtual void addRenderFilters(SWModule *module, ConfigEntMap &section);
 
 	/**
-	 * Deprecated.  Use addStripFilters instead.
+	 * @deprecated Use addStripFilters instead.
 	 */
 	SWDEPRECATED virtual void AddStripFilters(SWModule *module, ConfigEntMap &section) { addStripFilters(module, section); }
 	/**
@@ -230,7 +233,7 @@ protected:
 	virtual void addStripFilters(SWModule *module, ConfigEntMap &section);
 
 	/**
-	 * Deprecated.  Use addLocalStripFilters instead.
+	 * @deprecated Use addLocalStripFilters instead.
 	 */
 	SWDEPRECATED virtual void AddStripFilters(SWModule *module, ConfigEntMap &section, ConfigEntMap::iterator start, ConfigEntMap::iterator end) { addLocalStripFilters(module, section); }
 	/**
@@ -243,7 +246,7 @@ protected:
 	virtual void addLocalStripFilters(SWModule *module, ConfigEntMap &section);
 
 	/**
-	 * Deprecated.  Use addRawFilters instead.
+	 * @deprecated Use addRawFilters instead.
 	 */
 	SWDEPRECATED virtual void AddRawFilters(SWModule *module, ConfigEntMap &section) { addRawFilters(module, section); }
 	/**
@@ -278,7 +281,7 @@ public:
 	static const char *globalConfPath;
 
 	/**
-	 * Deprecated.  Used FileMgr::getSystemFileMgr()->getHomeDir() instead.
+	 * @deprecated Used FileMgr::getSystemFileMgr()->getHomeDir() instead.
 	 */
 	SWDEPRECATED static SWBuf getHomeDir();
 
@@ -317,6 +320,7 @@ public:
 	 * Deprecated.  Use getModules instead.
 	 */
 	ModMap Modules;
+
 	/** The map of available modules.
 	 *	This map exposes the installed modules.
 	 *
@@ -417,7 +421,7 @@ public:
 	virtual void InstallScan(const char *dir);
 
 	/**
-	 * Deprecated.  Use load
+	 * @deprecated Use load
 	 */
 	SWDEPRECATED virtual signed char Load() { return load(); }
 	/** Loads installed library of SWORD modules.

@@ -63,7 +63,10 @@ public:
 	/** Clears out elements of list
 	 */
 	virtual void clear();
-	// deprecated, use clear(), instead
+
+	/** 
+	* @deprecated, use clear(), instead
+* 	*/
 	SWDEPRECATED virtual void ClearList() { clear(); }
 
 
@@ -71,13 +74,17 @@ public:
 	 * @return number of key elements in list
 	 */
 	virtual int getCount() const;
-	//deprecated, use getCount
+	/**
+	 * @deprecated Use getCount
+	 */
 	SWDEPRECATED virtual int Count() { return getCount(); }
 	
 	/** Removes current element from list
 	 */
 	virtual void remove();
-	// deprecated use remove
+	/**
+	 * @deprecated Use remove
+	 */
 	SWDEPRECATED virtual void Remove() { remove(); }
 
 	
@@ -89,7 +96,9 @@ public:
 	 * deprecated use setToElement
 	 */
 	virtual char setToElement(int ielement, SW_POSITION pos = TOP);
-	// deprecated use setToElement
+	/**
+	 * @deprecated Use setToElement
+	 */
 	SWDEPRECATED virtual char SetToElement(int ielement, SW_POSITION pos = TOP) { return setToElement(ielement, pos); }
 
 
@@ -102,7 +111,9 @@ public:
 	virtual SWKey *getElement(int pos = -1);
 	virtual const SWKey *getElement(int pos = -1) const;
 	
-	// deprecated, use above function
+	/**
+	 * @deprecated Use getElement
+	 */
 	SWDEPRECATED virtual SWKey *GetElement(int pos = -1) { return getElement(pos); }
 
 	/** Adds an element to the list

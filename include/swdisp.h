@@ -48,6 +48,9 @@ public:
 	 * @return error status
 	 */
 	virtual char display(SWModule &imodule) = 0;
+	/**
+	 * @deprecated Use display
+	 */
 	SWDEPRECATED char Display(SWModule &imodule) { return display(imodule); }
 };
 

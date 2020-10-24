@@ -39,8 +39,13 @@ public:
 	/** Messages before stages of a batch download */
 	virtual void preStatus(long totalBytes, long completedBytes, const char *message);
 
-	/** frequently called throughout a download, to report status */
+	/**
+	 * @deprecated Use override update instead, receive sttaus updates
+	 */
 	SWDEPRECATED virtual void statusUpdate(double dtTotal, double dlNow);
+	/** frequently called throughout a download, to report status
+	*	override to receive status information
+	*/
 	virtual void update(unsigned long totalBytes, unsigned long completedBytes);
 };
 

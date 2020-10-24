@@ -62,7 +62,7 @@ public:
 
 	/** Markup sets/gets the markup after initialization
 	 * 
-	 * DEPRECATED: use setMarkup / getMarkup
+	 * @deprecated Use setMarkup / getMarkup
 	 *
 	 * @param m The new markup
 	 * @return The current (possibly changed) markup format.

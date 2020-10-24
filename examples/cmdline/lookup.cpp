@@ -28,6 +28,7 @@
 #include <swmodule.h>
 #include <swfilter.h>
 #include <markupfiltmgr.h>
+#include <osiswordjs.h>
 #include <versekey.h>
 //#include "../../bindings/corba/orbitcpp/webmgr.hpp"
 
@@ -38,6 +39,7 @@ using sword::SWModule;
 using sword::FMT_WEBIF;
 using sword::FMT_HTMLHREF;
 using sword::FMT_XHTML;
+using sword::FMT_OSIS;
 using sword::FMT_RTF;
 using sword::FMT_LATEX;
 using sword::ModMap;
@@ -46,6 +48,7 @@ using sword::AttributeList;
 using sword::AttributeValue;
 using sword::VerseKey;
 using sword::FilterList;
+using sword::OSISWordJS;
 
 
 int main(int argc, char **argv)
@@ -77,6 +80,12 @@ int main(int argc, char **argv)
 		exit(-1);
 	}
 
+	if (target->getMarkup() == FMT_OSIS) {
+		OSISWordJS *osisWordJS = new OSISWordJS();
+		osisWordJS->setMgr(&manager);
+		target->addOptionFilter(osisWordJS);
+		osisWordJS->setOptionValue("On");
+	}
 	// turn all filters to default values
 	manager.setGlobalOption("Headings", "On");
 	manager.setGlobalOption("Strong's Numbers", "Off");

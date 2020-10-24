@@ -142,6 +142,9 @@ public:
 	 * @return 1 - persists in module; 0 - a copy is attempted
 	 */
 	bool isPersist() const;
+	/**
+	 * @deprecated Use isPersist
+	 */
 	SWDEPRECATED char Persist() const { return isPersist(); }
 
 	/** Sets whether this key should persist in any module to which it is set
@@ -149,16 +152,22 @@ public:
 	 * @param ipersist value which to set persist;
 	 * @return 1 - persists in module; 0 - a copy is attempted
 	 */
-	SWDEPRECATED char Persist(signed char ipersist) { setPersist(ipersist!=0); return isPersist(); }
 	void setPersist(bool ipersist);
+	/**
+	 * @deprecated Use setPersist and isPersist instead.
+	 */
+	SWDEPRECATED char Persist(signed char ipersist) { setPersist(ipersist!=0); return isPersist(); }
 
 	/** Gets and clears error status
 	 * @return error status
 	 */
-	SWDEPRECATED char Error() { return popError(); }
 	virtual char popError();
 	virtual char getError() const { return error; }
 	virtual void setError(char err) { error = err; }
+	/**
+	 * @deprecated Use popError and getError instead
+	 */
+	SWDEPRECATED char Error() { return popError(); }
 
 	/** Sets this SWKey with a character string
 	 * @param ikey string used to set this key

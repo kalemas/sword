@@ -68,6 +68,9 @@ class SWFilter;
 	SWModule &operator ++(int) { return *this += 1; } \
 	SWModule &operator --(int) { return *this -= 1; } \
 	SWModule &operator =(SW_POSITION p) { setPosition(p); return *this; } \
+	/**	\
+	 * @deprecated Use renderText instead	\ 
+	 */	\
 	SWDEPRECATED operator const char *() { static SWBuf unsafeTmp = renderText(); return unsafeTmp.c_str(); }
 
 
@@ -193,6 +196,9 @@ public:
 	 * @return error status
 	 */
 	virtual char popError();
+	/**
+	 * @deprecated Use popError instead.
+	 */
 	SWDEPRECATED virtual char Error() { return popError(); }
 
 	/**
@@ -296,9 +302,13 @@ public:
 
 	virtual long getIndex() const { return entryIndex; }
 	virtual void setIndex(long iindex) { entryIndex = iindex; }
-	// deprecated, use getIndex()
+	/**
+	 * @deprecated Use getIndex()
+	 */
 	SWDEPRECATED long Index() const { return getIndex(); }
-	// deprecated, use setIndex(...)
+	/**
+	 * @deprecated Use setIndex(...)
+	 */
 	SWDEPRECATED long Index(long iindex) { setIndex(iindex); return getIndex(); }
 
 	/** Calls this module's display object and passes itself
@@ -306,6 +316,9 @@ public:
 	 * @return error status
 	 */
 	virtual char display();
+	/**
+	 * @deprecated Use display
+	 */
 	SWDEPRECATED char Display() { return display(); }
 
 	/** Gets display driver
@@ -330,10 +343,14 @@ public:
 	 * @return pointer to modname
 	 */
 	const char *getName() const;
+	/**
+	 * @deprecated Use getName
+	 */
 	SWDEPRECATED const char *Name() const { return getName(); }
 
 	/** Sets module name
 	 *
+	 * @deprecated Use getName
 	 * @param imodname Value which to set modname; [0]-only get
 	 * @return pointer to modname
 	 */
@@ -344,10 +361,14 @@ public:
 	 * @return pointer to moddesc
 	 */
 	const char *getDescription() const;
+	/**
+	 * @deprecated Use getDescription
+	 */
 	SWDEPRECATED const char *Description() const { return getDescription(); }
 
 	/** Sets module description
 	 *
+	 * @deprecated Use getDescription
 	 * @param imoddesc Value which to set moddesc; [0]-only get
 	 * @return pointer to moddesc
 	 */
@@ -358,6 +379,9 @@ public:
 	 * @return pointer to modtype
 	 */
 	const char *getType() const;
+	/**
+	 * @deprecated Use getType
+	 */
 	SWDEPRECATED const char *Type() const { return getType(); }
 
 	/** Sets module type
@@ -365,14 +389,20 @@ public:
 	 * @param imodtype Value which to set modtype; [0]-only get
 	 * @return pointer to modtype
 	 */
-	SWDEPRECATED const char *Type(const char *imodtype) { setType(imodtype); return getType(); }
 	void setType(const char *imodtype) { stdstr(&modtype, imodtype); }
+	/**
+	 * @deprecated Use setType / getType
+	 */
+	SWDEPRECATED const char *Type(const char *imodtype) { setType(imodtype); return getType(); }
 
 	/** Sets/gets module direction
 	 *
 	 * @return new direction
 	 */
 	virtual char getDirection() const;
+	/**
+	 * @deprecated Use getDirection
+	 */
 	SWDEPRECATED char Direction(signed char newdir = -1) { char retVal = getDirection(); if (newdir != -1) return direction = newdir; return retVal; }
 
 	/** Gets module encoding
@@ -380,6 +410,9 @@ public:
 	 * @return Encoding
 	 */
 	char getEncoding() const { return encoding; }
+	/**
+	 * @deprecated Use getEncoding
+	 */
 	SWDEPRECATED char Encoding(signed char enc = -1) { char retVal = getEncoding(); if (enc != -1) encoding = enc; return retVal; }
 
 	/** Gets module markup
@@ -387,6 +420,9 @@ public:
 	 * @return Markup
 	 */
 	char getMarkup() const { return markup; }
+	/**
+	 * @deprecated Use getMarkup
+	 */
 	SWDEPRECATED char Markup(signed char imarkup = -1) { char retVal = getMarkup(); if (imarkup != -1) markup = imarkup; return retVal; }
 
 	/** Gets module language
@@ -394,6 +430,9 @@ public:
 	 * @return pointer to modlang
 	 */
 	const char *getLanguage() const { return modlang; }
+	/**
+	 * @deprecated Use getLanguage
+	 */
 	SWDEPRECATED const char *Lang(char *imodlang = 0) { if (imodlang != 0) stdstr(&modlang, imodlang); return getLanguage(); }
 
 
@@ -427,6 +466,10 @@ public:
 			void *percentUserData = 0);
 
 	// for backward compat-- deprecated
+
+	/**
+	 * @deprecated Use search
+	 */
 	SWDEPRECATED ListKey &Search(const char *istr, int searchType = 0, int flags = 0, SWKey * scope = 0, bool * justCheckIfSupported = 0, void (*percent) (char, void *) = &nullPercent, void *percentUserData = 0) {	return search(istr, searchType, flags, scope, justCheckIfSupported, percent, percentUserData);	}
 
 
@@ -438,6 +481,9 @@ public:
 	 * @return pointer to allocated key. Caller is responsible for deleting the object
 	 */
 	virtual SWKey *createKey() const;
+	/**
+	 * @deprecated Use createKey
+	 */
 	SWDEPRECATED SWKey *CreateKey() const { return createKey(); }
 
 	/** This function is reimplemented by the different kinds
@@ -514,6 +560,9 @@ public:
 		renderFilters->push_back(newFilter);
 		return *this;
 	}
+	/**
+	 * @deprecated Use addRenderFilter
+	 */
 	SWDEPRECATED SWModule &AddRenderFilter(SWFilter *newFilter) { return addRenderFilter(newFilter); }
 
 	/** Retrieves a container of render filters associated with this
@@ -532,6 +581,9 @@ public:
 		renderFilters->remove(oldFilter);
 		return *this;
 	}
+	/**
+	 * @deprecated Use removeRenderFilter
+	 */
 	SWDEPRECATED SWModule &RemoveRenderFilter(SWFilter *oldFilter) {	return removeRenderFilter(oldFilter); }
 
 	/** Replaces a RenderFilter in this module's renderfilters queue
@@ -547,6 +599,9 @@ public:
 		}
 		return *this;
 	}
+	/**
+	 * @deprecated Use replaceRenderFilter
+	 */
 	SWDEPRECATED SWModule &ReplaceRenderFilter(SWFilter *oldFilter, SWFilter *newFilter) { return replaceRenderFilter(oldFilter, newFilter); }
 
 	/** RenderFilter run a buf through this module's Render Filters
@@ -568,6 +623,9 @@ public:
 		encodingFilters->push_back(newFilter);
 		return *this;
 	}
+	/**
+	 * @deprecated Use addEncodingFilter
+	 */
 	SWDEPRECATED SWModule &AddEncodingFilter(SWFilter *newFilter) { return addEncodingFilter(newFilter); }
 
 	/** Removes an EncodingFilter from this module's encodingFilters queue
@@ -578,6 +636,9 @@ public:
 		encodingFilters->remove(oldFilter);
 		return *this;
 	}
+	/**
+	 * @deprecated Use removeEncodingFilter
+	 */
 	SWDEPRECATED SWModule &RemoveEncodingFilter(SWFilter *oldFilter) { return removeEncodingFilter(oldFilter); }
 
 	/** Replaces an EncodingFilter in this module's encodingfilters queue
@@ -593,6 +654,9 @@ public:
 		}
 		return *this;
 	}
+	/**
+	 * @deprecated Use replaceEncodingFilter
+	 */
 	SWDEPRECATED SWModule &ReplaceEncodingFilter(SWFilter *oldFilter, SWFilter *newFilter) { return replaceEncodingFilter(oldFilter, newFilter); }
 
 	/** encodingFilter run a buf through this module's Encoding Filters
@@ -613,6 +677,9 @@ public:
 		stripFilters->push_back(newFilter);
 		return *this;
 	}
+	/**
+	 * @deprecated Use addStripFilter
+	 */
 	SWDEPRECATED SWModule &AddStripFilter(SWFilter *newFilter) { return addStripFilter(newFilter);	}
 
 	/** Adds a RawFilter to this module's rawFilters queue
@@ -623,6 +690,9 @@ public:
 		rawFilters->push_back(newFilter);
 		return *this;
 	}
+	/**
+	 * @deprecated Use addRawFilter
+	 */
 	SWDEPRECATED SWModule &AddRawFilter(SWFilter *newFilter) { return addRawFilter(newFilter); }
 
 	/** StripFilter run a buf through this module's Strip Filters
@@ -653,6 +723,9 @@ public:
 		optionFilters->push_back(newFilter);
 		return *this;
 	}
+	/**
+	 * @deprecated Use addOptionFilter
+	 */
 	SWDEPRECATED SWModule &AddOptionFilter(SWOptionFilter *newFilter) { return addOptionFilter(newFilter); }
 
 	virtual const OptionFilterList &getOptionFilters() const { return *optionFilters; }
@@ -674,6 +747,9 @@ public:
 	 * @return result buffer
 	 */
 	virtual const char *stripText(const char *buf = 0, int len = -1);
+	/**
+	 * @deprecated Use stripText
+	 */
 	SWDEPRECATED const char *StripText(const char *buf = 0, int len = -1) { return stripText(buf, len); }
 
 	/** Produces renderable text of the current module entry or supplied text
@@ -686,6 +762,9 @@ public:
 	 */
 	SWBuf renderText(const char *buf, int len = -1, bool render = true) const;
 	 SWBuf renderText();
+	/**
+	 * @deprecated Use renderText
+	 */
 	SWDEPRECATED const char *RenderText(const char *buf = 0, int len = -1, bool render = true) { return renderText(buf, len, render); }
 
 	/** Produces any header data which might be useful which is associated with the
@@ -716,6 +795,9 @@ public:
 	 *	consecutive links when iterating
 	 */
 	virtual bool isSkipConsecutiveLinks() { return skipConsecutiveLinks; }
+	/**
+	 * @deprecated Use isSkipConsecutiveLinks
+	 */
 	SWDEPRECATED bool getSkipConsecutiveLinks() { return isSkipConsecutiveLinks(); }
 	
 	virtual bool isLinked(const SWKey *, const SWKey *) const { return false; }
@@ -735,6 +817,9 @@ public:
 	 * optimization.
 	 */
 	virtual void setProcessEntryAttributes(bool val) const { procEntAttr = val; }
+	/**
+	 * @deprecated Use setProcessEntryAttributes
+	 */
 	SWDEPRECATED void processEntryAttributes(bool val) const { setProcessEntryAttributes(val); }
 
 	/** Whether or not we're processing Entry Attributes

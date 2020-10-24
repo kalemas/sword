@@ -167,29 +167,44 @@ public:
 	* @param lb the new lower boundary for this VerseKey
 	*/
 	void setLowerBound(const VerseKey &lb);
+	/**
+	 * @deprecated Use setLowerBound / getLowerBound
+	 */
 	SWDEPRECATED VerseKey &LowerBound(const VerseKey &lb) { setLowerBound(lb); return getLowerBound(); }
 
 	/** sets the upper boundary for this VerseKey
 	* @param ub the new upper boundary for this VerseKey
 	*/
 	void setUpperBound(const VerseKey &ub);
+	/**
+	 * @deprecated Use setUpperBound / getUpperBound
+	 */
 	SWDEPRECATED VerseKey &UpperBound(const VerseKey &ub) { setUpperBound(ub); return getUpperBound(); }
 
 	/** gets the lower boundary of this VerseKey
 	* @return the lower boundary of this VerseKey
 	*/
 	VerseKey &getLowerBound() const;
+	/**
+	 * @deprecated Use getLowerBound
+	 */
 	SWDEPRECATED VerseKey &LowerBound() const { return getLowerBound(); }
 
 	/** gets the upper boundary of this VerseKey
 	* @return the upper boundary of this VerseKey
 	*/
 	VerseKey &getUpperBound() const;
+	/**
+	 * @deprecated Use getUpperBound
+	 */
 	SWDEPRECATED VerseKey &UpperBound() const { return getUpperBound(); }
 
 	/** clears the boundaries of this VerseKey
 	*/
 	void clearBounds() const;
+	/**
+	 * @deprecated Use clearBounds
+	 */
 	SWDEPRECATED void ClearBounds() { clearBounds(); }
 
 	/** Creates a new SWKey based on the current VerseKey
@@ -341,6 +356,9 @@ public:
 	*
 	*/
 	virtual void normalize(bool autocheck = false);
+	/**
+	 * @deprecated Use normalize
+	 */
 	SWDEPRECATED void Normalize(char autocheck = 0) { normalize(autocheck!=0); }
 
 	/** Sets flag that tells VerseKey to
@@ -429,6 +447,9 @@ public:
 	 * COMMENT: This code works but wreaks.  Rewrite to make more maintainable.
 	 */
 	virtual ListKey parseVerseList(const char *buf, const char *defaultKey = 0, bool expandRange = false, bool useChapterAsVerse = false);
+	/**
+	 * @deprecated Use parseVerseList
+	 */
 	SWDEPRECATED ListKey ParseVerseList(const char *buf, const char *defaultKey = 0, bool expandRange = false, bool useChapterAsVerse = false) { return parseVerseList(buf, defaultKey, expandRange, useChapterAsVerse); }
 	virtual const char *getRangeText() const;
 	virtual const char *getShortRangeText() const;
