@@ -163,9 +163,13 @@ char CURLFTPTransport::getURL(const char *destPath, const char *sourceURL, SWBuf
 
 		/* Switch on full protocol/debug output */
 		curl_easy_setopt(session, CURLOPT_VERBOSE, true);
+#ifndef OLDCURL
 		curl_easy_setopt(session, CURLOPT_CONNECTTIMEOUT_MS, timeoutMillis);
 		curl_easy_setopt(session, CURLOPT_TIMEOUT_MS, timeoutMillis);
-
+#else
+		curl_easy_setopt(session, CURLOPT_CONNECTTIMEOUT, timeoutMillis/1000);
+		curl_easy_setopt(session, CURLOPT_TIMEOUT, timeoutMillis/1000);
+#endif
 		/* FTP connection settings */
 
 #if (LIBCURL_VERSION_MAJOR > 7) || \
@@ -190,7 +194,12 @@ char CURLFTPTransport::getURL(const char *destPath, const char *sourceURL, SWBuf
 		curl_easy_setopt(session, CURLOPT_PROGRESSDATA, (void*)NULL);
 
 		if (CURLE_OK != res) {
-			if (CURLE_FTP_ACCEPT_TIMEOUT == res || CURLE_OPERATION_TIMEDOUT == res) {
+			if (CURLE_OPERATION_TIMEDOUT == res
+// older CURL doesn't define this
+#ifdef CURLE_FTP_ACCEPT_TIMEOUT
+	               || CURLE_FTP_ACCEPT_TIMEOUT == res
+#endif
+               ) {
 				retVal = -2;
 			}
 			else {

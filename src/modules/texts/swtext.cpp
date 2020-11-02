@@ -92,7 +92,7 @@ void SWText::setIndex(long iindex) {
 }
 
 
-const VerseKey &SWText::getVerseKey(const SWKey *keyToConvert) const {
+const VerseKey &SWText::getVerseKeyConst(const SWKey *keyToConvert) const {
 	const SWKey *thisKey = keyToConvert ? keyToConvert : this->key;
 
 	const VerseKey *key = 0;

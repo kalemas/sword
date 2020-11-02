@@ -87,6 +87,10 @@
 #else
 #define lllog(M) fprintf(stderr, M);
 #endif
+#ifndef socklen_t
+#define socklen_t int
+#endif
+
 void *mymemccpy(void *dst, const void *src, int c, size_t n)
 {
     char*        q     = dst;

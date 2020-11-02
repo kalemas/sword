@@ -159,7 +159,7 @@ void RawFiles::linkEntry(const SWKey *inkey) {
 		SWBuf tmpbuf;
 		readText(key->getTestament(), start, size + 2, tmpbuf);
 
-		key = &getVerseKey(inkey);
+		key = &getVerseKeyConst(inkey);
 		doSetText(key->getTestament(), key->getTestamentIndex(), tmpbuf.c_str());
 	}
 }

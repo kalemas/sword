@@ -43,7 +43,8 @@ private:
 	char *versification;
 
 protected:
-	const VerseKey &getVerseKey(const SWKey *key=0) const;
+	const VerseKey &getVerseKey(const SWKey *key=0) const { return getVerseKeyConst(key); }
+	const VerseKey &getVerseKeyConst(const SWKey *key=0) const;
 	VerseKey &getVerseKey(SWKey *key=0);
 	
 public:

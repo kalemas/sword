@@ -87,7 +87,7 @@ void SWCom::setIndex(long iindex) {
 }
 
 
-const VerseKey &SWCom::getVerseKey(const SWKey *keyToConvert) const {
+const VerseKey &SWCom::getVerseKeyConst(const SWKey *keyToConvert) const {
 	const SWKey *thisKey = keyToConvert ? keyToConvert : this->key;
 
 	const VerseKey *key = 0;

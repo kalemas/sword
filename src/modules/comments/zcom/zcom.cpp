@@ -131,7 +131,7 @@ void zCom::setEntry(const char *inbuf, long len) {
 
 void zCom::linkEntry(const SWKey *inkey) {
 	VerseKey *destkey = &getVerseKey();
-	const VerseKey *srckey = &getVerseKey(inkey);
+	const VerseKey *srckey = &getVerseKeyConst(inkey);
 
 	doLinkEntry(destkey->getTestament(), destkey->getTestamentIndex(), srckey->getTestamentIndex());
 

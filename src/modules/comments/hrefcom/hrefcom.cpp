@@ -86,7 +86,7 @@ SWBuf &HREFCom::getRawEntryBuf() const {
 	entryBuf += tmpbuf.c_str();
 	prepText(entryBuf);
 
-	if (key != this->key)
+	if (key != (const VerseKey *)this->key)
 		delete key;
 
 	return entryBuf;
