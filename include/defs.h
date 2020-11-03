@@ -42,19 +42,6 @@
 
 SWORD_NAMESPACE_START
 
-#ifndef STRIPLOGD
-#define SWLOGD(...) SWLog::getSystemLog()->logDebug(__VA_ARGS__)
-#else
-#define SWLOGD(...) (void)0
-#endif
-
-#ifndef STRIPLOGI
-#define SWLOGI(...) SWLog::getSystemLog()->logInformation(__VA_ARGS__)
-#define SWLOGTI(...) SWLog::getSystemLog()->logTimedInformation(__VA_ARGS__)
-#else
-#define SWLOGI(...) (void)0
-#define SWLOGTI(...) (void)0 
-#endif
 
 // support for compilers with no RTTI
 #define SWDYNAMIC_CAST(className, object) dynamic_cast<className *>(object)
@@ -122,7 +109,7 @@ SWORD_NAMESPACE_START
 #    define SWDLLEXPORT_CTORFN
 #  endif
 
-#  define SWDEPRECATED 
+#  define SWDEPRECATED
 
 
 #elif defined(__GNUWIN32__)
@@ -145,6 +132,7 @@ SWORD_NAMESPACE_START
 
 
 #elif defined(__BORLANDC__)
+#define NOVARMACS
 #  ifdef SWMAKINGDLL
 #    define SWDLLEXPORT _export
 #    define SWDLLEXPORT_DATA(type) __declspec( dllexport ) type
@@ -158,6 +146,7 @@ SWORD_NAMESPACE_START
 #    define SWDLLEXPORT_DATA(type) type
 #    define SWDLLEXPORT_CTORFN
 #  endif
+
 
 #define COMMENT SLASH(/)
 #define SLASH(s) /##s
@@ -192,6 +181,37 @@ SWORD_NAMESPACE_START
 #else
 #  define SWDLLIMPORT
 #endif
+
+#ifndef NOVARMACS
+#ifndef STRIPLOGD
+#define SWLOGD(...) SWLog::getSystemLog()->logDebug(__VA_ARGS__)
+#else
+#define SWLOGD(...) (void)0
+#endif
+
+#ifndef STRIPLOGI
+#define SWLOGI(...) SWLog::getSystemLog()->logInformation(__VA_ARGS__)
+#define SWLOGTI(...) SWLog::getSystemLog()->logTimedInformation(__VA_ARGS__)
+#else
+#define SWLOGI(...) (void)0
+#define SWLOGTI(...) (void)0
+#endif
+#else
+#ifndef STRIPLOGD
+#define SWLOGD SWLog::getSystemLog()->logDebug
+#else
+#define SWLOGD COMMENT
+#endif
+
+#ifndef STRIPLOGI
+#define SWLOGI SWLog::getSystemLog()->logInformation
+#define SWLOGTI SWLog::getSystemLog()->logTimedInformation
+#else
+#define SWLOGI COMMENT
+#define SWLOGTI COMMENT
+#endif
+#endif
+
 
 SWORD_NAMESPACE_END
 #endif //SWORDDEFS_H
