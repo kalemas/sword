@@ -33,12 +33,3 @@ the option -DSWORD_PYTHON_INSTALL_DIR="/some/other/path" at configure time. No c
 option is currently available for the Perl bindings because the maintainer is unaware
 of how to implement it.
 
-Building java
--------------
-
-The source can be built with sun java (javac) or with GNU Classpath (jikes-classpath)
-GJC does not yet work, corba is expected to work with gcj 4.1
-
-set the JAVAC environment variable to whichever you wish to build with
-
-e.g. JAVAC=javac ./configure

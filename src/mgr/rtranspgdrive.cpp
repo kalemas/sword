@@ -76,7 +76,7 @@ namespace {
 	static int my_fprogress(void *clientp, double dltotal, double dlnow, double ultotal, double ulnow) {
 		if (clientp) {
 			MyProgressData *pd = (MyProgressData *)clientp;
-			SWLog::getSystemLog()->logDebug("CURLFTPTransport report progress: totalSize: %ld; xfered: %ld\n", (long)dltotal, (long)dlnow);
+SWLOGD("RTransportGDrive report progress: totalSize: %ld; xfered: %ld\n", (long)dltotal, (long)dlnow);
 			if (pd->sr) {
 				if (dltotal < 0) dltotal = 0;
 				if (dlnow < 0) dlnow = 0;
@@ -144,15 +144,15 @@ char RTransportGDrive::getURL(const char *destPath, const char *sourceURL, SWBuf
 
 #ifdef EPRT_AVAILABLE
 		curl_easy_setopt(session, CURLOPT_FTP_USE_EPRT, 0);
-		SWLog::getSystemLog()->logDebug("***** using CURLOPT_FTP_USE_EPRT\n");
+SWLOGD("***** using CURLOPT_FTP_USE_EPRT\n");
 #endif
 
 		
-		SWLog::getSystemLog()->logDebug("***** About to perform curl easy action. \n");
-		SWLog::getSystemLog()->logDebug("***** destPath: %s \n", destPath);
-		SWLog::getSystemLog()->logDebug("***** sourceURL: %s \n", sourceURL);
+SWLOGD("***** About to perform curl easy action. \n");
+SWLOGD("***** destPath: %s \n", destPath);
+SWLOGD("***** sourceURL: %s \n", sourceURL);
 		res = curl_easy_perform(session);
-		SWLog::getSystemLog()->logDebug("***** Finished performing curl easy action. \n");
+SWLOGD("***** Finished performing curl easy action. \n");
 
 		// it seems CURL tries to use this option data later for some reason, so we unset here
 		curl_easy_setopt(session, CURLOPT_PROGRESSDATA, (void*)NULL);

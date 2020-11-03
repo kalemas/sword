@@ -120,9 +120,9 @@ BibleSync *bibleSync = 0;
 org_biblesync_MessageReceivedCallback bibleSyncListener = 0;
 
 void bibleSyncCallback(char cmd, string pkt_uuid, string bible, string ref, string alt, string group, string domain, string info, string dump) {
-SWLog::getSystemLog()->logDebug("bibleSync callback msg: %c; pkt_uuid: %s; bible: %s; ref: %s; alt: %s; group: %s; domain: %s; info: %s; dump: %s", cmd, pkt_uuid.c_str(), bible.c_str(), ref.c_str(), alt.c_str(), group.c_str(), domain.c_str(), info.c_str(), dump.c_str());
+SWLOGD("bibleSync callback msg: %c; pkt_uuid: %s; bible: %s; ref: %s; alt: %s; group: %s; domain: %s; info: %s; dump: %s", cmd, pkt_uuid.c_str(), bible.c_str(), ref.c_str(), alt.c_str(), group.c_str(), domain.c_str(), info.c_str(), dump.c_str());
 	if (bibleSyncListener) {
-SWLog::getSystemLog()->logDebug("bibleSync listener is true");
+SWLOGD("bibleSync listener is true");
 		switch(cmd) {
 		// error
 		case 'E':
@@ -137,13 +137,13 @@ SWLog::getSystemLog()->logDebug("bibleSync listener is true");
 			break;
 		// chat message
 		case 'C': {
-SWLog::getSystemLog()->logDebug("bibleSync Chat Received: %s", ref.c_str());
+SWLOGD("bibleSync Chat Received: %s", ref.c_str());
 			(*bibleSyncListener)(cmd, group.c_str(), alt.c_str());
 			break;
 		}
 		// navigation
 		case 'N':
-SWLog::getSystemLog()->logDebug("bibleSync Nav Received: %s", ref.c_str());
+SWLOGD("bibleSync Nav Received: %s", ref.c_str());
 			(*bibleSyncListener)(cmd, ref.c_str(), 0);
 			break;
 		}
@@ -1071,12 +1071,12 @@ SWHANDLE SWDLLEXPORT org_crosswire_sword_SWMgr_newWithPath(const char *path) {
 	}
 	SWBuf extraPath = confPath + "extraConfig.conf";
 	bool exists = FileMgr::existsFile(extraPath.c_str());
-SWLog::getSystemLog()->logDebug("libsword: extraConfig %s at path: %s", exists?"Exists":"Absent", extraPath.c_str());
+SWLOGD("libsword: extraConfig %s at path: %s", exists?"Exists":"Absent", extraPath.c_str());
 
-SWLog::getSystemLog()->logDebug("libsword: init() adding locales from baseDir.");
+SWLOGD("libsword: init() adding locales from baseDir.");
 	LocaleMgr::getSystemLocaleMgr()->loadConfigDir(SWBuf(confPath + "locales.d").c_str());
 	LocaleMgr::getSystemLocaleMgr()->loadConfigDir(SWBuf(confPath + "uilocales.d").c_str());
-SWLog::getSystemLog()->logDebug("libsword: init() creating WebMgr using path: %s", path);
+SWLOGD("libsword: init() creating WebMgr using path: %s", path);
 	return (SWHANDLE) new HandleSWMgr(new WebMgr(confPath.c_str(), exists?extraPath.c_str():0));
 }
 
@@ -1300,14 +1300,14 @@ const char ** SWDLLEXPORT org_crosswire_sword_SWConfig_getSections
 	int count = 0;
 	const char **retVal = 0;
 	bool exists = FileMgr::existsFile(confPath);
-SWLog::getSystemLog()->logDebug("libsword: getConfigSections %s at path: %s", exists?"Exists":"Absent", confPath);
+SWLOGD("libsword: getConfigSections %s at path: %s", exists?"Exists":"Absent", confPath);
 	if (exists) {
 		SWConfig config(confPath);
 		SectionMap::const_iterator sit;
 		for (sit = config.getSections().begin(); sit != config.getSections().end(); ++sit) {
 			count++;
 		}
-		SWLog::getSystemLog()->logDebug("libsword: %d sections found in config", count);
+SWLOGD("libsword: %d sections found in config", count);
 		retVal = (const char **)calloc(count+1, sizeof(const char *));
 		count = 0;
 		for (sit = config.getSections().begin(); sit != config.getSections().end(); ++sit) {
@@ -1828,11 +1828,11 @@ SWHANDLE SWDLLEXPORT org_crosswire_sword_InstallMgr_getRemoteModuleByName
  */
 void SWDLLEXPORT org_crosswire_sword_SWMgr_sendBibleSyncMessage
 		(SWHANDLE hMgr, const char *osisRefRaw) {
-SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() begin");
+SWLOGD("libsword: sendBibleSyncMessage() begin");
 
 #ifdef BIBLESYNC
 	if (!bibleSync) {
-SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() bibleSync not active; message not sent.");
+SWLOGD("libsword: sendBibleSyncMessage() bibleSync not active; message not sent.");
 		return;
 	}
 	SWBuf modName = "Bible";
@@ -1841,9 +1841,9 @@ SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() bibleSync not 
 	if (modNamePrefix) modName = modNamePrefix;
 
 	BibleSync_xmit_status result = bibleSync->Transmit(modName.c_str(), osisRef.c_str());
-SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() finished with status code: %d", result);
+SWLOGD("libsword: sendBibleSyncMessage() finished with status code: %d", result);
 #else
-SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() bibleSync not active; message not sent.");
+SWLOGD("libsword: sendBibleSyncMessage() bibleSync not active; message not sent.");
 #endif
 
 }
@@ -1858,7 +1858,7 @@ SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() bibleSync not 
 void SWDLLEXPORT org_crosswire_sword_SWMgr_startBibleSync
   (SWHANDLE hMgr, const char *appNameJS, const char *userNameJS, const char *passphraseJS, org_biblesync_MessageReceivedCallback callback) {
 
-	SWLog::getSystemLog()->logDebug("startBibleSync() start");
+SWLOGD("startBibleSync() start");
 	// only one thread
 	static bool starting = false;
 	if (starting) return;
@@ -1872,31 +1872,31 @@ void SWDLLEXPORT org_crosswire_sword_SWMgr_startBibleSync
 
 	// in case we're restarting, wait for our loop to finish for sure
 	if (bibleSync) {
-SWLog::getSystemLog()->logDebug("startBibleSync() sleeping 3 seconds");
+SWLOGD("startBibleSync() sleeping 3 seconds");
 		sleep(3);
 	}
 
 	bibleSyncListener = callback;
-	SWLog::getSystemLog()->logDebug("startBibleSync - calling init");
+SWLOGD("startBibleSync - calling init");
 
 	if (!bibleSync) {
-SWLog::getSystemLog()->logDebug("bibleSync initializing c-tor");
+SWLOGD("bibleSync initializing c-tor");
 		bibleSync = new BibleSync(appName.c_str(), (const char *)SWVersion().currentVersion, userName.c_str());
-SWLog::getSystemLog()->logDebug("bibleSync initializing setMode");
+SWLOGD("bibleSync initializing setMode");
 		bibleSync->setMode(BSP_MODE_PERSONAL, bibleSyncCallback, passphrase.c_str());
 	}
-	SWLog::getSystemLog()->logDebug("startBibleSync - starting while listener");
+SWLOGD("startBibleSync - starting while listener");
 	starting = false;
 	while(bibleSyncListener) {
-		SWLog::getSystemLog()->logDebug("bibleSyncListener - while loop iteration");
+SWLOGD("bibleSyncListener - while loop iteration");
 		BibleSync::Receive(bibleSync);
-		SWLog::getSystemLog()->logDebug("bibleSyncListener - sleeping for 2 seconds");
+SWLOGD("bibleSyncListener - sleeping for 2 seconds");
 		sleep(2);
 	}
 	delete bibleSync;
 	bibleSync = 0;
 #else
-	SWLog::getSystemLog()->logDebug("registerBibleSyncListener: !!! BibleSync disabled in native code.");
+SWLOGD("registerBibleSyncListener: !!! BibleSync disabled in native code.");
 #endif
 }
 
@@ -1909,7 +1909,7 @@ SWLog::getSystemLog()->logDebug("bibleSync initializing setMode");
 void SWDLLEXPORT org_crosswire_sword_SWMgr_stopBibleSync
 		(SWHANDLE hMgr) {
 
-SWLog::getSystemLog()->logDebug("stopBibleSync()");
+SWLOGD("stopBibleSync()");
 #ifdef BIBLESYNC
 	// if we have a listen loop going, just break the loop; the bibleSync cleanup will happen there
 	if (::bibleSyncListener) ::bibleSyncListener = 0;
@@ -1918,6 +1918,6 @@ SWLog::getSystemLog()->logDebug("stopBibleSync()");
 		bibleSync = 0;
 	}
 #else
-SWLog::getSystemLog()->logDebug("registerBibleSyncListener: !!! BibleSync disabled in native code.");
+SWLOGD("registerBibleSyncListener: !!! BibleSync disabled in native code.");
 #endif
 }

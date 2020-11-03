@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file:///data/home/scribe/src/sword/bindings/Android/SWORD/Android-SWORD.iml" filepath="/data/home/scribe/src/sword/bindings/Android/SWORD/Android-SWORD.iml" group="SWORD" />
-      <module fileurl="file:///data/home/scribe/src/sword/bindings/Android/SWORD/app/app.iml" filepath="/data/home/scribe/src/sword/bindings/Android/SWORD/app/app.iml" group="SWORD/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/610104356/SWORD.iml" filepath="$PROJECT_DIR$/.idea/modules/610104356/SWORD.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/311794102/SWORD.app.iml" filepath="$PROJECT_DIR$/.idea/modules/311794102/SWORD.app.iml" />
     </modules>
   </component>
 </project>

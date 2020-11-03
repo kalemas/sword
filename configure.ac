@@ -65,6 +65,8 @@ AC_ARG_WITH(conf,
 	AC_HELP_STRING([--with-conf],[install a new sword.conf (default=yes)]),,with_conf=yes)
 AC_ARG_WITH(cxx11regex,
 	AC_HELP_STRING([--with-cxx11regex],[build regex support using c++11 regex (default=no)]),,with_cxx11regex=no)
+AC_ARG_WITH(cxx11time,
+	AC_HELP_STRING([--with-cxx11time],[build time support using c++11 time (default=no)]),,with_cxx11time=no)
 AC_ARG_WITH(curl,
 	AC_HELP_STRING([--with-curl],[build install manager support using libcurl (default=yes)]),,with_curl=yes)
 AC_ARG_WITH(curl_sftp,
@@ -98,6 +100,10 @@ AC_ARG_ENABLE(utilities,
 	AC_HELP_STRING([--enable-utilities],[build utilities (default=yes)]),,enable_utilities=yes)
 AC_ARG_ENABLE(examples,
 	AC_HELP_STRING([--enable-examples],[build examples (default=no)]),,enable_examples=no)
+AC_ARG_ENABLE(logdebug,
+	AC_HELP_STRING([--disable-logd],[strip log debug messages from code for optimization (default=no)]),disable_logdebug=yes,disable_logdebug=no)
+AC_ARG_ENABLE(loginfo,
+	AC_HELP_STRING([--disable-logi],[strip log information messages from code for optimization (default=no)]),disable_loginfo=yes,disable_loginfo=no)
 AM_MAINTAINER_MODE
 
 # ---------------------------------------------------------------------
@@ -305,6 +311,18 @@ if test x$with_cxx11regex = xyes; then
 	AM_CXXFLAGS="$AM_CXXFLAGS -DUSECXX11REGEX -std=c++11"
 fi
 
+if test x$with_cxx11time = xyes; then
+	AM_CXXFLAGS="$AM_CXXFLAGS -DUSECXX11TIME -std=c++11"
+fi
+
+if test x$disable_logdebug = xyes; then
+	AM_CXXFLAGS="$AM_CXXFLAGS -DSTRIPLOGD"
+fi
+
+if test x$disable_loginfo = xyes; then
+	AM_CXXFLAGS="$AM_CXXFLAGS -DSTRIPLOGI"
+fi
+
 # ---------------------------------------------------------------------
 # Check for clucene for lucene searching support
 # ---------------------------------------------------------------------
@@ -461,6 +479,9 @@ AM_CONDITIONAL(SHAREDLIB, test x$enable_shared = xyes)
 AM_CONDITIONAL(INSTCONF, test x$with_conf = xyes)
 AM_CONDITIONAL(USECXX11REGEX, test x$with_cxx11regex = xyes)
 AM_CONDITIONAL(USEICUREGEX, test x$with_icuregex = xyes)
+AM_CONDITIONAL(USECXX11TIME, test x$with_cxx11time = xyes)
+AM_CONDITIONAL(STRIPLOGD, test x$disable_logdebug = xyes)
+AM_CONDITIONAL(STRIPLOGI, test x$disable_loginfo = xyes)
 AM_CONDITIONAL(WITHCURL, test x$with_curl = xyes)
 AM_CONDITIONAL(WITHGAPI, test x$with_gapi = xyes)
 AM_CONDITIONAL(WITHCURLSFTP, test x$with_curl_sftp = xyes)
@@ -489,6 +510,8 @@ echo     "     PROFILE:              $enable_profile"
 echo     "     BUILD TESTS:          $enable_tests"
 echo     "     BUILD EXAMPLES:       $enable_examples"
 echo     "     BUILD UTILITIES:      $enable_utilities"
+echo     "     STRIP LOG DEBUG:      $disable_logdebug"
+echo     "     STRIP LOG INFO:       $disable_loginfo"
 echo     ""
 echo     " Dependencies for standard use:"
 echo     "     REGEX:                $have_systemregex"
@@ -502,8 +525,9 @@ echo     "     LIBCURL SFTP:         $with_curl_sftp"
 echo     "     BZIP2:                $with_bzip2"
 echo     "     XZ:                   $with_xz"
 echo     "     ICUSWORD:             $with_icusword"
-echo     "     CXX11-REGEX:          $with_cxx11regex"
 echo     "     ICU-REGEX:            $with_icuregex"
+echo     "     CXX11-REGEX:          $with_cxx11regex"
+echo     "     CXX11-TIME:           $with_cxx11time"
 echo     "     XAPIAN-CORE:          $with_xapian"
 echo     "     GAPI:                 $with_gapi"
 

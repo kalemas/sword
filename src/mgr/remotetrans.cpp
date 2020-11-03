@@ -91,7 +91,7 @@ char RemoteTransport::putURL(const char *destURL, const char *sourcePath, SWBuf 
 
 vector<struct DirEntry> RemoteTransport::getDirList(const char *dirURL) {
 
-	SWLog::getSystemLog()->logDebug("RemoteTransport::getDirList(%s)", dirURL);
+SWLOGD("RemoteTransport::getDirList(%s)", dirURL);
 	vector<struct DirEntry> dirList;
 	
 	SWBuf dirBuf;
@@ -111,12 +111,12 @@ vector<struct DirEntry> RemoteTransport::getDirList(const char *dirURL) {
 				else if ((*end != 10) && (*end != 13))
 					break;
 			}
-			SWLog::getSystemLog()->logDebug("getDirList: parsing item %s(%d)\n", start, end-start);
+SWLOGD("getDirList: parsing item %s(%d)\n", start, end-start);
 			int status = ftpparse(&item, start, (int)(end - start));
 			// in ftpparse.h, there is a warning that name is not necessarily null terminated
 			SWBuf name;
 			name.append(item.name, item.namelen);
-			SWLog::getSystemLog()->logDebug("getDirList: got item %s\n", name.c_str());
+SWLOGD("getDirList: got item %s\n", name.c_str());
 			if (status && name != "." && name != "..") {
 				struct DirEntry i;
 				i.name = name;
@@ -138,14 +138,14 @@ vector<struct DirEntry> RemoteTransport::getDirList(const char *dirURL) {
  * @return error status 0: OK; -1: operation error, -2: connection error; -3: user requested termination
  */
 int RemoteTransport::copyDirectory(const char *urlPrefix, const char *dir, const char *dest, const char *suffix) {
-	SWLog::getSystemLog()->logDebug("RemoteTransport::copyDirectory");
+SWLOGD("RemoteTransport::copyDirectory");
 	int retVal = 0;
 
 	SWBuf url = SWBuf(urlPrefix) + SWBuf(dir);
 	removeTrailingSlash(url);
 	url += '/';
 	
-	SWLog::getSystemLog()->logDebug("NetTransport: getting dir %s\n", url.c_str());
+SWLOGD("NetTransport: getting dir %s\n", url.c_str());
 	vector<struct DirEntry> dirList = getDirList(url.c_str());
 
 	if (!dirList.size()) {

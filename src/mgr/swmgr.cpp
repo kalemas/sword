@@ -154,7 +154,7 @@ namespace {
 			if (logLevel < 0) SWLog::getSystemLog()->logError("Invalid LogLevel found in %s: LogLevel: %s", logLocation.c_str(), logLevelString.c_str());
 			else {
 				SWLog::getSystemLog()->setLogLevel(logLevel);
-				SWLog::getSystemLog()->logInformation("Setting log level from %s to %s", logLocation.c_str(), logLevelString.c_str());
+				SWLOGTI("Setting log level from %s to %s", logLocation.c_str(), logLevelString.c_str());
 			}
 		}
 	}
@@ -391,20 +391,22 @@ SWMgr::SWMgr(const char *iConfigPath, bool autoload, SWFilterMgr *filterMgr, boo
 	int len = (int)path.length();
 	if ((len < 1) || ((iConfigPath[len-1] != '\\') && (iConfigPath[len-1] != '/')))
 		path += "/";
-	SWLog::getSystemLog()->logDebug("Checking at provided path: %s...", path.c_str());
+	SWLOGTI("Checking at provided path: %s...", path.c_str());
 	if (FileMgr::existsFile(path.c_str(), "mods.conf")) {
 		stdstr(&prefixPath, path.c_str());
 		path += "mods.conf";
 		stdstr(&configPath, path.c_str());
 	}
 	else if (FileMgr::existsDir(path.c_str(), "mods.d")) {
-		SWLog::getSystemLog()->logDebug("Found mods.d/");
+		SWLOGTI("Found mods.d/");
 		stdstr(&prefixPath, path.c_str());
 		path += "mods.d";
 		stdstr(&configPath, path.c_str());
 		configType = 1;
 	}
-	else SWLog::getSystemLog()->logDebug("Config not found at provided path.");
+	else {
+		SWLOGTI("Config not found at provided path.");
+	}
 
 	config = 0;
 	sysConfig = 0;
@@ -467,19 +469,19 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 	SWBuf homeDir = FileMgr::getSystemFileMgr()->getHomeDir();
 
 	// check for a sysConf passed in to us
-	SWLog::getSystemLog()->logDebug("Checking for provided SWConfig(\"sword.conf\")...");
+	SWLOGTI("Checking for provided SWConfig(\"sword.conf\")...");
 	if (providedSysConf && *providedSysConf) {
 		sysConf = *providedSysConf;
-		SWLog::getSystemLog()->logDebug("found.");
+		SWLOGTI("found.");
 		if (!setLogLevel) { setSystemLogLevel(sysConf); setLogLevel = true; }
 	}
 
 	// if we haven't been given our datapath in a sysconf, we need to track it down
 	if (!sysConf) {
 		// check working directory
-		SWLog::getSystemLog()->logDebug("Checking working directory for sword.conf...");
+		SWLOGTI("Checking working directory for sword.conf...");
 		if (FileMgr::existsFile(".", "sword.conf")) {
-			SWLog::getSystemLog()->logDebug("Overriding any systemwide or ~/.sword/ sword.conf with one found in current directory.");
+			SWLOGTI("Overriding any systemwide or ~/.sword/ sword.conf with one found in current directory.");
 			sysConfPath = "./sword.conf";
 			sysConf = new SWConfig(sysConfPath);
 			if ((entry = sysConf->getSection("Install").find("DataPath")) != sysConf->getSection("Install").end()) {
@@ -495,17 +497,17 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 			}
 		}
 		if (!sysConfDataPath.size()) {
-			SWLog::getSystemLog()->logDebug("Checking working directory for mods.conf...");
+			SWLOGTI("Checking working directory for mods.conf...");
 			if (FileMgr::existsFile(".", "mods.conf")) {
-				SWLog::getSystemLog()->logDebug("found.");
+				SWLOGTI("found.");
 				stdstr(prefixPath, "./");
 				stdstr(configPath, "./mods.conf");
 				return;
 			}
 
-			SWLog::getSystemLog()->logDebug("Checking working directory for mods.d...");
+			SWLOGTI("Checking working directory for mods.d...");
 			if (FileMgr::existsDir(".", "mods.d")) {
-				SWLog::getSystemLog()->logDebug("found.");
+				SWLOGTI("found.");
 				stdstr(prefixPath, "./");
 				stdstr(configPath, "./mods.d");
 				*configType = 1;
@@ -513,9 +515,9 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 			}
 
 			// check working directory ../library/
-			SWLog::getSystemLog()->logDebug("Checking working directory ../library/ for mods.d...");
+			SWLOGTI("Checking working directory ../library/ for mods.d...");
 			if (FileMgr::existsDir("../library", "mods.d")) {
-				SWLog::getSystemLog()->logDebug("found.");
+				SWLOGTI("found.");
 				stdstr(prefixPath, "../library/");
 				stdstr(configPath, "../library/mods.d");
 				*configType = 1;
@@ -523,28 +525,28 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 			}
 
 			// check environment variable SWORD_PATH
-			SWLog::getSystemLog()->logDebug("Checking $SWORD_PATH...");
+			SWLOGTI("Checking $SWORD_PATH...");
 
 			SWBuf envsworddir = FileMgr::getEnvValue("SWORD_PATH");
 			if (envsworddir.length()) {
 				
-				SWLog::getSystemLog()->logDebug("found (%s).", envsworddir.c_str());
+				SWLOGTI("found (%s).", envsworddir.c_str());
 				path = envsworddir;
 				if ((envsworddir[envsworddir.length()-1] != '\\') && (envsworddir[envsworddir.length()-1] != '/'))
 					path += "/";
 
-				SWLog::getSystemLog()->logDebug("Checking $SWORD_PATH for mods.conf...");
+				SWLOGTI("Checking $SWORD_PATH for mods.conf...");
 				if (FileMgr::existsFile(path.c_str(), "mods.conf")) {
-					SWLog::getSystemLog()->logDebug("found.");
+					SWLOGTI("found.");
 					stdstr(prefixPath, path.c_str());
 					path += "mods.conf";
 					stdstr(configPath, path.c_str());
 					return;
 				}
 
-				SWLog::getSystemLog()->logDebug("Checking $SWORD_PATH for mods.d...");
+				SWLOGTI("Checking $SWORD_PATH for mods.d...");
 				if (FileMgr::existsDir(path.c_str(), "mods.d")) {
-					SWLog::getSystemLog()->logDebug("found.");
+					SWLOGTI("found.");
 					stdstr(prefixPath, path.c_str());
 					path += "mods.d";
 					stdstr(configPath, path.c_str());
@@ -556,14 +558,14 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 
 			// check for systemwide globalConfPath
 
-			SWLog::getSystemLog()->logDebug("Parsing %s...", globalConfPath);
+			SWLOGTI("Parsing %s...", globalConfPath);
 			char *globPaths = 0;
 			char *gfp;
 			stdstr(&globPaths, globalConfPath);
 			for (gfp = strtok(globPaths, ":"); gfp; gfp = strtok(0, ":")) {
-				SWLog::getSystemLog()->logDebug("Checking for %s...", gfp);
+				SWLOGTI("Checking for %s...", gfp);
 				if (FileMgr::existsFile(gfp)) {
-					SWLog::getSystemLog()->logDebug("found.");
+					SWLOGTI("found.");
 					break;
 				}
 			}
@@ -575,14 +577,14 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 				SWBuf tryPath = homeDir;
 				tryPath += ".sword/sword.conf";
 				if (FileMgr::existsFile(tryPath)) {
-					SWLog::getSystemLog()->logDebug("Overriding any systemwide sword.conf with one found in users home directory (%s)", tryPath.c_str());
+					SWLOGTI("Overriding any systemwide sword.conf with one found in users home directory (%s)", tryPath.c_str());
 					sysConfPath = tryPath;
 				}
 				else {
 					SWBuf tryPath = homeDir;
 					tryPath += "sword/sword.conf";
 					if (FileMgr::existsFile(tryPath)) {
-						SWLog::getSystemLog()->logDebug("Overriding any systemwide sword.conf with one found in users home directory (%s)", tryPath.c_str());
+						SWLOGTI("Overriding any systemwide sword.conf with one found in users home directory (%s)", tryPath.c_str());
 						sysConfPath = tryPath;
 					}
 				}
@@ -604,21 +606,21 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 				sysConfDataPath += "/";
 
 			path = sysConfDataPath;
-			SWLog::getSystemLog()->logDebug("DataPath in %s is set to %s.", sysConfPath.c_str(), path.c_str());
-			SWLog::getSystemLog()->logDebug("Checking for mods.conf in DataPath...");
+			SWLOGTI("DataPath in %s is set to %s.", sysConfPath.c_str(), path.c_str());
+			SWLOGTI("Checking for mods.conf in DataPath...");
 			
 			if (FileMgr::existsFile(path.c_str(), "mods.conf")) {
-				SWLog::getSystemLog()->logDebug("found.");
+				SWLOGTI("found.");
 				stdstr(prefixPath, path.c_str());
 				path += "mods.conf";
 				stdstr(configPath, path.c_str());
 				*configType = 1;
 			}
 
-			SWLog::getSystemLog()->logDebug("Checking for mods.d in DataPath...");
+			SWLOGTI("Checking for mods.d in DataPath...");
 
 			if (FileMgr::existsDir(path.c_str(), "mods.d")) {
-				SWLog::getSystemLog()->logDebug("found.");
+				SWLOGTI("found.");
 				stdstr(prefixPath, path.c_str());
 				path += "mods.d";
 				stdstr(configPath, path.c_str());
@@ -656,19 +658,19 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 	// for various flavors of windoze...
 	// check %ALLUSERSPROFILE%/Application Data/sword/
 
-	SWLog::getSystemLog()->logDebug("Checking $ALLUSERSPROFILE/Application Data/sword/...");
+	SWLOGTI("Checking $ALLUSERSPROFILE/Application Data/sword/...");
 
 	SWBuf envallusersdir = FileMgr::getEnvValue("ALLUSERSPROFILE");
 	if (envallusersdir.length()) {
-		SWLog::getSystemLog()->logDebug("found (%s).", envallusersdir.c_str());
+		SWLOGTI("found (%s).", envallusersdir.c_str());
 		path = envallusersdir;
 		if ((!path.endsWith("\\")) && (!path.endsWith("/")))
 			path += "/";
 
 		path += "Application Data/sword/";
-		SWLog::getSystemLog()->logDebug("Checking %s for mods.d...", path.c_str());
+		SWLOGTI("Checking %s for mods.d...", path.c_str());
 		if (FileMgr::existsDir(path.c_str(), "mods.d")) {
-			SWLog::getSystemLog()->logDebug("found.");
+			SWLOGTI("found.");
 			stdstr(prefixPath, path.c_str());
 			path += "mods.d";
 			stdstr(configPath, path.c_str());
@@ -680,18 +682,18 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 	// for Mac OSX...
 	// check $HOME/Library/Application Support/Sword/
 
-	SWLog::getSystemLog()->logDebug("Checking $HOME/Library/Application Support/Sword/...");
+	SWLOGTI("Checking $HOME/Library/Application Support/Sword/...");
 
 	SWBuf pathCheck = FileMgr::getSystemFileMgr()->getHomeDir();
 	if (pathCheck.length()) {
-		SWLog::getSystemLog()->logDebug("found (%s).", pathCheck.c_str());
+		SWLOGTI("found (%s).", pathCheck.c_str());
 		path = pathCheck;
 		if ((!path.endsWith("\\")) && (!path.endsWith("/")))
 			path += "/";
 
-		SWLog::getSystemLog()->logDebug("Checking %s for mods.d...", path.c_str());
+		SWLOGTI("Checking %s for mods.d...", path.c_str());
 		if (FileMgr::existsDir(path.c_str(), "mods.d")) {
-			SWLog::getSystemLog()->logDebug("found.");
+			SWLOGTI("found.");
 			stdstr(prefixPath, path.c_str());
 			path += "mods.d";
 			stdstr(configPath, path.c_str());
@@ -703,23 +705,23 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 	// FINALLY CHECK PERSONAL HOME DIRECTORY LOCATIONS
 	// check ~/.sword/
 
-	SWLog::getSystemLog()->logDebug("Checking home directory for ~/.sword...");
+	SWLOGTI("Checking home directory for ~/.sword...");
 
 	if (homeDir.length()) {
 		path = homeDir;
 		path += ".sword/";
-		SWLog::getSystemLog()->logDebug("  Checking for %smods.conf...", path.c_str());
+		SWLOGTI("  Checking for %smods.conf...", path.c_str());
 		if (FileMgr::existsFile(path.c_str(), "mods.conf")) {
-			SWLog::getSystemLog()->logDebug("found.");
+			SWLOGTI("found.");
 			stdstr(prefixPath, path.c_str());
 			path += "mods.conf";
 			stdstr(configPath, path.c_str());
 			return;
 		}
 
-		SWLog::getSystemLog()->logDebug("  Checking for %smods.d...", path.c_str());
+		SWLOGTI("  Checking for %smods.d...", path.c_str());
 		if (FileMgr::existsDir(path.c_str(), "mods.d")) {
-			SWLog::getSystemLog()->logDebug("found.");
+			SWLOGTI("found.");
 			stdstr(prefixPath, path.c_str());
 			path += "mods.d";
 			stdstr(configPath, path.c_str());
@@ -729,9 +731,9 @@ void SWMgr::findConfig(char *configType, char **prefixPath, char **configPath, s
 
 		path = homeDir;
 		path += "sword/";
-		SWLog::getSystemLog()->logDebug("  Checking for %smods.d...", path.c_str());
+		SWLOGTI("  Checking for %smods.d...", path.c_str());
 		if (FileMgr::existsDir(path.c_str(), "mods.d")) {
-			SWLog::getSystemLog()->logDebug("found.");
+			SWLOGTI("found.");
 			stdstr(prefixPath, path.c_str());
 			path += "mods.d";
 			stdstr(configPath, path.c_str());
@@ -837,20 +839,25 @@ signed char SWMgr::load() {
 
 	if (!config) {	// If we weren't passed a config object at construction, find a config file
 		if (!configPath) {	// If we weren't passed a config path at construction...
-			SWLog::getSystemLog()->logDebug("LOOKING UP MODULE CONFIGURATION...");
+			SWLOGTI("LOOKING UP MODULE CONFIGURATION...");
 			SWConfig *externalSysConf = sysConfig;	// if we have a sysConf before findConfig, then we were provided one from an external source.
 			findConfig(&configType, &prefixPath, &configPath, &augPaths, &sysConfig);
 			if (!externalSysConf) mysysconfig = sysConfig;	// remind us to delete our own sysConfig in d-tor
-			SWLog::getSystemLog()->logDebug("LOOKING UP MODULE CONFIGURATION COMPLETE.");
+			SWLOGTI("LOOKING UP MODULE CONFIGURATION COMPLETE.");
 		}
 		if (configPath) {
+			SWLOGTI("LOADING MODULE CONFIGURATIONS...");
 			if (configType)
 				loadConfigDir(configPath);
 			else	config = myconfig = new SWConfig(configPath);
+			SWLOGTI("LOADING MODULE CONFIGURATIONS COMPLETE.");
 		}
 	}
 
 	if (config) {
+
+		SWLOGTI("LOADING MODULE LIBRARY...");
+
 		SectionMap::iterator Sectloop, Sectend;
 		ConfigEntMap::iterator Entryloop, Entryend;
 
@@ -888,6 +895,7 @@ signed char SWMgr::load() {
 		if (!getModules().size()) // config exists, but no modules
 			ret = 1;
 
+		SWLOGTI("LOADING MODULE LIBRARY COMPLETE.");
 	}
 	else {
 		SWLog::getSystemLog()->logError("SWMgr: Can't find 'mods.conf' or 'mods.d'.  Try setting:\n\tSWORD_PATH=<directory containing mods.conf>\n\tOr see the README file for a full description of setup options (%s)", (configPath) ? configPath : "<configPath is null>");
@@ -1368,7 +1376,7 @@ char SWMgr::addModToConfig(FileDesc *conffd, const char *fname)
 	FileDesc *modfd;
 	char ch;
 
-	SWLog::getSystemLog()->logTimedInformation("Found new module [%s]. Installing...", fname);
+	SWLOGTI("Found new module [%s]. Installing...", fname);
 	modfd = FileMgr::getSystemFileMgr()->open(fname, FileMgr::RDONLY);
 	ch = '\n';
 	conffd->write(&ch, 1);
@@ -1446,7 +1454,7 @@ StringList SWMgr::getGlobalOptionValues(const char *option)
 // also old deprecated virtuals so client overrides still are called
 
 void SWMgr::createAllModules(bool multiMod) {
-SWLog::getSystemLog()->logDebug("libsword: SWMgr::createAllModules");
+SWLOGD("libsword: SWMgr::createAllModules");
 	SectionMap::iterator it;
 	ConfigEntMap::iterator entry;
 	SWModule *newmod;

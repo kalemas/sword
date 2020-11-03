@@ -218,16 +218,16 @@ static void init(JNIEnv *env) {
 		firstInit = false;
 	}
 	if (!mgr) {
-SWLog::getSystemLog()->logDebug("libsword: init() begin");
+SWLOGD("libsword: init() begin");
 		SWBuf baseDir  = SDCARD_PATH;
 		SWBuf confPath = baseDir + "/mods.d/globals.conf";
 		// be sure we have at least some config file already out there
 		if (!FileMgr::existsFile(confPath.c_str())) {
-			SWLog::getSystemLog()->logDebug("libsword: init() sword config not found, attempting to create parent of: %s", confPath.c_str());
+SWLOGD("libsword: init() sword config not found, attempting to create parent of: %s", confPath.c_str());
 			FileMgr::createParent(confPath.c_str());
 			remove(confPath.c_str());
 
-			SWLog::getSystemLog()->logDebug("libsword: init() saving basic: %s", confPath.c_str());
+SWLOGD("libsword: init() saving basic: %s", confPath.c_str());
 			SWConfig config(confPath.c_str());
 			config["Globals"]["HiAndroid"] = "weeee";
 			config.save();
@@ -235,11 +235,11 @@ SWLog::getSystemLog()->logDebug("libsword: init() begin");
 		if (!FileMgr::existsFile(confPath.c_str())) {
 			baseDir = STORAGE_BASE;
 			confPath = baseDir + "/mods.d/globals.conf";
-SWLog::getSystemLog()->logDebug("libsword: init() sword config STILL not found, attempting to create parent of: %s", confPath.c_str());
+SWLOGD("libsword: init() sword config STILL not found, attempting to create parent of: %s", confPath.c_str());
 			FileMgr::createParent(confPath.c_str());
 			remove(confPath.c_str());
 
-SWLog::getSystemLog()->logDebug("libsword: init() saving basic: %s", confPath.c_str());
+SWLOGD("libsword: init() saving basic: %s", confPath.c_str());
 			SWConfig config(confPath.c_str());
 			config["Globals"]["HiAndroid"] = "weeee";
 			config.save();
@@ -252,26 +252,26 @@ SWLog::getSystemLog()->logDebug("libsword: init() saving basic: %s", confPath.c_
 			config.save();
 			exists = true;
 		}
-SWLog::getSystemLog()->logDebug("libsword: extraConfig %s at path: %s", exists?"Exists":"Absent", confPath.c_str());
+SWLOGD("libsword: extraConfig %s at path: %s", exists?"Exists":"Absent", confPath.c_str());
 
-SWLog::getSystemLog()->logDebug("libsword: init() creating WebMgr using path: %s", baseDir.c_str());
+SWLOGD("libsword: init() creating WebMgr using path: %s", baseDir.c_str());
 		mgr = new WebMgr(baseDir, exists?confPath.c_str():nullptr);
 
-SWLog::getSystemLog()->logDebug("libsword: init() augmenting modules from: %s", AND_BIBLE_MODULES_PATH);
+SWLOGD("libsword: init() augmenting modules from: %s", AND_BIBLE_MODULES_PATH);
 		// for And Bible modules
 		mgr->augmentModules(AND_BIBLE_MODULES_PATH, true);
 		// if our basedir isn't the sdcard, let's augment the sdcard
 		if (strcmp(baseDir.c_str(), SDCARD_PATH)) { // NOLINT(bugprone-suspicious-string-compare)
-SWLog::getSystemLog()->logDebug("libsword: init() augmenting modules from: %s", SDCARD_PATH);
+SWLOGD("libsword: init() augmenting modules from: %s", SDCARD_PATH);
 			mgr->augmentModules(SDCARD_PATH, true);
 		}
 		// if our basedir isn't the private storage base, let's augment the private
 		// storage base in case a previous version of the app stored modules there.
 		if (strcmp(baseDir.c_str(), STORAGE_BASE)) { // NOLINT(bugprone-suspicious-string-compare)
-SWLog::getSystemLog()->logDebug("libsword: init() augmenting modules from: %s", STORAGE_BASE.c_str());
+SWLOGD("libsword: init() augmenting modules from: %s", STORAGE_BASE.c_str());
 			mgr->augmentModules(STORAGE_BASE, true);
 		}
-SWLog::getSystemLog()->logDebug("libsword: init() adding locales from baseDir.");
+SWLOGD("libsword: init() adding locales from baseDir.");
 		LocaleMgr::getSystemLocaleMgr()->loadConfigDir(SWBuf(STORAGE_BASE + "/locales.d").c_str());
 		LocaleMgr::getSystemLocaleMgr()->loadConfigDir(SWBuf(STORAGE_BASE + "/uilocales.d").c_str());
 		LocaleMgr::getSystemLocaleMgr()->loadConfigDir((SWBuf(SDCARD_PATH) + "/locales.d").c_str());
@@ -279,7 +279,7 @@ SWLog::getSystemLog()->logDebug("libsword: init() adding locales from baseDir.")
 
 		mgr->setGlobalOption("Footnotes", "On");
 		mgr->setGlobalOption("Cross-references", "On");
-SWLog::getSystemLog()->logDebug("libsword: init() end.");
+SWLOGD("libsword: init() end.");
 	}
 }
 
@@ -290,14 +290,14 @@ void initInstall(JNIEnv *env, jobject progressReporter = nullptr) {
 	}
 	installStatusReporter->init(env, progressReporter);
 	if (!installMgr) {
-SWLog::getSystemLog()->logDebug("initInstall: installMgr is null");
+SWLOGD("initInstall: installMgr is null");
 		SWBuf baseDir  = SDCARD_PATH;
 		baseDir += "/InstallMgr";
 		SWBuf confPath = baseDir + "/InstallMgr.conf";
 		// be sure we have at least some config file already out there
-SWLog::getSystemLog()->logDebug("initInstall: confPath: %s", confPath.c_str());
+SWLOGD("initInstall: confPath: %s", confPath.c_str());
 		if (!FileMgr::existsFile(confPath.c_str())) {
-			SWLog::getSystemLog()->logDebug("initInstall: file doesn't exist: %s", confPath.c_str());
+SWLOGD("initInstall: file doesn't exist: %s", confPath.c_str());
 			FileMgr::createParent(confPath.c_str());
 			SWConfig config(confPath.c_str());
 			config["General"]["PassiveFTP"] = "true";
@@ -306,7 +306,7 @@ SWLog::getSystemLog()->logDebug("initInstall: confPath: %s", confPath.c_str());
 		if (!FileMgr::existsFile(confPath.c_str())) {
 			baseDir = STORAGE_BASE;
 			confPath = baseDir + "/InstallMgr.conf";
-			SWLog::getSystemLog()->logDebug("initInstall: file STILL doesn't exist, attempting to create parent of: %s", confPath.c_str());
+SWLOGD("initInstall: file STILL doesn't exist, attempting to create parent of: %s", confPath.c_str());
 			FileMgr::createParent(confPath.c_str());
 			SWConfig config(confPath.c_str());
 			config["General"]["PassiveFTP"] = "true";
@@ -314,15 +314,15 @@ SWLog::getSystemLog()->logDebug("initInstall: confPath: %s", confPath.c_str());
 		}
 		installMgr = new InstallMgr(baseDir, installStatusReporter);
 		if (disclaimerConfirmed) installMgr->setUserDisclaimerConfirmed(true);
-SWLog::getSystemLog()->logDebug("initInstall: instantiated InstallMgr with baseDir: %s", baseDir.c_str());
+SWLOGD("initInstall: instantiated InstallMgr with baseDir: %s", baseDir.c_str());
 	}
 }
 
 #ifdef BIBLESYNC
 void bibleSyncCallback(char cmd, string pkt_uuid, string bible, string ref, string alt, string group, string domain, string info, string dump) {
-SWLog::getSystemLog()->logDebug("bibleSync callback msg: %c; pkt_uuid: %s; bible: %s; ref: %s; alt: %s; group: %s; domain: %s; info: %s; dump: %s", cmd, pkt_uuid.c_str(), bible.c_str(), ref.c_str(), alt.c_str(), group.c_str(), domain.c_str(), info.c_str(), dump.c_str());
+SWLOGD("bibleSync callback msg: %c; pkt_uuid: %s; bible: %s; ref: %s; alt: %s; group: %s; domain: %s; info: %s; dump: %s", cmd, pkt_uuid.c_str(), bible.c_str(), ref.c_str(), alt.c_str(), group.c_str(), domain.c_str(), info.c_str(), dump.c_str());
 	if (bibleSyncListener) {
-		SWLog::getSystemLog()->logDebug("bibleSync listener is true");
+SWLOGD("bibleSync listener is true");
 		jclass cls = bibleSyncListenerEnv->GetObjectClass(bibleSyncListener);
 		switch (cmd) {
 			// error
@@ -338,11 +338,11 @@ SWLog::getSystemLog()->logDebug("bibleSync callback msg: %c; pkt_uuid: %s; bible
 				break;
 				// chat message
 			case 'C': {
-				SWLog::getSystemLog()->logDebug("bibleSync Chat Received: %s", ref.c_str());
+SWLOGD("bibleSync Chat Received: %s", ref.c_str());
 				jmethodID mid = bibleSyncListenerEnv->GetMethodID(cls, "chatReceived",
 				                                                  "(Ljava/lang/String;Ljava/lang/String;)V");
 				if (mid) {
-					SWLog::getSystemLog()->logDebug("bibleSync listener mid is available");
+SWLOGD("bibleSync listener mid is available");
 					jstring user = strToUTF8Java(bibleSyncListenerEnv, group.c_str());
 					jstring msg = strToUTF8Java(bibleSyncListenerEnv, alt.c_str());
 					bibleSyncListenerEnv->CallVoidMethod(bibleSyncListener, mid, user, msg);
@@ -353,11 +353,11 @@ SWLog::getSystemLog()->logDebug("bibleSync callback msg: %c; pkt_uuid: %s; bible
 			}
 				// navigation
 			case 'N': {
-				SWLog::getSystemLog()->logDebug("bibleSync Nav Received: %s", ref.c_str());
+SWLOGD("bibleSync Nav Received: %s", ref.c_str());
 				jmethodID mid = bibleSyncListenerEnv->GetMethodID(cls, "navReceived",
 				                                                  "(Ljava/lang/String;)V");
 				if (mid) {
-					SWLog::getSystemLog()->logDebug("bibleSync listener mid is available");
+SWLOGD("bibleSync listener mid is available");
 					jstring msg = strToUTF8Java(bibleSyncListenerEnv, ref.c_str());
 					bibleSyncListenerEnv->CallVoidMethod(bibleSyncListener, mid, msg);
 					bibleSyncListenerEnv->DeleteLocalRef(msg);
@@ -365,10 +365,10 @@ SWLog::getSystemLog()->logDebug("bibleSync callback msg: %c; pkt_uuid: %s; bible
 				break;
 			}
 			default:
-				SWLog::getSystemLog()->logDebug("bibleSync listener got unhandled cmd: '%c'", cmd);
+SWLOGD("bibleSync listener got unhandled cmd: '%c'", cmd);
 				break;
 		}
-		SWLog::getSystemLog()->logDebug("bibleSync listener deleting local ref to cls");
+SWLOGD("bibleSync listener deleting local ref to cls");
 		bibleSyncListenerEnv->DeleteLocalRef(cls);
 	}
 }
@@ -401,7 +401,7 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_reInit
 	const char *basePath = (basePathJS?env->GetStringUTFChars(basePathJS, nullptr):nullptr);
 	STORAGE_BASE = basePath;
 	env->ReleaseStringUTFChars(basePathJS, basePath);
-	SWLog::getSystemLog()->logDebug("setting STORAGE_BASE to: %s", STORAGE_BASE.c_str());
+SWLOGD("setting STORAGE_BASE to: %s", STORAGE_BASE.c_str());
 
 	delete mgr;
 	mgr = nullptr;
@@ -436,7 +436,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_getModInfo
 			size++;
 	}
 
-SWLog::getSystemLog()->logDebug("getModInfoList returning %d length array\n", size);
+SWLOGD("getModInfoList returning %d length array\n", size);
 
 	jclass clazzModInfo = env->FindClass("org/crosswire/android/sword/SWMgr$ModInfo");
 	jclass clazzString  = env->FindClass("java/lang/String");
@@ -664,14 +664,14 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWMgr_getExtraCo
 	bool exists = FileMgr::existsFile(confPath.c_str());
 	jclass clazzString = env->FindClass("java/lang/String");
 	jobjectArray ret;
-	SWLog::getSystemLog()->logDebug("libsword: extraConfig %s at path: %s", exists?"Exists":"Absent", confPath.c_str());
+SWLOGD("libsword: extraConfig %s at path: %s", exists?"Exists":"Absent", confPath.c_str());
 	if (exists) {
 		SWConfig config(confPath.c_str());
 		SectionMap::const_iterator sit;
 		for (sit = config.getSections().begin(); sit != config.getSections().end(); ++sit) {
 			count++;
 		}
-		SWLog::getSystemLog()->logDebug("libsword: %d sections found in extraConfig", count);
+SWLOGD("libsword: %d sections found in extraConfig", count);
 		ret = (jobjectArray) env->NewObjectArray(count, clazzString, nullptr);
 		count = 0;
 		for (sit = config.getSections().begin(); sit != config.getSections().end(); ++sit) {
@@ -1063,7 +1063,7 @@ SWModule *getModule
 	jstring sourceNameJS = (jstring)env->GetObjectField(me, sourceFieldID);
 	const char *modName = (modNameJS?env->GetStringUTFChars(modNameJS, nullptr):nullptr);
 	const char *sourceName = (sourceNameJS?env->GetStringUTFChars(sourceNameJS, nullptr):nullptr);
-SWLog::getSystemLog()->logDebug("libsword: lookup up module %s from source: %s", modName?modName:"<null>", sourceName?sourceName:"<null>");
+SWLOGD("libsword: lookup up module %s from source: %s", modName?modName:"<null>", sourceName?sourceName:"<null>");
 
 	if (sourceName && *sourceName) {
 		initInstall(env);
@@ -1095,13 +1095,13 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWModule_setKeyText
 
 	if (module) {
 		const char *keyText = env->GetStringUTFChars(keyTextJS, nullptr);
-SWLog::getSystemLog()->logDebug("setKeyText(%s, %s)", module->getName(), keyText);
+SWLOGD("setKeyText(%s, %s)", module->getName(), keyText);
 		SWKey *key = module->getKey();
 		VerseKey *vkey = SWDYNAMIC_CAST(VerseKey, key);
 		if (vkey && (*keyText=='+' ||*keyText=='-')) {
 			if (!stricmp(keyText+1, "book")) {
 				int newBook = vkey->getBook() + ((*keyText=='+')?1:-1);
-SWLog::getSystemLog()->logDebug("setting book to %d", newBook);
+SWLOGD("setting book to %d", newBook);
 				vkey->setBook((signed char)newBook);
 				env->ReleaseStringUTFChars(keyTextJS, keyText);
 				return;
@@ -1244,7 +1244,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_getEntr
 	const char *level2 = env->GetStringUTFChars(level2JS, nullptr);
 	const char *level3 = env->GetStringUTFChars(level3JS, nullptr);
 	bool filtered = (filteredJS == JNI_TRUE);
-SWLog::getSystemLog()->logDebug("calling getEntryAttributes(%s, %s, %s, %s", level1, level2, level3, (filtered?"true":"false"));
+SWLOGD("calling getEntryAttributes(%s, %s, %s, %s", level1, level2, level3, (filtered?"true":"false"));
 
 	jclass clazzString = env->FindClass("java/lang/String");
 	jobjectArray ret = nullptr;
@@ -1324,7 +1324,7 @@ SWLog::getSystemLog()->logDebug("calling getEntryAttributes(%s, %s, %s, %s", lev
 
 		ret = (jobjectArray) env->NewObjectArray(results.size(), clazzString, nullptr);
 
-SWLog::getSystemLog()->logDebug("getEntryAttributes: size returned: %d", results.size());
+SWLOGD("getEntryAttributes: size returned: %d", results.size());
 
 		for (int i = 0; i < results.size(); ++i) {
 			jstring s;
@@ -1674,23 +1674,23 @@ JNIEXPORT jstring JNICALL Java_org_crosswire_android_sword_SWModule_getConfigEnt
 	jstring retVal = nullptr;
 
 	const char *configKey = env->GetStringUTFChars(configKeyJS, nullptr);
-SWLog::getSystemLog()->logDebug("getConfigEntry(%s)\n", configKey);
+SWLOGD("getConfigEntry(%s)\n", configKey);
 
 	SWModule *module = getModule(env, me);
 
 	if (module) {
-SWLog::getSystemLog()->logDebug("getConfigEntry, found module.");
+SWLOGD("getConfigEntry, found module.");
 
 
 		const char *configValue = module->getConfigEntry(configKey);
-//SWLog::getSystemLog()->logDebug("getConfigEntry, configValue: %s", configValue);
+//SWLOGD("getConfigEntry, configValue: %s", configValue);
 		if (configValue) {
 			SWBuf confValue = configValue;
 			// special processing if we're requesting About-- kindof cheese
 			if (!strcmp("About", configKey)) {
 				RTFHTML().processText(confValue);
 			}
-//SWLog::getSystemLog()->logDebug("getConfigEntry, configValue: %s", confValue.c_str());
+//SWLOGD("getConfigEntry, configValue: %s", confValue.c_str());
 			retVal = strToUTF8Java(env, confValue.c_str());
 		}
 	}
@@ -1739,7 +1739,7 @@ JNIEXPORT jboolean JNICALL Java_org_crosswire_android_sword_SWModule_hasSearchFr
 
 struct pu {
 	pu(JNIEnv *env, jobject pr) : env(env), progressReporter(pr), last(0) {
-SWLog::getSystemLog()->logDebug("building progressReporter");
+SWLOGD("building progressReporter");
 		jclass cls = env->GetObjectClass(progressReporter);
 		mid = env->GetMethodID(cls, "progressReport", "(I)V");
 		env->DeleteLocalRef(cls);
@@ -1895,7 +1895,7 @@ JNIEXPORT jint JNICALL Java_org_crosswire_android_sword_InstallMgr_uninstallModu
 
 	const char *modName = env->GetStringUTFChars(modNameJS, nullptr);
 
-SWLog::getSystemLog()->logDebug("uninstallModule %s\n", modName);
+SWLOGD("uninstallModule %s\n", modName);
 
 	const SWModule *module = mgr->getModule(modName);
 
@@ -1928,7 +1928,7 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_InstallMgr_getRe
 	for (InstallSourceMap::const_iterator it = installMgr->sources.begin(); it != installMgr->sources.end(); ++it) {
 		count++;
 	}
-SWLog::getSystemLog()->logDebug("getRemoteSources: count: %d\n", count);
+SWLOGD("getRemoteSources: count: %d\n", count);
 	ret = (jobjectArray) env->NewObjectArray(count, clazzString, nullptr);
 	count = 0;
 	for (InstallSourceMap::const_iterator it = installMgr->sources.begin(); it != installMgr->sources.end(); ++it) {
@@ -1974,12 +1974,12 @@ JNIEXPORT jint JNICALL Java_org_crosswire_android_sword_InstallMgr_refreshRemote
 JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_InstallMgr_getRemoteModInfoList
 		(JNIEnv *env, jobject me, jstring sourceNameJS) {
 
-SWLog::getSystemLog()->logDebug("getRemoteModInfoList\n");
+SWLOGD("getRemoteModInfoList\n");
 	init(env);
 	initInstall(env);
 
 	const char *sourceName = env->GetStringUTFChars(sourceNameJS, nullptr);
-SWLog::getSystemLog()->logDebug("sourceName: %s\n", sourceName);
+SWLOGD("sourceName: %s\n", sourceName);
 
 	jclass clazzModInfo = env->FindClass("org/crosswire/android/sword/SWMgr$ModInfo");
 	jclass clazzString  = env->FindClass("java/lang/String");
@@ -1995,7 +1995,7 @@ SWLog::getSystemLog()->logDebug("sourceName: %s\n", sourceName);
 	jobjectArray ret = nullptr;
 	InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName);
 	if (source == installMgr->sources.end()) {
-SWLog::getSystemLog()->logDebug("remoteListModules returning 0 length array\n");
+SWLOGD("remoteListModules returning 0 length array\n");
 		ret = (jobjectArray) env->NewObjectArray(0, clazzModInfo, nullptr);
 
 		env->ReleaseStringUTFChars(sourceNameJS, sourceName);
@@ -2003,7 +2003,7 @@ SWLog::getSystemLog()->logDebug("remoteListModules returning 0 length array\n");
 
 		return ret;
 	}
-SWLog::getSystemLog()->logDebug("found source: %s\n", sourceName);
+SWLOGD("found source: %s\n", sourceName);
 
 	map<SWModule *, int> modStats = InstallMgr::getModuleStatus(*mgr, *source->second->getMgr());
 
@@ -2012,7 +2012,7 @@ SWLog::getSystemLog()->logDebug("found source: %s\n", sourceName);
 		size++;
 	}
 
-SWLog::getSystemLog()->logDebug("remoteListModules returning %d length array\n", size);
+SWLOGD("remoteListModules returning %d length array\n", size);
 	ret = (jobjectArray) env->NewObjectArray(size, clazzModInfo, nullptr);
 
 	int i = 0;
@@ -2084,7 +2084,7 @@ JNIEXPORT jint JNICALL Java_org_crosswire_android_sword_InstallMgr_remoteInstall
 	initInstall(env, progressReporter);
 
 	const char *sourceName = env->GetStringUTFChars(sourceNameJS, nullptr);
-SWLog::getSystemLog()->logDebug("remoteInstallModule: sourceName: %s\n", sourceName);
+SWLOGD("remoteInstallModule: sourceName: %s\n", sourceName);
 	InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName);
 	env->ReleaseStringUTFChars(sourceNameJS, sourceName);
 
@@ -2096,7 +2096,7 @@ SWLog::getSystemLog()->logDebug("remoteInstallModule: sourceName: %s\n", sourceN
 	SWMgr *rmgr = is->getMgr();
 
 	const char *modName = env->GetStringUTFChars(modNameJS, nullptr);
-SWLog::getSystemLog()->logDebug("remoteInstallModule: modName: %s\n", modName);
+SWLOGD("remoteInstallModule: modName: %s\n", modName);
 	const SWModule *module = rmgr->getModule(modName);
 	env->ReleaseStringUTFChars(modNameJS, modName);
 
@@ -2135,12 +2135,12 @@ JNIEXPORT jobject JNICALL Java_org_crosswire_android_sword_InstallMgr_getRemoteM
 
 	const char *sourceNameC = env->GetStringUTFChars(sourceNameJS, nullptr);
 	SWBuf sourceName = sourceNameC;
-SWLog::getSystemLog()->logDebug("getRemoteModuleByName: sourceName: %s\n", sourceName.c_str());
+SWLOGD("getRemoteModuleByName: sourceName: %s\n", sourceName.c_str());
 	InstallSourceMap::const_iterator source = installMgr->sources.find(sourceName.c_str());
 	env->ReleaseStringUTFChars(sourceNameJS, sourceNameC);
 
 	if (source == installMgr->sources.end()) {
-SWLog::getSystemLog()->logDebug("Couldn't find remote source [%s]\n", sourceName.c_str());
+SWLOGD("Couldn't find remote source [%s]\n", sourceName.c_str());
 		return nullptr;
 	}
 
@@ -2152,7 +2152,7 @@ SWLog::getSystemLog()->logDebug("Couldn't find remote source [%s]\n", sourceName
 	env->ReleaseStringUTFChars(modNameJS, modNameC);
 
 	if (module) {
-SWLog::getSystemLog()->logDebug("Found remote module [%s]: %s\n", sourceName.c_str(), modName.c_str());
+SWLOGD("Found remote module [%s]: %s\n", sourceName.c_str(), modName.c_str());
 		SWBuf type = module->getType();
 		SWBuf cat = module->getConfigEntry("Category");
 		if (cat.length() > 0) type = cat;
@@ -2163,7 +2163,7 @@ SWLog::getSystemLog()->logDebug("Found remote module [%s]: %s\n", sourceName.c_s
 		fieldID = env->GetFieldID(clazzSWModule, "description", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, module->getDescription()));
 		fieldID = env->GetFieldID(clazzSWModule, "category", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, type));
 		fieldID = env->GetFieldID(clazzSWModule, "remoteSourceName", "Ljava/lang/String;"); env->SetObjectField(retVal, fieldID, strToUTF8Java(env, sourceName));
-SWLog::getSystemLog()->logDebug("returning remote module [%s]: %s\n", sourceName.c_str(), modName.c_str());
+SWLOGD("returning remote module [%s]: %s\n", sourceName.c_str(), modName.c_str());
 	}
 
 	return retVal;
@@ -2193,10 +2193,10 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_InstallMgr_setUserDiscla
  */
 JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_sendBibleSyncMessage
 		(JNIEnv *env, jobject me, jstring osisRefJS) {
-SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() begin");
+SWLOGD("libsword: sendBibleSyncMessage() begin");
 
 	if (!bibleSync) {
-SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() bibleSync not active; message not sent.");
+SWLOGD("libsword: sendBibleSyncMessage() bibleSync not active; message not sent.");
 		return;
 	}
 	const char *osisRefString = env->GetStringUTFChars(osisRefJS, nullptr);
@@ -2208,7 +2208,7 @@ SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() bibleSync not 
 #ifdef BIBLESYNC
 	BibleSync_xmit_status result = bibleSync->Transmit(modName.c_str(), osisRef.c_str());
 #endif
-SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() finished with status code: %d", result);
+SWLOGD("libsword: sendBibleSyncMessage() finished with status code: %d", result);
 
 	env->ReleaseStringUTFChars(osisRefJS, osisRefString);
 }
@@ -2223,7 +2223,7 @@ SWLog::getSystemLog()->logDebug("libsword: sendBibleSyncMessage() finished with 
 JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_startBibleSync
   (JNIEnv *env, jobject me, jstring appNameJS, jstring userNameJS, jstring passphraseJS, jobject bibleSyncListenerMe) {
 
-	SWLog::getSystemLog()->logDebug("startBibleSync() start");
+SWLOGD("startBibleSync() start");
 	// only one thread
 	static bool starting = false;
 	if (starting) return;
@@ -2243,32 +2243,32 @@ JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_startBibleSync
 
 	// in case we're restarting, wait for our loop to finish for sure
 	if (::bibleSync) {
-SWLog::getSystemLog()->logDebug("startBibleSync() sleeping 3 seconds");
+SWLOGD("startBibleSync() sleeping 3 seconds");
 		sleep(3);
 	}
 
 	bibleSyncListener = bibleSyncListenerMe;
 	bibleSyncListenerEnv = env;
-	SWLog::getSystemLog()->logDebug("startBibleSync - calling init");
+SWLOGD("startBibleSync - calling init");
 
 	if (!bibleSync) {
-SWLog::getSystemLog()->logDebug("bibleSync initializing c-tor");
+SWLOGD("bibleSync initializing c-tor");
 		bibleSync = new BibleSync(appName.c_str(), SWVersion::currentVersion.getText(), userName.c_str());
-SWLog::getSystemLog()->logDebug("bibleSync initializing setMode");
+SWLOGD("bibleSync initializing setMode");
 		bibleSync->setMode(BSP_MODE_PERSONAL, bibleSyncCallback, passphrase.c_str());
 	}
-	SWLog::getSystemLog()->logDebug("startBibleSync - starting while listener");
+SWLOGD("startBibleSync - starting while listener");
 	starting = false;
 	while (bibleSyncListener) {
-		SWLog::getSystemLog()->logDebug("bibleSyncListener - while loop iteration");
+SWLOGD("bibleSyncListener - while loop iteration");
 		BibleSync::Receive(bibleSync);
-		SWLog::getSystemLog()->logDebug("bibleSyncListener - sleeping for 2 seconds");
+SWLOGD("bibleSyncListener - sleeping for 2 seconds");
 		sleep(2);
 	}
 	delete bibleSync;
 	bibleSync = nullptr;
 #else
-	SWLog::getSystemLog()->logDebug("registerBibleSyncListener: !!! BibleSync disabled in native code.");
+SWLOGD("registerBibleSyncListener: !!! BibleSync disabled in native code.");
 #endif
 }
 
@@ -2281,7 +2281,7 @@ SWLog::getSystemLog()->logDebug("bibleSync initializing setMode");
 JNIEXPORT void JNICALL Java_org_crosswire_android_sword_SWMgr_stopBibleSync
 		(JNIEnv *env, jobject me) {
 
-SWLog::getSystemLog()->logDebug("stopBibleSync()");
+SWLOGD("stopBibleSync()");
 #ifdef BIBLESYNC
 	// if we have a listen loop going, just break the loop; the bibleSync cleanup will happen there
 	if (bibleSyncListener) bibleSyncListener = nullptr;
@@ -2290,7 +2290,7 @@ SWLog::getSystemLog()->logDebug("stopBibleSync()");
 		bibleSync = nullptr;
 	}
 #else
-SWLog::getSystemLog()->logDebug("registerBibleSyncListener: !!! BibleSync disabled in native code.");
+SWLOGD("registerBibleSyncListener: !!! BibleSync disabled in native code.");
 #endif
 }
 

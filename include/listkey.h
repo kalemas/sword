@@ -66,7 +66,7 @@ public:
 
 	/** 
 	* @deprecated, use clear(), instead
-* 	*/
+ 	*/
 	SWDEPRECATED virtual void ClearList() { clear(); }
 
 

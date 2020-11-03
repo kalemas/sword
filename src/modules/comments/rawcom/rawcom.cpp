@@ -137,7 +137,7 @@ void RawCom::setEntry(const char *inbuf, long len) {
 
 
 void RawCom::linkEntry(const SWKey *inkey) {
-	VerseKey *destkey = &(VerseKey &)getVerseKey();
+	VerseKey *destkey = &getVerseKey();
 	const VerseKey *srckey = &getVerseKeyConst(inkey);
 
 	doLinkEntry(destkey->getTestament(), destkey->getTestamentIndex(), srckey->getTestamentIndex());

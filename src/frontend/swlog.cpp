@@ -31,6 +31,13 @@
 #include "swlog.h"
 #include "swbuf.h"
 
+#ifdef USECXX11TIME
+#include <chrono>
+using namespace std::chrono;
+
+static high_resolution_clock::time_point baseTime = high_resolution_clock::now();
+#endif
+
 
 SWORD_NAMESPACE_START
 
@@ -107,9 +114,15 @@ void SWLog::logTimedInformation(const char *fmt, ...) const {
 	va_list argptr;
 
 	if (logLevel >= LOG_TIMEDINFO) {
+		const char *fmtStr = fmt;
 		SWBuf msg;
+#ifdef USECXX11TIME
+		SWBuf msgTS;
+		msgTS.setFormatted("[%.5f] %s", duration_cast<duration<double>>(high_resolution_clock::now() - baseTime).count(), fmt);
+		fmtStr = msgTS.c_str();
+#endif
 		va_start(argptr, fmt);
-		msg.setFormattedVA(fmt, argptr);
+		msg.setFormattedVA(fmtStr, argptr);
 		va_end(argptr);
 		logMessage(msg, LOG_TIMEDINFO);
 	}

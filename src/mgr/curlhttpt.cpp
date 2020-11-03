@@ -96,7 +96,7 @@ namespace {
 		SWBuf text;
 		text.size(size);
 		memcpy(text.getRawData(), data, size);
-		SWLog::getSystemLog()->logDebug("CURLHTTPTransport: %s: %s", header.c_str(), text.c_str());
+SWLOGD("CURLHTTPTransport: %s: %s", header.c_str(), text.c_str());
 		return 0;
 	}
 }
@@ -159,15 +159,15 @@ char CURLHTTPTransport::getURL(const char *destPath, const char *sourceURL, SWBu
 
 #ifdef EPRT_AVAILABLE
 		curl_easy_setopt(session, CURLOPT_FTP_USE_EPRT, 0);
-		SWLog::getSystemLog()->logDebug("***** using CURLOPT_FTP_USE_EPRT\n");
+SWLOGD("***** using CURLOPT_FTP_USE_EPRT\n");
 #endif
 
 
-		SWLog::getSystemLog()->logDebug("***** About to perform curl easy action. \n");
-		SWLog::getSystemLog()->logDebug("***** destPath: %s \n", destPath);
-		SWLog::getSystemLog()->logDebug("***** sourceURL: %s \n", sourceURL);
+SWLOGD("***** About to perform curl easy action. \n");
+SWLOGD("***** destPath: %s \n", destPath);
+SWLOGD("***** sourceURL: %s \n", sourceURL);
 		res = curl_easy_perform(session);
-		SWLog::getSystemLog()->logDebug("***** Finished performing curl easy action. \n");
+SWLOGD("***** Finished performing curl easy action. \n");
 
 		if(CURLE_OK != res) {
 			if (CURLE_OPERATION_TIMEDOUT == res
@@ -233,7 +233,7 @@ vector<struct DirEntry> CURLHTTPTransport::getDirList(const char *dirURL) {
 			possibleNameLength = (int)(pBufRes - pBuf);
 			possibleName.setFormatted("%.*s", possibleNameLength, pBuf);
 			if (isalnum(possibleName[0])) {
-				SWLog::getSystemLog()->logDebug("getDirListHTTP: Found a file: %s", possibleName.c_str());
+SWLOGD("getDirListHTTP: Found a file: %s", possibleName.c_str());
 				pBuf = pBufRes;
 				pBufRes = (char *)findSizeStart(pBuf);
 				fSize = 0;

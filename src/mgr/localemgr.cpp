@@ -82,16 +82,16 @@ LocaleMgr::LocaleMgr(const char *iConfigPath) {
 	defaultLocaleName = 0;
 	
 	if (!iConfigPath) {
-		SWLog::getSystemLog()->logDebug("LOOKING UP LOCALE DIRECTORY...");
+		SWLOGTI("LOOKING UP LOCALE DIRECTORY...");
 		SWMgr::findConfig(&configType, &prefixPath, &configPath, &augPaths, &sysConf);
 		if (sysConf) {
 			if ((entry = sysConf->getSection("Install").find("LocalePath")) != sysConf->getSection("Install").end()) {
 				configType = 9;	// our own
 				stdstr(&prefixPath, (char *)entry->second.c_str());
-				SWLog::getSystemLog()->logDebug("LocalePath provided in sysConfig.");
+				SWLOGTI("LocalePath provided in sysConfig.");
 			}
 		}
-		SWLog::getSystemLog()->logDebug("LOOKING UP LOCALE DIRECTORY COMPLETE.");
+		SWLOGTI("LOOKING UP LOCALE DIRECTORY COMPLETE.");
 	}
 	else {
 		loadConfigDir(iConfigPath);
@@ -157,7 +157,7 @@ LocaleMgr::~LocaleMgr() {
 
 void LocaleMgr::loadConfigDir(const char *ipath) {
 	LocaleMap::iterator it;
-	SWLog::getSystemLog()->logInformation("LocaleMgr::loadConfigDir loading %s", ipath);
+	SWLOGD("LocaleMgr::loadConfigDir loading %s", ipath);
  
 	SWBuf baseDir = ipath;
 	if (!baseDir.endsWith('/') && !baseDir.endsWith('\\')) baseDir += '/';

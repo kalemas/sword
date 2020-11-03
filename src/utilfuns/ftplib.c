@@ -58,6 +58,10 @@
 
 #include <winsock.h>
 
+#ifndef socklen_t
+#define socklen_t int
+#endif
+
 #endif
 
 #define BUILDING_LIBRARY
@@ -86,9 +90,6 @@
 #define lllog(M) __android_log_write(ANDROID_LOG_DEBUG, "ftplib", M)
 #else
 #define lllog(M) fprintf(stderr, M);
-#endif
-#ifndef socklen_t
-#define socklen_t int
 #endif
 
 void *mymemccpy(void *dst, const void *src, int c, size_t n)

@@ -194,10 +194,10 @@ StringMgr* StringMgr::getSystemStringMgr() {
 	if (!systemStringMgr) {
 #ifdef _ICU_
 		systemStringMgr = new ICUStringMgr();
-// 		SWLog::getSystemLog()->logInformation("created default ICUStringMgr");
+// 		SWLOGI("created default ICUStringMgr");
 #else
 		systemStringMgr = new StringMgr();
-//  		SWLog::getSystemLog()->logInformation("created default StringMgr");
+//  		SWLOGI("created default StringMgr");
 #endif
 	}
 	

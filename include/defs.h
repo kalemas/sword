@@ -42,6 +42,19 @@
 
 SWORD_NAMESPACE_START
 
+#ifndef STRIPLOGD
+#define SWLOGD(...) SWLog::getSystemLog()->logDebug(__VA_ARGS__)
+#else
+#define SWLOGD(...) (void)0
+#endif
+
+#ifndef STRIPLOGI
+#define SWLOGI(...) SWLog::getSystemLog()->logInformation(__VA_ARGS__)
+#define SWLOGTI(...) SWLog::getSystemLog()->logTimedInformation(__VA_ARGS__)
+#else
+#define SWLOGI(...) (void)0
+#define SWLOGTI(...) (void)0 
+#endif
 
 // support for compilers with no RTTI
 #define SWDYNAMIC_CAST(className, object) dynamic_cast<className *>(object)

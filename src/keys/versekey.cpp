@@ -137,7 +137,7 @@ void VerseKey::setFromOther(const VerseKey &ikey) {
 		int map_range = map_verse;
 
 		ikey.refSys->translateVerse(refSys, &map_book, &map_chapter, &map_verse, &map_range);
-		//dbg_mapping SWLog::getSystemLog()->logDebug("verse: %s.%i.%i-%i\n", map_book, map_chapter, map_verse, map_range);
+//dbg_mapping SWLOGD("verse: %s.%i.%i-%i\n", map_book, map_chapter, map_verse, map_range);
 		
 		book = refSys->getBookNumberByOSISName(map_book);
 
@@ -478,7 +478,7 @@ void VerseKey::validateCurrentLocale() const {
 				char *abbr = 0;
 				stdstr(&abbr, getPrivateLocale()->translate(refSys->getBook(i)->getLongName()), 2);
 				strstrip(abbr);
-				SWLog::getSystemLog()->logDebug("VerseKey::Book: %s does not have a matching toupper abbrevs entry! book number returned was: %d, should be %d. Required entry to add to locale:", abbr, bn, i);
+				SWLog::getSystemLog()->logWarning("VerseKey::Book: %s does not have a matching toupper abbrevs entry! book number returned was: %d, should be %d. Required entry to add to locale:", abbr, bn, i);
 
 				StringMgr* stringMgr = StringMgr::getSystemStringMgr();
 				const bool hasUTF8Support = StringMgr::hasUTF8Support();
@@ -488,7 +488,7 @@ void VerseKey::validateCurrentLocale() const {
 				else {
 					stringMgr->upperLatin1(abbr);
 				}
-				SWLog::getSystemLog()->logDebug("%s=%s\n", abbr, refSys->getBook(i)->getOSISName());
+				SWLOGD("%s=%s\n", abbr, refSys->getBook(i)->getOSISName());
 				delete [] abbr;
 			}
 		}

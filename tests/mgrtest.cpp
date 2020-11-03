@@ -31,40 +31,42 @@ using namespace sword;
 #endif
 
 int main(int argc, char **argv) {
+
 	std::cerr << "\n";
-	SWLog::getSystemLog()->setLogLevel(SWLog::LOG_DEBUG);
+	std::cout << "\n";
+
+	SWLog::getSystemLog()->setLogLevel(SWLog::LOG_TIMEDINFO);
 	SWConfig *sysConf = 0;
 	if (argc > 1) {
 		sysConf = new SWConfig(argv[1]);
 	}
-	SWMgr mymgr(0, sysConf);
-	std::cerr << "\n\nprefixPath: " << mymgr.prefixPath;
-	std::cerr << "\nconfigPath: " << mymgr.configPath << "\n\n";
 
+	SWMgr myMgr(0, sysConf);
 
+	SWLog::getSystemLog()->logTimedInformation("prefixPath: %s", myMgr.prefixPath);
+	SWLog::getSystemLog()->logTimedInformation("configPath: %s\n\n", myMgr.configPath);
 
-	ModMap::iterator it;
-
-	for (it = mymgr.Modules.begin(); it != mymgr.Modules.end(); it++) {
-		std::cout << "[" << (*it).second->getName() << "] (Writable: " << (it->second->isWritable()?"Yes":"No") << ") [" << (*it).second->getDescription() << "]\n";
-		std::cout << "AbsoluteDataPath = " << it->second->getConfigEntry("AbsoluteDataPath") << "\n";
-		std::cout << "Has Feature HebrewDef = " << it->second->getConfig().has("Feature", "HebrewDef") << "\n";
-		if ((!strcmp((*it).second->getType(), "Biblical Texts")) || (!strcmp((*it).second->getType(), "Commentaries"))) {
+	for (ModMap::iterator it = myMgr.getModules().begin(); it != myMgr.getModules().end(); ++it) {
+		SWLog::getSystemLog()->logTimedInformation("[%s] Writable: %s) [%s]\n", it->second->getName(), (it->second->isWritable()?"Yes":"No"), it->second->getDescription());
+		SWLog::getSystemLog()->logTimedInformation("AbsoluteDataPath = %s\n", it->second->getConfigEntry("AbsoluteDataPath"));
+		SWLog::getSystemLog()->logTimedInformation("Has Feature HebrewDef = %s\n", (it->second->getConfig().has("Feature", "HebrewDef")?"Yes":"No"));
+		if ((!strcmp(it->second->getType(), SWMgr::MODTYPE_BIBLES)) || (!strcmp(it->second->getType(), SWMgr::MODTYPE_COMMENTARIES))) {
 			it->second->setKey("James 1:19");
-			std::cout << (*it).second->renderText() << "\n\n";
+			SWLog::getSystemLog()->logTimedInformation("%s\n\n", it->second->renderText().c_str());
 		}
 	}
 
-	SWModule *mhc = mymgr.Modules["MHC"];
+	SWModule *mhc = myMgr.Modules["MHC"];
 
 	if (mhc) {
-		std::cout << "MHC, Lang = " << mhc->getLanguage() << "\n\n";
+		SWLog::getSystemLog()->logTimedInformation("MHC, Lang = %s\n\n", mhc->getLanguage());
 		for (mhc->setKey("Gen 1:1"); *mhc->getKey() < (VerseKey) "Gen 1:10"; (*mhc)++)
-			std::cout << mhc->renderText() << "\n";
+			SWLog::getSystemLog()->logTimedInformation("%s\n", mhc->renderText().c_str());
 	}
 
 	if (sysConf)
 		delete sysConf;
 
+	SWLog::getSystemLog()->logTimedInformation("%s finished.", *argv);
 	return 0;
 }

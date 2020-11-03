@@ -179,7 +179,7 @@ void UTF8Transliterator::Load(UErrorCode &status)
 				UnicodeString id = ures_getUnicodeStringByIndex(colBund, 0, &status);
                         	UChar type = ures_getUnicodeStringByIndex(colBund, 1, &status).charAt(0);
 				UnicodeString resString = ures_getUnicodeStringByIndex(colBund, 2, &status);
-                        	SWLog::getSystemLog()->logDebug("ok so far");
+SWLOGD("ok so far");
 
 				 if (U_SUCCESS(status)) {
 					switch (type) {
@@ -194,9 +194,9 @@ void UTF8Transliterator::Load(UErrorCode &status)
 								0x0046 /*F*/) ?
 								UTRANS_FORWARD : UTRANS_REVERSE;
 		                                        //registry->put(id, resString, dir, visible);
-							SWLog::getSystemLog()->logDebug("instantiating %s ...", resString.getBuffer());
+SWLOGD("instantiating %s ...", resString.getBuffer());
 					    		registerTrans(id, resString, dir, status);
-							SWLog::getSystemLog()->logDebug("done.");
+SWLOGD("done.");
 	                                	}
 						break;
 					case 0x61: // 'a'
@@ -211,8 +211,7 @@ void UTF8Transliterator::Load(UErrorCode &status)
 			ures_close(colBund);
 		}
 	}
-	else
-	{
+	else {
 		SWLog::getSystemLog()->logError("UTF8Transliterator: ICU: no resource index to load");
 		SWLog::getSystemLog()->logError("UTF8Transliterator: ICU: status %s", u_errorName(status));
 	}
@@ -227,7 +226,7 @@ void  UTF8Transliterator::registerTrans(const UnicodeString& ID, const UnicodeSt
 		UTransDirection dir, UErrorCode &status )
 {
 #ifndef _ICUSWORD_
-		SWLog::getSystemLog()->logDebug("registering ID locally %s", ID.getBuffer());
+SWLOGD("registering ID locally %s", ID.getBuffer());
 		SWTransData swstuff;
 		swstuff.resource = resource;
 		swstuff.dir = dir;
@@ -242,25 +241,23 @@ bool UTF8Transliterator::checkTrans(const UnicodeString& ID, UErrorCode &status 
 {
 #ifndef _ICUSWORD_
 		Transliterator *trans = Transliterator::createInstance(ID, UTRANS_FORWARD, status);
-		if (!U_FAILURE(status))
-		{
+		if (!U_FAILURE(status)) {
 			// already have it, clean up and return true
-			SWLog::getSystemLog()->logDebug("already have it %s", ID.getBuffer());
+SWLOGD("already have it %s", ID.getBuffer());
 			delete trans;
 			return true;
 		}
 		status = U_ZERO_ERROR;
 	
 	SWTransMap::iterator swelement;
-	if ((swelement = transMap.find(ID)) != transMap.end())
-	{
-		SWLog::getSystemLog()->logDebug("found element in map");
+	if ((swelement = transMap.find(ID)) != transMap.end()) {
+SWLOGD("found element in map");
 		SWTransData swstuff = (*swelement).second;
 		UParseError parseError;
 		//UErrorCode status;
 		//std::cout << "unregistering " << ID << std::endl;
 		//Transliterator::unregister(ID);
-		SWLog::getSystemLog()->logDebug("resource is %s", swstuff.resource.getBuffer());
+SWLOGD("resource is %s", swstuff.resource.getBuffer());
 
 		// Get the rules
 		//std::cout << "importing: " << ID << ", " << resource << std::endl;
@@ -297,8 +294,7 @@ bool UTF8Transliterator::checkTrans(const UnicodeString& ID, UErrorCode &status 
 		//Transliterator *trans = instantiateTrans(ID, swstuff.resource, swstuff.dir, parseError, status);
 		//return trans;
 	}
-	else
-	{
+	else {
 		return false;
 	}
 #else
