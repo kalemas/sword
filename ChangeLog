@@ -1,5 +1,33 @@
 API ChangeLog
 
+* Release 1.9.0 *
+03-Nov-2020	Troy A. Griffitts <scribe@crosswire.org>
+	Added new compile option USECXX11TIME which will provide a default
+		SWLog::logTimedInformation impl using C++11 facilities
+	Added new compile options STRIPLOGD and STRIPLOGI which will compile
+		out engine calles to SWLog::logDebug and SWLog::logInformation
+		and SWLog::logTimedInformation for runtime optimization
+	Extended Cordova plugin to include SWModule::setEntry,
+	SWMgr::getPrefixPath
+	Isolated all File IO calls to FileMgr
+	Merged in Xiphos' Windows patch to FileMgr to allow full legal Unicode
+		range in file path names.
+	Improved TEI -> HTML output path
+	Completed camelCase of all public non-deprecated API methods
+	Added the concept of Utility Modules to engine which are intended to
+		assist clients in building a robust user experience but are not
+		intended for exposure to the end user in the same way as
+		traditional SWORD modules.
+	Added the concept of [Pref Abbrevs] to locale files to assist mobile
+		developers choose a localized abbreviation for Bible book
+		names.
+	Added facility to set timeouts for SWTransport classes
+	Many locale updates
+
+25-Jul-2020	Troy A. Griffitts <scribe@crosswire.org>
+	Added ZipCompress::unTarGZ to provide a library facility to untargz
+		a file on all supported platforms.
+	
 07-Jul-2020	Troy A. Griffitts <scribe@crosswire.org>
 	Renamed __[su][8,16,32,64] defines to SW_[su][8,16,32,64]
 
@@ -13,6 +41,7 @@ API ChangeLog
 21-May-2017	Troy A. Griffitts <scribe@crosswire.org>
 	Added --with-icuregex option to use ICU regex engine
 
+* Release 1.8.0 *
 24-Apr-2017	Troy A. Griffitts <scribe@crosswire.org>
 	Branching 1.8.x
 
