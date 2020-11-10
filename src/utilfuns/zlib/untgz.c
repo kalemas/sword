@@ -3,6 +3,7 @@
  * a gzip'd TAR file
  * written by "Pedro A. Aranda Guti\irrez" <paag@tid.es>
  * adaptation to Unix by Jean-loup Gailly <jloup@gzip.org>
+ * updates by the CrossWire Bible Society <support@crosswire.org>
  */
 
 #include <stdio.h>
