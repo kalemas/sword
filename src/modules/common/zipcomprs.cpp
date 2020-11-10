@@ -42,6 +42,8 @@ extern "C" {
 /* This untar code is largely lifted from zlib untgz.c
  * written by "Pedro A. Aranda Gutirrez" <paag@tid.es>
  * adaptation to Unix by Jean-loup Gailly <jloup@gzip.org>
+ * For conditions of distribution and use,
+ * see copyright notice in ../../utilfuns/zlib/zlib.h
  */
 namespace {
 
