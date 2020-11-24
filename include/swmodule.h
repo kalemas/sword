@@ -387,7 +387,6 @@ public:
 	/** Sets module type
 	 *
 	 * @param imodtype Value which to set modtype; [0]-only get
-	 * @return pointer to modtype
 	 */
 	void setType(const char *imodtype) { stdstr(&modtype, imodtype); }
 	/**

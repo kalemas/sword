@@ -150,7 +150,6 @@ public:
 	/** Sets whether this key should persist in any module to which it is set
 	 * otherwise just a copy will be used in the module.
 	 * @param ipersist value which to set persist;
-	 * @return 1 - persists in module; 0 - a copy is attempted
 	 */
 	void setPersist(bool ipersist);
 	/**

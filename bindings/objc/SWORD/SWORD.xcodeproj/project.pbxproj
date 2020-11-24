@@ -31,22 +31,6 @@
 		0A22C52F1FCF295E00C02113 /* ftpparse.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5251FCF295D00C02113 /* ftpparse.c */; };
 		0A22C5301FCF295E00C02113 /* roman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5261FCF295E00C02113 /* roman.cpp */; };
 		0A22C5311FCF295E00C02113 /* utilstr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5271FCF295E00C02113 /* utilstr.cpp */; };
-		0A22C54D1FCF29A000C02113 /* inffast.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5321FCF299B00C02113 /* inffast.c */; };
-		0A22C54E1FCF29A000C02113 /* infback.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5371FCF299B00C02113 /* infback.c */; };
-		0A22C54F1FCF29A000C02113 /* uncompr.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5381FCF299C00C02113 /* uncompr.c */; };
-		0A22C5501FCF29A000C02113 /* inflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5391FCF299C00C02113 /* inflate.c */; };
-		0A22C5511FCF29A000C02113 /* untgz.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C53A1FCF299C00C02113 /* untgz.c */; };
-		0A22C5521FCF29A000C02113 /* inftrees.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C53B1FCF299C00C02113 /* inftrees.c */; };
-		0A22C5531FCF29A000C02113 /* gzlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C53C1FCF299C00C02113 /* gzlib.c */; };
-		0A22C5541FCF29A000C02113 /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C53E1FCF299D00C02113 /* zutil.c */; };
-		0A22C5551FCF29A000C02113 /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5421FCF299D00C02113 /* crc32.c */; };
-		0A22C5561FCF29A000C02113 /* gzread.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5431FCF299E00C02113 /* gzread.c */; };
-		0A22C5571FCF29A000C02113 /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5471FCF299F00C02113 /* adler32.c */; };
-		0A22C5581FCF29A000C02113 /* compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5481FCF299F00C02113 /* compress.c */; };
-		0A22C5591FCF29A000C02113 /* deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5491FCF299F00C02113 /* deflate.c */; };
-		0A22C55A1FCF29A000C02113 /* trees.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C54A1FCF299F00C02113 /* trees.c */; };
-		0A22C55B1FCF29A000C02113 /* gzwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C54B1FCF299F00C02113 /* gzwrite.c */; };
-		0A22C55C1FCF29A000C02113 /* gzclose.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C54C1FCF29A000C02113 /* gzclose.c */; };
 		0A22C55E1FCF29E600C02113 /* swmodule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C55D1FCF29E600C02113 /* swmodule.cpp */; };
 		0A22C5731FCF2A0E00C02113 /* encfiltmgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C55F1FCF2A0A00C02113 /* encfiltmgr.cpp */; };
 		0A22C5741FCF2A0E00C02113 /* remotetrans.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A22C5601FCF2A0A00C02113 /* remotetrans.cpp */; };
@@ -220,33 +204,7 @@
 		0A22C5251FCF295D00C02113 /* ftpparse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftpparse.c; path = ../../../src/utilfuns/ftpparse.c; sourceTree = "<group>"; };
 		0A22C5261FCF295E00C02113 /* roman.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = roman.cpp; path = ../../../src/utilfuns/roman.cpp; sourceTree = "<group>"; };
 		0A22C5271FCF295E00C02113 /* utilstr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = utilstr.cpp; path = ../../../src/utilfuns/utilstr.cpp; sourceTree = "<group>"; };
-		0A22C5321FCF299B00C02113 /* inffast.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inffast.c; path = ../../../src/utilfuns/zlib/inffast.c; sourceTree = "<group>"; };
-		0A22C5331FCF299B00C02113 /* trees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = trees.h; path = ../../../src/utilfuns/zlib/trees.h; sourceTree = "<group>"; };
-		0A22C5341FCF299B00C02113 /* crc32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crc32.h; path = ../../../src/utilfuns/zlib/crc32.h; sourceTree = "<group>"; };
-		0A22C5351FCF299B00C02113 /* inffixed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = inffixed.h; path = ../../../src/utilfuns/zlib/inffixed.h; sourceTree = "<group>"; };
-		0A22C5361FCF299B00C02113 /* inftrees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = inftrees.h; path = ../../../src/utilfuns/zlib/inftrees.h; sourceTree = "<group>"; };
-		0A22C5371FCF299B00C02113 /* infback.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = infback.c; path = ../../../src/utilfuns/zlib/infback.c; sourceTree = "<group>"; };
-		0A22C5381FCF299C00C02113 /* uncompr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = uncompr.c; path = ../../../src/utilfuns/zlib/uncompr.c; sourceTree = "<group>"; };
-		0A22C5391FCF299C00C02113 /* inflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inflate.c; path = ../../../src/utilfuns/zlib/inflate.c; sourceTree = "<group>"; };
-		0A22C53A1FCF299C00C02113 /* untgz.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = untgz.c; path = ../../../src/utilfuns/zlib/untgz.c; sourceTree = "<group>"; };
-		0A22C53B1FCF299C00C02113 /* inftrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inftrees.c; path = ../../../src/utilfuns/zlib/inftrees.c; sourceTree = "<group>"; };
-		0A22C53C1FCF299C00C02113 /* gzlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gzlib.c; path = ../../../src/utilfuns/zlib/gzlib.c; sourceTree = "<group>"; };
-		0A22C53D1FCF299C00C02113 /* gzguts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gzguts.h; path = ../../../src/utilfuns/zlib/gzguts.h; sourceTree = "<group>"; };
-		0A22C53E1FCF299D00C02113 /* zutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = zutil.c; path = ../../../src/utilfuns/zlib/zutil.c; sourceTree = "<group>"; };
-		0A22C53F1FCF299D00C02113 /* deflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = deflate.h; path = ../../../src/utilfuns/zlib/deflate.h; sourceTree = "<group>"; };
-		0A22C5401FCF299D00C02113 /* zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zlib.h; path = ../../../src/utilfuns/zlib/zlib.h; sourceTree = "<group>"; };
-		0A22C5411FCF299D00C02113 /* zutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zutil.h; path = ../../../src/utilfuns/zlib/zutil.h; sourceTree = "<group>"; };
-		0A22C5421FCF299D00C02113 /* crc32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crc32.c; path = ../../../src/utilfuns/zlib/crc32.c; sourceTree = "<group>"; };
-		0A22C5431FCF299E00C02113 /* gzread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gzread.c; path = ../../../src/utilfuns/zlib/gzread.c; sourceTree = "<group>"; };
-		0A22C5441FCF299E00C02113 /* inflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = inflate.h; path = ../../../src/utilfuns/zlib/inflate.h; sourceTree = "<group>"; };
 		0A22C5451FCF299E00C02113 /* zconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = zconf.h; path = ../../../src/utilfuns/zlib/zconf.h; sourceTree = "<group>"; };
-		0A22C5461FCF299E00C02113 /* inffast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = inffast.h; path = ../../../src/utilfuns/zlib/inffast.h; sourceTree = "<group>"; };
-		0A22C5471FCF299F00C02113 /* adler32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = adler32.c; path = ../../../src/utilfuns/zlib/adler32.c; sourceTree = "<group>"; };
-		0A22C5481FCF299F00C02113 /* compress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = compress.c; path = ../../../src/utilfuns/zlib/compress.c; sourceTree = "<group>"; };
-		0A22C5491FCF299F00C02113 /* deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = deflate.c; path = ../../../src/utilfuns/zlib/deflate.c; sourceTree = "<group>"; };
-		0A22C54A1FCF299F00C02113 /* trees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = trees.c; path = ../../../src/utilfuns/zlib/trees.c; sourceTree = "<group>"; };
-		0A22C54B1FCF299F00C02113 /* gzwrite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gzwrite.c; path = ../../../src/utilfuns/zlib/gzwrite.c; sourceTree = "<group>"; };
-		0A22C54C1FCF29A000C02113 /* gzclose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gzclose.c; path = ../../../src/utilfuns/zlib/gzclose.c; sourceTree = "<group>"; };
 		0A22C55D1FCF29E600C02113 /* swmodule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = swmodule.cpp; path = ../../../src/modules/swmodule.cpp; sourceTree = "<group>"; };
 		0A22C55F1FCF2A0A00C02113 /* encfiltmgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = encfiltmgr.cpp; path = ../../../src/mgr/encfiltmgr.cpp; sourceTree = "<group>"; };
 		0A22C5601FCF2A0A00C02113 /* remotetrans.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = remotetrans.cpp; path = ../../../src/mgr/remotetrans.cpp; sourceTree = "<group>"; };
@@ -412,15 +370,9 @@
 				0AD80314203BE13C0080C00C /* biblesync-version.hh */,
 				0AD80315203BE13D0080C00C /* biblesync.hh */,
 				0AC2147C1FCF9CFF0058DE8C /* flatapi.cpp */,
-				0A22C5471FCF299F00C02113 /* adler32.c */,
 				0A22C6031FCF2B5500C02113 /* cipherfil.cpp */,
-				0A22C5481FCF299F00C02113 /* compress.c */,
-				0A22C5421FCF299D00C02113 /* crc32.c */,
-				0A22C5341FCF299B00C02113 /* crc32.h */,
 				0A22C5681FCF2A0C00C02113 /* curlftpt.cpp */,
 				0A22C56B1FCF2A0C00C02113 /* curlhttpt.cpp */,
-				0A22C5491FCF299F00C02113 /* deflate.c */,
-				0A22C53F1FCF299D00C02113 /* deflate.h */,
 				0A22C55F1FCF2A0A00C02113 /* encfiltmgr.cpp */,
 				0A22C5A51FCF2B0D00C02113 /* entriesblk.cpp */,
 				0A22C56D1FCF2A0D00C02113 /* filemgr.cpp */,
@@ -443,20 +395,7 @@
 				0A22C5C31FCF2B4800C02113 /* gbfwordjs.cpp */,
 				0A22C5ED1FCF2B5100C02113 /* gbfxhtml.cpp */,
 				0A22C5DE1FCF2B4E00C02113 /* greeklexattribs.cpp */,
-				0A22C54C1FCF29A000C02113 /* gzclose.c */,
-				0A22C53D1FCF299C00C02113 /* gzguts.h */,
-				0A22C53C1FCF299C00C02113 /* gzlib.c */,
-				0A22C5431FCF299E00C02113 /* gzread.c */,
-				0A22C54B1FCF299F00C02113 /* gzwrite.c */,
 				0A22C65C1FCF2C3200C02113 /* hrefcom.cpp */,
-				0A22C5371FCF299B00C02113 /* infback.c */,
-				0A22C5321FCF299B00C02113 /* inffast.c */,
-				0A22C5461FCF299E00C02113 /* inffast.h */,
-				0A22C5351FCF299B00C02113 /* inffixed.h */,
-				0A22C5391FCF299C00C02113 /* inflate.c */,
-				0A22C5441FCF299E00C02113 /* inflate.h */,
-				0A22C53B1FCF299C00C02113 /* inftrees.c */,
-				0A22C5361FCF299B00C02113 /* inftrees.h */,
 				0A22C5721FCF2A0E00C02113 /* installmgr.cpp */,
 				0A22C5B31FCF2B4400C02113 /* latin1utf8.cpp */,
 				0A22C5EE1FCF2B5100C02113 /* latin1utf16.cpp */,
@@ -553,11 +492,7 @@
 				0A22C5CC1FCF2B4A00C02113 /* thmlxhtml.cpp */,
 				0A22C58C1FCF2A8C00C02113 /* treekey.cpp */,
 				0A22C58B1FCF2A8C00C02113 /* treekeyidx.cpp */,
-				0A22C54A1FCF299F00C02113 /* trees.c */,
-				0A22C5331FCF299B00C02113 /* trees.h */,
-				0A22C5381FCF299C00C02113 /* uncompr.c */,
 				0A22C5F21FCF2B5200C02113 /* unicodertf.cpp */,
-				0A22C53A1FCF299C00C02113 /* untgz.c */,
 				0A22C51E1FCF295D00C02113 /* url.cpp */,
 				0A22C5D51FCF2B4C00C02113 /* utf8arabicpoints.cpp */,
 				0A22C6011FCF2B5500C02113 /* utf8arshaping.cpp */,
@@ -583,12 +518,9 @@
 				0A22C5451FCF299E00C02113 /* zconf.h */,
 				0A22C59B1FCF2B0B00C02113 /* zipcomprs.cpp */,
 				0A22C66D1FCF2E5300C02113 /* zld.cpp */,
-				0A22C5401FCF299D00C02113 /* zlib.h */,
 				0A22C59A1FCF2B0B00C02113 /* zstr.cpp */,
 				0A22C6751FCF2E8500C02113 /* ztext.cpp */,
 				0A22C6761FCF2E8500C02113 /* ztext4.cpp */,
-				0A22C53E1FCF299D00C02113 /* zutil.c */,
-				0A22C5411FCF299D00C02113 /* zutil.h */,
 				0A22C59C1FCF2B0B00C02113 /* zverse.cpp */,
 				0A22C5991FCF2B0A00C02113 /* zverse4.cpp */,
 			);
@@ -693,7 +625,6 @@
 			files = (
 				0A22C6431FCF2B5600C02113 /* gbfosis.cpp in Sources */,
 				0A22C6531FCF2B5600C02113 /* utf8arshaping.cpp in Sources */,
-				0A22C5531FCF29A000C02113 /* gzlib.c in Sources */,
 				0A22C60B1FCF2B5600C02113 /* osisscripref.cpp in Sources */,
 				0A22C6311FCF2B5600C02113 /* osisplain.cpp in Sources */,
 				0AC2147D1FCF9D000058DE8C /* flatapi.cpp in Sources */,
@@ -701,15 +632,12 @@
 				0A22C67B1FCF2E8500C02113 /* ztext4.cpp in Sources */,
 				0A22C5911FCF2A8D00C02113 /* versetreekey.cpp in Sources */,
 				0A22C6291FCF2B5600C02113 /* utf8html.cpp in Sources */,
-				0A22C5511FCF29A000C02113 /* untgz.c in Sources */,
 				0A22C66E1FCF2E5300C02113 /* rawld4.cpp in Sources */,
 				0A22C57D1FCF2A0E00C02113 /* swsearchable.cpp in Sources */,
 				0A22C64C1FCF2B5600C02113 /* thmlosis.cpp in Sources */,
 				0A22C6191FCF2B5600C02113 /* osiswebif.cpp in Sources */,
-				0A22C54E1FCF29A000C02113 /* infback.c in Sources */,
 				0A22C5291FCF295E00C02113 /* swversion.cpp in Sources */,
 				0A22C6121FCF2B5600C02113 /* utf16utf8.cpp in Sources */,
-				0A22C5581FCF29A000C02113 /* compress.c in Sources */,
 				0A22C6201FCF2B5600C02113 /* gbflatex.cpp in Sources */,
 				0A22C62C1FCF2B5600C02113 /* swbasicfilter.cpp in Sources */,
 				0A22C6471FCF2B5600C02113 /* thmlwebif.cpp in Sources */,
@@ -741,7 +669,6 @@
 				0A22C6101FCF2B5600C02113 /* gbfrtf.cpp in Sources */,
 				0A22C60F1FCF2B5600C02113 /* thmlgbf.cpp in Sources */,
 				0A22C62B1FCF2B5600C02113 /* thmlfootnotes.cpp in Sources */,
-				0A22C5591FCF29A000C02113 /* deflate.c in Sources */,
 				0A22C62A1FCF2B5600C02113 /* thmllemma.cpp in Sources */,
 				0A22C5851FCF2A0E00C02113 /* installmgr.cpp in Sources */,
 				0A22C6711FCF2E5300C02113 /* zld.cpp in Sources */,
@@ -758,18 +685,14 @@
 				0A22C5B21FCF2B0D00C02113 /* entriesblk.cpp in Sources */,
 				0A22C5AD1FCF2B0D00C02113 /* swcomprs.cpp in Sources */,
 				0A22C5281FCF295E00C02113 /* url.cpp in Sources */,
-				0A22C5561FCF29A000C02113 /* gzread.c in Sources */,
 				0A22C57B1FCF2A0E00C02113 /* stringmgr.cpp in Sources */,
 				0A22C6211FCF2B5600C02113 /* scsuutf8.cpp in Sources */,
-				0A22C5541FCF29A000C02113 /* zutil.c in Sources */,
 				0A22C5A91FCF2B0D00C02113 /* zverse.cpp in Sources */,
 				0A22C6081FCF2B5600C02113 /* thmllatex.cpp in Sources */,
 				0A22C6271FCF2B5600C02113 /* utf8arabicpoints.cpp in Sources */,
 				0A22C61B1FCF2B5600C02113 /* gbfhtml.cpp in Sources */,
 				0AD80317203BE1710080C00C /* biblesync.cc in Sources */,
-				0A22C55C1FCF29A000C02113 /* gzclose.c in Sources */,
 				0A22C60A1FCF2B5600C02113 /* utf8cantillation.cpp in Sources */,
-				0A22C54D1FCF29A000C02113 /* inffast.c in Sources */,
 				0A22C6111FCF2B5600C02113 /* utf8transliterator.cpp in Sources */,
 				0A22C6361FCF2B5600C02113 /* utf8latin1.cpp in Sources */,
 				0A22C60D1FCF2B5600C02113 /* swoptfilter.cpp in Sources */,
@@ -785,7 +708,6 @@
 				0A22C6421FCF2B5600C02113 /* thmlplain.cpp in Sources */,
 				0A22C65A1FCF2BAB00C02113 /* rawcom.cpp in Sources */,
 				0A22C5AE1FCF2B0D00C02113 /* swcipher.cpp in Sources */,
-				0A22C55B1FCF29A000C02113 /* gzwrite.c in Sources */,
 				0A22C60C1FCF2B5600C02113 /* osismorphsegmentation.cpp in Sources */,
 				0A22C5A71FCF2B0D00C02113 /* zstr.cpp in Sources */,
 				0A22C6461FCF2B5600C02113 /* gbfhtmlhref.cpp in Sources */,
@@ -806,17 +728,14 @@
 				0A22C5771FCF2A0E00C02113 /* swcacher.cpp in Sources */,
 				0A22C5811FCF2A0E00C02113 /* filemgr.cpp in Sources */,
 				0A22C62F1FCF2B5600C02113 /* utf8bidireorder.cpp in Sources */,
-				0A22C5551FCF29A000C02113 /* crc32.c in Sources */,
 				0A22C62D1FCF2B5600C02113 /* utf8nfkd.cpp in Sources */,
 				0A22C6611FCF2C7700C02113 /* rawfiles.cpp in Sources */,
 				0A22C6501FCF2B5600C02113 /* utf8hebrewpoints.cpp in Sources */,
 				0A22C6281FCF2B5600C02113 /* osishtmlhref.cpp in Sources */,
 				0A22C67A1FCF2E8500C02113 /* ztext.cpp in Sources */,
 				0A22C5781FCF2A0E00C02113 /* swlocale.cpp in Sources */,
-				0A22C5521FCF29A000C02113 /* inftrees.c in Sources */,
 				0A22C65D1FCF2C3200C02113 /* hrefcom.cpp in Sources */,
 				0A22C5A81FCF2B0D00C02113 /* zipcomprs.cpp in Sources */,
-				0A22C54F1FCF29A000C02113 /* uncompr.c in Sources */,
 				0A22C55E1FCF29E600C02113 /* swmodule.cpp in Sources */,
 				0A22C5AA1FCF2B0D00C02113 /* lzsscomprs.cpp in Sources */,
 				0A22C6651FCF2CE500C02113 /* zcom4.cpp in Sources */,
@@ -840,7 +759,6 @@
 				0A22C6511FCF2B5600C02113 /* teihtmlhref.cpp in Sources */,
 				0A22C60E1FCF2B5600C02113 /* teiplain.cpp in Sources */,
 				0A22C5311FCF295E00C02113 /* utilstr.cpp in Sources */,
-				0A22C5571FCF29A000C02113 /* adler32.c in Sources */,
 				0A22C57A1FCF2A0E00C02113 /* localemgr.cpp in Sources */,
 				0A22C5981FCF2ABC00C02113 /* swdisp.cpp in Sources */,
 				0A22C6151FCF2B5600C02113 /* gbfwordjs.cpp in Sources */,
@@ -854,9 +772,7 @@
 				0A22C6381FCF2B5600C02113 /* osisxlit.cpp in Sources */,
 				0A22C6671FCF2E0F00C02113 /* swgenbook.cpp in Sources */,
 				0A22C6251FCF2B5600C02113 /* thmlscripref.cpp in Sources */,
-				0A22C55A1FCF29A000C02113 /* trees.c in Sources */,
 				0A22C64A1FCF2B5600C02113 /* osisfootnotes.cpp in Sources */,
-				0A22C5501FCF29A000C02113 /* inflate.c in Sources */,
 				0A22C6401FCF2B5600C02113 /* latin1utf16.cpp in Sources */,
 				0A22C65F1FCF2C5000C02113 /* rawcom4.cpp in Sources */,
 			);

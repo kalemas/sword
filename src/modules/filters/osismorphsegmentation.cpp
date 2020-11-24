@@ -80,7 +80,7 @@ char OSISMorphSegmentation::processText(SWBuf &text, const SWKey * /*key*/, cons
 
 				if (!tag.isEndTag() && tag.getAttribute("type") &&
 					(  !strcmp("morph", tag.getAttribute("type"))
-					|| !strcmp("x-morph", tag.getAttribute("type")))) {  //<seg type="morph"> start tag
+					|| !strcmp("x-morph", tag.getAttribute("type")))) {  // <seg type="morph"> start tag
 					hide = !option; //only hide if option is Off
 					tagText = "";
 					inMorpheme = true;
@@ -93,7 +93,7 @@ char OSISMorphSegmentation::processText(SWBuf &text, const SWKey * /*key*/, cons
 				}
 				if (hide) { //hides start and end tags as long as hide is set
 
-					if (tag.isEndTag()) { //</seg>
+					if (tag.isEndTag()) { // </seg>
 						hide = false;
 					}
 
