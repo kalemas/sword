@@ -12,8 +12,11 @@ noinst_PROGRAMS = utf8norm ciphertest keytest mgrtest parsekey versekeytest \
 			compnone complzss localetest introtest indextest \
 			configtest keycast romantest testblocks filtertest \
 			rawldidxtest lextest swaptest swbuftest xmltest \
-			webiftest striptest ldtest osistest bibliotest \
-			httptest
+			webiftest striptest ldtest osistest bibliotest
+
+if WITHCURL
+noinst_PROGRAMS += httptest
+endif
 
 if HAVE_ICU
 ICUPROG = icutest translittest tlitmgrtest
