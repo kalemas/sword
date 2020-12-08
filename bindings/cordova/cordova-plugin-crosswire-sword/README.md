@@ -17,6 +17,6 @@
          under the License.
 -->
 
-# org.apache.cordova.device
+# org.crosswire.sword.cordova.SWORD
 
 Plugin documentation: [doc/index.md](doc/index.md)

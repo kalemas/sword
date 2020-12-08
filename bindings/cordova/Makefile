@@ -18,6 +18,9 @@ clean:
 publish:
 	npm publish cordova-plugin-crosswire-sword/
 
+publishlogin:
+	npm adduser
+
 strip:
 	./libstrip.sh cordova-plugin-crosswire-sword/libs/ios/libSWORD.a
 	./libstrip.sh cordova-plugin-crosswire-sword/libs/ios/libcurl.a
