@@ -26,25 +26,21 @@ Although the object is in the global scope, it is not available until after the 
 
 - Android
 - iOS
-- others should work from source, but binaries are only included for these
+- other platforms should work from source, but binaries are only included for those listed above
 
 ### Quick Example
 
-	document.addEventListener("deviceready", onDeviceReady, false);
+	var moduleName = 'KJV';
+	var verse = 'Jn.3.16';
 
-	function onDeviceReady() {
-
-		var moduleName = 'KJV';
-		var verse = 'Jn.3.16';
-
-		SWORD.mgr.getModuleByName(moduleName, module) {
-			module.setKeyText(verse, function() {
-				module.renderText(function(entryText) {
-					console.log(verse + ': ' + entryText + '(' + moduleName + ')');
-				});
+	SWORD.mgr.getModuleByName(moduleName, function (module) {
+		module.setKeyText(verse, function() {
+			module.getRenderText(function(entryText) {
+				console.log(verse + ': ' + entryText + '(' + moduleName + ')');
 			});
 		});
-	}
+	});
+
 
 ## Installation
 

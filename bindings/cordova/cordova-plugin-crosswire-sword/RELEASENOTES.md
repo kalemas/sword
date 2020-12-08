@@ -20,7 +20,7 @@
 -->
 # Release Notes
 
-### 0.2.2 (Dec 7, 2020)
+### 0.2.4 (Dec 7, 2020)
 * Updated documentation
 
 ### 0.2.1 (Nov 24, 2020)
