@@ -187,7 +187,6 @@ add_library( # Sets the name of the library.
         keys/listkey.cpp
         frontend/swdisp.cpp
         frontend/swlog.cpp
-        utilfuns/zlib/untgz.c
 
         biblesync/biblesync.cc
         biblesync/Android/ifaddrs.c

@@ -19,13 +19,6 @@ else
 ftpsrc =
 endif
 
-if HAVE_LIBZ
-UNTGZ = $(utilfunsdir)/zlib/untgz.c
-else
-UNTGZ =
-endif
-
-libsword_la_SOURCES += $(UNTGZ) 
 libsword_la_SOURCES += $(ftpsrc)
 
 if USE_INTERNAL_REGEX
