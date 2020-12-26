@@ -295,6 +295,12 @@ Log.d(TAG, "SWModule_getRemoteModuleByName("+args.getString(0)+", " + args.getSt
 			if (mod == null) { callbackContext.error("couldn't find module: " + args.getString(0)); return true; }
 			callbackContext.success(mod.getKeyText());
 		}
+		else if (action.equals("SWModule_terminateSearch")) {
+			SWModule mod = mgr.getModuleByName(args.getString(0));
+			if (mod == null) { callbackContext.error("couldn't find module: " + args.getString(0)); return true; }
+			mod.terminateSearch();
+			callbackContext.success();
+		}
 		else if (action.equals("SWModule_search")) {
 			final SWModule mod = mgr.getModuleByName(args.getString(0));
 			final String expression = args.getString(1);

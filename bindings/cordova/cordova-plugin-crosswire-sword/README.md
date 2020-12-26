@@ -33,7 +33,7 @@ Although the object is in the global scope, it is not available until after the 
 	var moduleName = 'KJV';
 	var verse = 'Jn.3.16';
 
-	SWORD.mgr.getModuleByName(moduleName, function (module) {
+	SWORD.mgr.getModuleByName(moduleName, function(module) {
 		module.setKeyText(verse, function() {
 			module.getRenderText(function(entryText) {
 				console.log(verse + ': ' + entryText + '(' + moduleName + ')');

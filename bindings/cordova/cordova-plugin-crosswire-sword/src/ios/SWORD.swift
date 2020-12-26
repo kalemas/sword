@@ -724,6 +724,14 @@ debugPrint("initMgr, mgr: " + String(describing: mgr))
         return retVal;
     }
 
+    @objc(SWModule_terminateSearch:)
+    func SWModule_setKeyText(command: CDVInvokedUrlCommand) {
+        let module = getModule(command: command)
+        if (module != 0) {
+            org_crosswire_sword_SWModule_terminateSearch(module)
+            self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: "SWModule_terminateSearch"), callbackId: command.callbackId)
+        }
+    }
     
     @objc(SWModule_search:)
     func SWModule_search(command: CDVInvokedUrlCommand) {
