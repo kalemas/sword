@@ -43,7 +43,9 @@ extern "C" {
  * written by "Pedro A. Aranda Gutirrez" <paag@tid.es>
  * adaptation to Unix by Jean-loup Gailly <jloup@gzip.org>
  * For conditions of distribution and use,
- * see copyright notice in ../../utilfuns/zlib/zlib.h
+ * see copyright code / notice / discussion at:
+ * https://github.com/madler/zlib/blob/master/contrib/untgz/untgz.c
+ * https://github.com/madler/zlib/issues/531
  */
 namespace {
 
@@ -95,7 +97,7 @@ int getoct(char *p, int width) {
 }
 
 
-int untar (gzFile in, const char *dest) {
+int untar(gzFile in, const char *dest) {
 	union  tar_buffer buffer;
 	int    len;
 	int    err;
