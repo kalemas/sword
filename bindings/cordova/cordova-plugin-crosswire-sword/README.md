@@ -100,6 +100,7 @@ Although the object is in the global scope, it is not available until after the 
 
 	SWModule.setKeyText
 	SWModule.search
+	SWModule.terminateSearch
 	SWModule.getKeyText
 	SWModule.getRenderText
 	SWModule.getStripText
