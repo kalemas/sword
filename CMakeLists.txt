@@ -11,9 +11,16 @@
 # of their own GPLv2 license and all copyright is transferred to them for
 # all posterity and eternity, wherever such transfer is possible.  Where it is
 # not, then this file is released under the GPLv2 by myself.
+
+include(FindSubversion)
+Subversion_WC_INFO(${CMAKE_CURRENT_SOURCE_DIR} MYSVN)
+
 PROJECT(libsword CXX C)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
-SET(SWORD_VERSION 1.9.0.svnversion)
+SET(SWORD_VERSION 1.9.0)
+if(DEFINED MYSVN_WC_REVISION)
+	SET(SWORD_VERSION ${SWORD_VERSION}.${MYSVN_WC_REVISION})
+endif(DEFINED MYSVN_WC_REVISION)
 
 # Make sure it's an out-of-stream build
 IF(${CMAKE_CURRENT_BINARY_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
