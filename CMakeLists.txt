@@ -12,8 +12,9 @@
 # all posterity and eternity, wherever such transfer is possible.  Where it is
 # not, then this file is released under the GPLv2 by myself.
 
+CMAKE_POLICY(SET CMP0010 NEW)
 include(FindSubversion)
-Subversion_WC_INFO(${CMAKE_CURRENT_SOURCE_DIR} MYSVN, IGNORE_SVN_FAILURE)
+Subversion_WC_INFO(${CMAKE_CURRENT_SOURCE_DIR} MYSVN IGNORE_SVN_FAILURE)
 
 PROJECT(libsword CXX C)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
