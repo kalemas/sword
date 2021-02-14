@@ -22,7 +22,7 @@ GlobalOptionFilter=OSISRedLetterWords
 Feature=StrongsNumbers
 !
 
-../../utilities/osis2mod tmp/osis_basic/modules/ osisReference.xml -z 2>&1 | grep -v \$Rev
+../../utilities/osis2mod tmp/osis_basic/modules/ osisReference.xml -z 2>&1 | grep -v \$Rev | grep -v WARN
 
 cd tmp/osis_basic
 ../../../osistest OSISReference

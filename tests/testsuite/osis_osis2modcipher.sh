@@ -23,7 +23,7 @@ GlobalOptionFilter=OSISRedLetterWords
 Feature=StrongsNumbers
 !
 
-../../utilities/osis2mod tmp/osis_osis2modcipher/modules/ osisReference.xml -z -c abc123 2>&1 | grep -v \$Rev|grep -v "with phrase"
+../../utilities/osis2mod tmp/osis_osis2modcipher/modules/ osisReference.xml -z -c abc123 2>&1 | grep -v \$Rev|grep -v "with phrase" | grep -v WARN
 
 cp osis_basic.good osis_osis2modcipher.good
 cd tmp/osis_osis2modcipher

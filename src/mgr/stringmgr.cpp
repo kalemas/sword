@@ -38,6 +38,10 @@
 
 #include <unicode/locid.h>
 
+#else
+
+#include <swtoupperdata.h>
+
 #endif
 
 
@@ -181,9 +185,9 @@ void StringMgr::setSystemStringMgr(StringMgr *newStringMgr) {
 	
 	systemStringMgr = newStringMgr;
 
-   // TODO: this is magic. apparently we have to reset the system localemgr upon changing stringmgr.
-   // setting system stringmgr should be set before localemgr and not possible to change.
-   // rework this design.
+	// TODO: this is magic. apparently we have to reset the system localemgr upon changing stringmgr.
+	// setting system stringmgr should be set before localemgr and not possible to change.
+	// rework this design.
 	LocaleMgr::getSystemLocaleMgr()->setSystemLocaleMgr(new LocaleMgr());
 }
 
@@ -217,12 +221,36 @@ StringMgr* StringMgr::getSystemStringMgr() {
  *
  */	
 char *StringMgr::upperUTF8(char *t, unsigned int maxlen) const {
+
+#ifndef _ICU_
+
+	SWBuf orig = t;
+	const unsigned char* from = (unsigned char*)orig.c_str();
+	SWBuf text = "";
+	std::map<SW_u32, SW_u32>::const_iterator it = toUpperData.end();
+	while (*from) {		
+		SW_u32 ch = getUniCharFromUTF8(&from, true);
+		// should we skip conversion if we run into an invalid UTF8 character?
+		// maybe the string isn't intended to be UTF8
+		// Right now, if ch is bad, then convert to replacement char
+		if (!ch) ch = 0xFFFD;
+
+		it = toUpperData.find(ch);
+		getUTF8FromUniChar(it == toUpperData.end() ? ch : it->second, &text);
+	}
+	long len = maxlen ? (text.size() < maxlen ? text.size() : (maxlen - 1)) : 0;
+	if (len) memcpy(t, text.c_str(), len);
+	t[len] = 0;
+#endif
+	return t;
+/* OLD
 	// try to decide if it's worth trying to toupper.  Do we have more
 	// characters which are probably lower latin than not?
 	// we still don't use isValidUTF8 optimally. what if we have 1 unicode
 	// character in the string?  should we not try to upper any of the string?
 	// dunno.  Best solution is to upper all other characters. Don't have
 	// time to write that before release.
+
 	long performOp = 0;
 	if (!isValidUTF8((unsigned char *)t)) {
 		performOp = 1;
@@ -236,6 +264,7 @@ char *StringMgr::upperUTF8(char *t, unsigned int maxlen) const {
 	if (performOp > 0) {
 		return upperLatin1(t);
 	}
+*/
 
 	return t;
 }
@@ -311,7 +340,7 @@ char *StringMgr::upperLatin1(char *buf, unsigned int maxlen) const {
 }
 
 bool StringMgr::supportsUnicode() const {
-	return false; //default impl has no UTF8 support
+	return true; //default impl has no UTF8 support
 }
 
 

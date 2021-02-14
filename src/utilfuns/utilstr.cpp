@@ -263,7 +263,7 @@ SWBuf utf8ToWChar(const char *buf) {
 SWBuf wcharToUTF8(const wchar_t *buf) {
 
 	SWBuf utf8Buf;
-     if (buf) {
+	if (buf) {
 		while (*buf) {
 			getUTF8FromUniChar(*buf++, &utf8Buf);
 		}
