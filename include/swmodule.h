@@ -50,12 +50,6 @@ enum {BIB_BIBTEX = 0, /* possible future formats: BIB_MARCXML, BIB_MARC21, BIB_D
 class SWOptionFilter;
 class SWFilter;
 
-// used for matching whole entry (not substring) in entry attributes searches.
-#define SEARCHFLAG_MATCHWHOLEENTRY 4096
-
-// used for turning off the default behavior of SWORD to use a sliding search window 
-// which allows hits across verse boundaries.
-#define SEARCHFLAG_STRICTBOUNDARIES 8192
 
 #define SWMODULE_OPERATORS \
 	operator SWBuf() { return renderText(); } \
@@ -167,6 +161,18 @@ protected:
 
 
 public:
+	// used for matching whole entry (not substring) in entry attributes searches.
+	static const signed int SEARCHFLAG_MATCHWHOLEENTRY;
+
+	// used for turning off the default behavior of SWORD to use a sliding search window 
+	// which allows hits across verse boundaries.
+	static const signed int SEARCHFLAG_STRICTBOUNDARIES;
+
+	static const signed int SEARCHTYPE_REGEX;
+	static const signed int SEARCHTYPE_PHRASE;
+	static const signed int SEARCHTYPE_MULTIWORD;
+	static const signed int SEARCHTYPE_ENTRYATTR;
+	static const signed int SEARCHTYPE_EXTERNAL;
 
 	/**
 	 * Set this bool to false to terminate the search which is executed by this module (search()).
@@ -445,7 +451,7 @@ public:
 	 *			-1  - phrase
 	 *			-2  - multiword
 	 *			-3  - entryAttrib (eg. Word//Lemma./G1234/)	 (Lemma with dot means check components (Lemma.[1-9]) also)
-	 *			-4  - Lucene
+	 *			-4  - Use External Search Framework (CLucene, Xapian, etc.)
 	 *			-5  - multilemma window; set 'flags' param to window size (NOT DONE)
 	 * @param flags bitwise options flags for search.  Each search type supports different options.
 	 * 			REG_ICASE	- perform case insensitive search.  Supported by most all search types

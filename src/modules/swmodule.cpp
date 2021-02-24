@@ -79,6 +79,15 @@ SWORD_NAMESPACE_START
 
 SWModule::StdOutDisplay SWModule::rawdisp;
 
+const signed int SWModule::SEARCHFLAG_MATCHWHOLEENTRY  = 4096;
+const signed int SWModule::SEARCHFLAG_STRICTBOUNDARIES = 8192;
+
+const signed int SWModule::SEARCHTYPE_REGEX     =  0;
+const signed int SWModule::SEARCHTYPE_PHRASE    = -1;
+const signed int SWModule::SEARCHTYPE_MULTIWORD = -2;
+const signed int SWModule::SEARCHTYPE_ENTRYATTR = -3;
+const signed int SWModule::SEARCHTYPE_EXTERNAL  = -4;
+
 typedef std::list<SWBuf> StringList;
 
 /******************************************************************************
@@ -368,11 +377,11 @@ void SWModule::decrement(int steps) {
  *
  * ENT:	istr		- string for which to search
  * 	searchType	- type of search to perform
- *				>=0 - regex; (for backward compat, if > 0 then used as additional REGEX FLAGS)
- *				-1  - phrase
- *				-2  - multiword
- *				-3  - entryAttrib (eg. Word//Lemma./G1234/)	 (Lemma with dot means check components (Lemma.[1-9]) also)
- *				-4  - clucene
+ *				SEARCHTYPE_REGEX     - regex; (for backward compat, if > 0 then used as additional REGEX FLAGS)
+ *				SEARCHTYPE_PHRASE    - phrase
+ *				SEARCHTYPE_MULTIWORD - multiword
+ *				SEARCHTYPE_ENTRYATTR - entryAttrib (eg. Word//Lemma./G1234/)	 (Lemma with dot means check components (Lemma.[1-9]) also)
+ *				SEARCHTYPE_EXTERNAL - clucene, xapian, etc., whatever was configured at engine build time
  *				-5  - multilemma window; flags = window size
  * 	flags		- options flags for search
  *	justCheckIfSupported	- if set, don't search, only tell if this
@@ -393,7 +402,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 	// Searching are done in a sliding window of 2 verses right now.
 	// To turn this off, include SEARCHFLAG_STRICTBOUNDARIES in search flags
 	int windowSize = 2;
-	if ((flags & SEARCHFLAG_STRICTBOUNDARIES) && (searchType == -2 || searchType > 0)) {
+	if ((flags & SEARCHFLAG_STRICTBOUNDARIES) && (searchType == SEARCHTYPE_MULTIWORD || searchType > 0)) {
 		// remove custom SWORD flag to prevent possible overlap with unknown regex option
 		flags ^= SEARCHFLAG_STRICTBOUNDARIES;
 		windowSize = 1;
@@ -409,13 +418,13 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 	target.append("lucene");
 #endif
 	if (justCheckIfSupported) {
-		*justCheckIfSupported = (searchType >= -3);
+		*justCheckIfSupported = (searchType >= SEARCHTYPE_ENTRYATTR);
 #if defined USEXAPIAN
-		if ((searchType == -4) && (FileMgr::existsDir(target))) {
+		if ((searchType == SEARCHTYPE_EXTERNAL) && (FileMgr::existsDir(target))) {
 			*justCheckIfSupported = true;
 		}
 #elif defined USELUCENE
-		if ((searchType == -4) && (IndexReader::indexExists(target.c_str()))) {
+		if ((searchType == SEARCHTYPE_EXTERNAL) && (IndexReader::indexExists(target.c_str()))) {
 			*justCheckIfSupported = true;
 		}
 #endif
@@ -454,7 +463,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 			|| (getConfig().has("GlobalOptionFilter", "UTF8ArabicPoints"))
 			|| (strchr(istr, '<')));
 
-	setProcessEntryAttributes(searchType == -3);
+	setProcessEntryAttributes(searchType == SEARCHTYPE_ENTRYATTR);
 	
 
 	if (!key->isPersist()) {
@@ -502,7 +511,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 
 #if defined USEXAPIAN || defined USELUCENE
 	(*percent)(10, percentUserData);
-	if (searchType == -4) {	// indexed search
+	if (searchType == SEARCHTYPE_EXTERNAL) {	// indexed search
 #if defined USEXAPIAN
 		SWTRY {
 			Xapian::Database database(target.c_str());
@@ -602,14 +611,12 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 	// some pre-loop processing
 	switch (searchType) {
 
-	// phrase
-	case -1:
+	case SEARCHTYPE_PHRASE:
 		// let's see if we're told to ignore case.  If so, then we'll touppstr our term
 		if ((flags & REG_ICASE) == REG_ICASE) term.toUpper();
 		break;
 
-	// multi-word
-	case -2:
+	case SEARCHTYPE_MULTIWORD:
 	case -5:
 		// let's break the term down into our words vector
 		while (1) {
@@ -628,7 +635,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 		break;
 
 	// entry attributes
-	case -3:
+	case SEARCHTYPE_ENTRYATTR:
 		// let's break the attribute segs down.  We'll reuse our words vector for each segment
 		while (1) {
 			const char *word = term.stripPrefix('/');
@@ -651,7 +658,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 	(*percent)(perc, percentUserData);
 
 	
-	while ((searchType != -4) && !popError() && !terminateSearch) {
+	while ((searchType != SEARCHTYPE_EXTERNAL) && !popError() && !terminateSearch) {
 		long mindex = key->getIndex();
 		float per = (float)mindex / highIndex;
 		per *= 93;
@@ -722,8 +729,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 			SWBuf textBuf;
 			switch (searchType) {
 
-			// phrase
-			case -1: {
+			case SEARCHTYPE_PHRASE: {
 				textBuf = stripText();
 				if ((flags & REG_ICASE) == REG_ICASE) textBuf.toUpper();
 				sres = strstr(textBuf.c_str(), term.c_str());
@@ -735,8 +741,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 				break;
 			}
 
-			// multiword
-			case -2: { // enclose our allocations
+			case SEARCHTYPE_MULTIWORD: { // enclose our allocations
 				int stripped = 0;
 				int multiVerse = 0;
 				unsigned int foundWords = 0;
@@ -806,8 +811,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 			}
 			break;
 
-			// entry attributes
-			case -3: {
+			case SEARCHTYPE_ENTRYATTR: {
 				renderText();	// force parse
 				AttributeTypeList &entryAttribs = getEntryAttributes();
 				AttributeTypeList::iterator i1Start, i1End;
