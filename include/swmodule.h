@@ -443,26 +443,26 @@ public:
 
 	// search interface -------------------------------------------------
 
-	/** Searches a module for a string
+	/** Searches a module
 	 *
 	 * @param istr string for which to search
 	 * @param searchType type of search to perform
-	 *			>=0 - regex; (for backward compat, if > 0 then used as additional REGEX FLAGS)
-	 *			-1  - phrase
-	 *			-2  - multiword
-	 *			-3  - entryAttrib (eg. Word//Lemma./G1234/)	 (Lemma with dot means check components (Lemma.[1-9]) also)
-	 *			-4  - Use External Search Framework (CLucene, Xapian, etc.)
+	 *			SEARCHTYPE_REGEX     - regex; (for backward compat, if > 0 then used as additional REGEX FLAGS)
+	 *			SEARCHTYPE_PHRASE    - phrase
+	 *			SEARCHTYPE_MULTIWORD - multiword
+	 *			SEARCHTYPE_ENTRYATTR - entryAttrib (eg. Word//Lemma./G1234/)	 (Lemma with dot means check components (Lemma.[1-9]) also)
+	 *			SEARCHTYPE_EXTERNAL  - Use External Search Framework (CLucene, Xapian, etc.)
 	 *			-5  - multilemma window; set 'flags' param to window size (NOT DONE)
 	 * @param flags bitwise options flags for search.  Each search type supports different options.
 	 * 			REG_ICASE	- perform case insensitive search.  Supported by most all search types
-	 * 			SEARCHFLAG_*	- SWORD-specific search flags for various search types.  See defines for details
+	 * 			SEARCHFLAG_*	- SWORD-specific search flags for various search types.  See SWModule::SEARCHFLAG_ consts
 	 *
 	 * @param scope Key containing the scope. VerseKey or ListKey are useful here.
 	 * @param justCheckIfSupported If set, don't search but instead set this variable to true/false if the requested search is supported,
 	 * @param percent Callback function to get the current search status in %.
 	 * @param percentUserData Anything that you might want to send to the precent callback function.
 	 *
-	 * @return ListKey set to verses that contain istr
+	 * @return ListKey set to entry keys that match
 	 */
 	virtual ListKey &search(const char *istr, int searchType = 0, int flags = 0,
 			SWKey *scope = 0,

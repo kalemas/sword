@@ -372,22 +372,26 @@ void SWModule::decrement(int steps) {
 }
 
 
-/******************************************************************************
- * SWModule::Search 	- Searches a module for a string
+/** Searches a module
  *
- * ENT:	istr		- string for which to search
- * 	searchType	- type of search to perform
- *				SEARCHTYPE_REGEX     - regex; (for backward compat, if > 0 then used as additional REGEX FLAGS)
- *				SEARCHTYPE_PHRASE    - phrase
- *				SEARCHTYPE_MULTIWORD - multiword
- *				SEARCHTYPE_ENTRYATTR - entryAttrib (eg. Word//Lemma./G1234/)	 (Lemma with dot means check components (Lemma.[1-9]) also)
- *				SEARCHTYPE_EXTERNAL - clucene, xapian, etc., whatever was configured at engine build time
- *				-5  - multilemma window; flags = window size
- * 	flags		- options flags for search
- *	justCheckIfSupported	- if set, don't search, only tell if this
- *							function supports requested search.
+ * @param istr string for which to search
+ * @param searchType type of search to perform
+ *			SEARCHTYPE_REGEX     - regex; (for backward compat, if > 0 then used as additional REGEX FLAGS)
+ *			SEARCHTYPE_PHRASE    - phrase
+ *			SEARCHTYPE_MULTIWORD - multiword
+ *			SEARCHTYPE_ENTRYATTR - entryAttrib (eg. Word//Lemma./G1234/)	 (Lemma with dot means check components (Lemma.[1-9]) also)
+ *			SEARCHTYPE_EXTERNAL  - Use External Search Framework (CLucene, Xapian, etc.)
+ *			-5  - multilemma window; set 'flags' param to window size (NOT DONE)
+ * @param flags bitwise options flags for search.  Each search type supports different options.
+ * 			REG_ICASE	- perform case insensitive search.  Supported by most all search types
+ * 			SEARCHFLAG_*	- SWORD-specific search flags for various search types.  See SWModule::SEARCHFLAG_ consts
  *
- * RET: ListKey set to verses that contain istr
+ * @param scope Key containing the scope. VerseKey or ListKey are useful here.
+ * @param justCheckIfSupported If set, don't search but instead set this variable to true/false if the requested search is supported,
+ * @param percent Callback function to get the current search status in %.
+ * @param percentUserData Anything that you might want to send to the precent callback function.
+ *
+ * @return ListKey set to entry keys that match
  */
 
 ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *scope, bool *justCheckIfSupported, void (*percent)(char, void *), void *percentUserData) {
