@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- *  simple.cpp -	This is about the simplest useful example of using the
- *			SWORD engine.
+ *  simpleVerseLookup.cpp -	This is about the simplest useful example of
+ *			 	using the SWORD engine.
  *
  * After sword is installed, it should compile with something similar to:
  *

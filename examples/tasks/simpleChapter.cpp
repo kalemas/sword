@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- *  simplechapter.cpp -	this example shows how to display the entire chapter
+ *  simpleChapter.cpp -	this example shows how to display the entire chapter
  *  of a given verse, marking the given verse within the chapter.
  *  This example is very simple and doesn't set output markup or take into
  *  account interverse material like chapter intros and section headings.

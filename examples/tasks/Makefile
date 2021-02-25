@@ -1,7 +1,6 @@
-CPP_SRCS=$(wildcard *.cpp)
-C_SRCS=$(wildcard *.c)
+SRCS=$(wildcard *.cpp)
 
-TARGETS=$(patsubst %.c,%,$(C_SRCS)) $(patsubst %.cpp,%,$(CPP_SRCS))
+TARGETS=$(patsubst %.cpp,%,$(SRCS))
 
 all: $(TARGETS)
 
