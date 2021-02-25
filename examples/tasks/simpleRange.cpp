@@ -3,7 +3,7 @@
  *  simpleRange.cpp -	this example shows how to display Bible text specified
  *  by a verse range
  *
- * $Id: $
+ * $Id$
  *
  * Copyright 2013-2014 CrossWire Bible Society (http://www.crosswire.org)
  *	CrossWire Bible Society
