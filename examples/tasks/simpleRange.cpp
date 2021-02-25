@@ -41,8 +41,8 @@ int main(int argc, char **argv) {
 
 	if (!module) return cerr << "\nCouldn't find module: " << moduleName << "\n\n", -1;
 
-	VerseKey parser = module->getKey();
-	ListKey range = parser.parseVerseList(verseRange, parser, true);
+	VerseKey *parser = (VerseKey *)module->getKey();
+	ListKey range = parser->parseVerseList(verseRange, *parser, true);
 
 	cout << "\n" << module->getDescription() << " -- " << range.getRangeText();
 	cout << "\n-------------------\n";
