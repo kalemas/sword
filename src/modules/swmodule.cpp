@@ -640,6 +640,10 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 
 	// entry attributes
 	case SEARCHTYPE_ENTRYATTR:
+		// if path starts with /, let's just pop it off the stack
+		// it's sometimes expressive to start the path with '/' but it is not required
+		if (term.startsWith('/')) term << 1;
+
 		// let's break the attribute segs down.  We'll reuse our words vector for each segment
 		while (1) {
 			const char *word = term.stripPrefix('/');
@@ -860,7 +864,7 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 							i3End   = i2Start->second.end();
 						}
 						for (;i3Start != i3End; i3Start++) {
-							if ((words.size()>3) && (words[3].length())) {
+							if (words.size() > 3) {
 								if (includeComponents) {
 									SWBuf key = i3Start->first.c_str();
 									key = key.stripPrefix('.', true);
@@ -868,7 +872,11 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 									// prefix (e.g., Lemma, Lemma.1, Lemma.2, etc.)
 									if (key != words[2]) continue;
 								}
-								if (flags & SEARCHFLAG_MATCHWHOLEENTRY) {
+								// we only want 0 length entries as hits
+								if (!words[3].length()) {
+									if (!i3Start->second.length()) sres = i3Start->second.c_str();
+								}
+								else if (flags & SEARCHFLAG_MATCHWHOLEENTRY) {
 									bool found = !(((flags & REG_ICASE) == REG_ICASE) ? sword::stricmp(i3Start->second.c_str(), words[3]) : strcmp(i3Start->second.c_str(), words[3]));
 									sres = (found) ? i3Start->second.c_str() : 0;
 								}
@@ -881,6 +889,13 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
 									listKey << *resultKey;
 									break;
 								}
+							}
+							// If we weren't provided a value for the Entry Attribute, then we simply return if present.
+							else {
+								*resultKey = *getKey();
+								resultKey->clearBounds();
+								listKey << *resultKey;
+								break;
 							}
 						}
 						if (i3Start != i3End)
