@@ -148,7 +148,7 @@
 <div type="bookGroup">
  <title>New Testament</title>
  <div type="book" osisID="Matt">
-  <chapter osisID="Matt.2"/>
+  <chapter osisID="Matt.2">
    <verse osisID="Matt.2.5">
     <w lemma="strong:G3004">They said</w> to him, <q level="1" marker="“" sID="q.5787"/><note n="A" osisID="Matt.2.5.xref.A" type="crossReference"><reference osisRef="John.7.42">John 7:42</reference></note><w lemma="strong:G965">In Bethlehem</w> <w lemma="strong:G2453">of Judea</w>; <w lemma="strong:G3779">for this</w> <w lemma="strong:G3704">is what</w> <w lemma="strong:G1125">has been written</w> <note n="1" osisID="Matt.2.5.note.1" type="explanation">Or <hi type="italic">through</hi></note><w lemma="strong:G4396">by the prophet</w>:
    </verse>
