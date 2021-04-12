@@ -41,15 +41,13 @@ int main(int argc, char **argv) {
 	library.setGlobalOption("Headings", "On");
 
         SWModule *module = library.getModule(moduleName);
-	ListKey results;
-
 	if (!module) return cerr << "\nCouldn't find module: " << moduleName << "\n\n", -1;
 
 	SWKey *key = module->getKey();
 	VerseKey *verseKey = SWDYNAMIC_CAST(VerseKey, key);
 	ListKey scope = verseKey->parseVerseList(verseRange, *verseKey, true);
 
-	results = module->search("/Heading", SWModule::SEARCHTYPE_ENTRYATTR, 0, &scope);
+	ListKey results = module->search("/Heading", SWModule::SEARCHTYPE_ENTRYATTR, 0, &scope);
 
 	for (results = TOP; !results.popError(); results++) {
 		module->setKey(results);
