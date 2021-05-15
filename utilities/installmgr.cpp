@@ -191,7 +191,6 @@ void finish(int status) {
 	mgr        = 0;
 
 	if (status < 1) {
-		cout << "\n";
 		exit(status);
 	}
 }
@@ -265,14 +264,21 @@ void uninstallModule(const char *modName) {
 }
 
 
-void listRemoteSources() {
+void listRemoteSources(bool namesOnly = false) {
 	init();
-	cout << "Remote Sources:\n\n";
+	if (!namesOnly) {
+		cout << "Remote Sources:\n\n";
+	}
 	for (InstallSourceMap::iterator it = installMgr->sources.begin(); it != installMgr->sources.end(); it++) {
-		cout << "[" << it->second->caption << "]\n";
-		cout << "\tType     : " << it->second->type << "\n";
-		cout << "\tSource   : " << it->second->source << "\n";
-		cout << "\tDirectory: " << it->second->directory << "\n";
+		if (namesOnly) {
+			cout << it->second->caption << "\n";
+		}
+		else {
+			cout << "[" << it->second->caption << "]\n";
+			cout << "\tType     : " << it->second->type << "\n";
+			cout << "\tSource   : " << it->second->source << "\n";
+			cout << "\tDirectory: " << it->second->directory << "\n";
+		}
 	}
 }
 
@@ -415,6 +421,7 @@ void usage(const char *progName, const char *error) {
 		"\t -sc\t\t\t\tsync config with known remote repo list\n"
 		"\t\t\t\t\t\tNOTE: also creates if none exists\n"
 		"\t -s\t\t\t\tlist remote sources\n"
+		"\t -sn\t\t\t\tlist remote sources names only\n"
 		"\t -r  <remoteSrcName>\t\trefresh remote source\n"
 		"\t -rl <remoteSrcName>\t\tlist available user modules from remote source\n"
 		"\t -rlu <remoteSrcName>\t\tlist available utility modules from remote source\n"
@@ -479,6 +486,9 @@ int main(int argc, char **argv) {
 		}
 		else if (!strcmp(argv[i], "-s")) {	// list sources
 			listRemoteSources();
+		}
+		else if (!strcmp(argv[i], "-sn")) {	// list sources
+			listRemoteSources(true);
 		}
 		else if (!strcmp(argv[i], "-sc")) {	// sync config with master
 			syncConfig();
