@@ -225,7 +225,7 @@ public:
 	*/
 	virtual void copyFrom(const VerseKey &ikey);
 
-	/** Only repositions this VerseKey to another VerseKey
+	/** Only repositions this VerseKey from another SWKey
 	*/
 	virtual void positionFrom(const SWKey &ikey);
 
