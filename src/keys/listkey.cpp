@@ -376,7 +376,7 @@ void ListKey::setText(const char *ikey) {
 		}
 	}
 	if (arraypos >= arraycnt) {
-		error = 1;
+		error = KEYERR_OUTOFBOUNDS;
 		arraypos = arraycnt-1;
 	}
 	
