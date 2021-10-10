@@ -38,15 +38,16 @@ using namespace sword;
 
 // FROM swmodule.h
 	/*
-	 *			>=0 - regex; (for backward compat, if > 0 then used as additional REGEX FLAGS)
-	 *			-1  - phrase
-	 *			-2  - multiword
-	 *			-3  - entryAttrib (eg. Word//Lemma./G1234/)	 (Lemma with dot means check components (Lemma.[1-9]) also)
-	 *			-4  - Lucene
+	 * 			SWModule::
+	 *			SEARCHTYPE_REGEX - regex; (for backward compat, if > 0 then used as additional REGEX FLAGS)
+	 *			SEARCHTYPE_PHRASE- phrase
+	 *			SEARCHTYPE_MULTIWORD - multiword
+	 *			SEARCHTYPE_ENTRYATTR - entryAttrib (eg. Word//Lemma./G1234/)	 (Lemma with dot means check components (Lemma.[1-9]) also)
+	 *			SEARCHTYPE_EXTERNAL - Lucene
 	 *			-5  - multilemma window; set 'flags' param to window size (NOT DONE)
 	 */
 
-char SEARCH_TYPE=-2;
+char SEARCH_TYPE = SWModule::SEARCHTYPE_MULTIWORD;
 int flags = 0
 // for case insensitivity
 | REG_ICASE
@@ -89,12 +90,10 @@ int main(int argc, char **argv)
 	}
 
 
-	SWBuf searchTerm = argv[2];
 	manager.setGlobalOption("Greek Accents", "Off");
 	manager.setGlobalOption("Strong's Numbers", "Off");
 	manager.setGlobalOption("Hebrew Vowel Points", "Off");
 	manager.setGlobalOption("Headings", "On");
-	manager.filterText("Greek Accents", searchTerm);
 
 	it = manager.Modules.find(argv[1]);
 	if (it == manager.Modules.end()) {
@@ -106,6 +105,7 @@ int main(int argc, char **argv)
 	}
 
 	target = (*it).second;
+	SWBuf searchTerm = target->stripText(argv[2]);
 
 	ListKey maybeScope;
 	if (argc > 3) {			// if min / max specified
