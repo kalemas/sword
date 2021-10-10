@@ -402,6 +402,8 @@ int InstallMgr::installModule(SWMgr *destMgr, const char *fromLocation, const ch
 	bool aborted = false;
 	bool cipher = false;
 	SWBuf modFile;
+	SWBuf sourceUID = "local";
+	SWBuf sourceCaption = "local";
 
 SWLOGD("***** InstallMgr::installModule\n");
 	if (fromLocation) {
@@ -409,8 +411,11 @@ SWLOGD("***** fromLocation: %s \n", fromLocation);
 	}
 SWLOGD("***** modName: %s \n", modName);
 
-	if (is)
+	if (is) {
 		sourceDir = (SWBuf)privatePath + "/" + is->uid;
+		sourceUID = is->uid;
+		sourceCaption = is->caption;
+	}
 	else	sourceDir = fromLocation;
 
 	removeTrailingSlash(sourceDir);
@@ -511,6 +516,7 @@ SWLOGD("***** relativePath: %s \n", relativePath.c_str());
 				}
 			}
 		}
+		// find and copy the .conf file
 		if (!aborted) {
 			SWBuf confDir = sourceDir + "mods.d/";
 			std::vector<DirEntry> dirList = FileMgr::getDirList(confDir);
@@ -519,6 +525,8 @@ SWLOGD("***** relativePath: %s \n", relativePath.c_str());
 					modFile = confDir;
 					modFile += dirList[i].name;
 					SWConfig *config = new SWConfig(modFile);
+
+					// we found a conf file with our module
 					if (config->getSections().find(modName) != config->getSections().end()) {
 						SWBuf targetFile = destMgr->configPath; //"./mods.d/";
 						removeTrailingSlash(targetFile);
@@ -536,7 +544,14 @@ SWLOGD("***** relativePath: %s \n", relativePath.c_str());
 								retVal = FileMgr::copyFile(modFile.c_str(), targetFile.c_str());
 							}
 						}
+						// let's add our install source information
+						SWConfig *newConfig = new SWConfig(targetFile.c_str());
+						newConfig->setValue(modName, "InstallSourceID", sourceUID);
+						newConfig->setValue(modName, "InstallSourceCaption", sourceCaption);
+						newConfig->save();
+						delete newConfig;
 					}
+
 					delete config;
 				}
 			}
