@@ -751,7 +751,7 @@ public:
 	 * @param len max len to process
 	 * @return result buffer
 	 */
-	virtual const char *stripText(const char *buf = 0, int len = -1);
+	SWBuf stripText(const char *buf = 0, int len = -1);
 	/**
 	 * @deprecated Use stripText
 	 */
@@ -766,7 +766,7 @@ public:
 	 * @return result buffer
 	 */
 	SWBuf renderText(const char *buf, int len = -1, bool render = true) const;
-	 SWBuf renderText();
+	SWBuf renderText();
 	/**
 	 * @deprecated Use renderText
 	 */
@@ -782,7 +782,7 @@ public:
 	 * @param tmpKey desired module entry
 	 * @return result buffer
 	 */
-	virtual const char *stripText(const SWKey *tmpKey);
+	SWBuf stripText(const SWKey *tmpKey);
 
 	/** Produces renderable text of the module entry at the supplied key
 	 * @param tmpKey key to use to grab text

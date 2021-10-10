@@ -1002,10 +1002,8 @@ ListKey &SWModule::search(const char *istr, int searchType, int flags, SWKey *sc
  * RET: this module's text at current key location massaged by Strip filters
  */
 
-const char *SWModule::stripText(const char *buf, int len) {
-	static SWBuf local;
-	local = renderText(buf, len, false);
-	return local.c_str();
+SWBuf SWModule::stripText(const char *buf, int len) {
+	return renderText(buf, len, false);
 }
 
 
@@ -1130,9 +1128,9 @@ SWBuf SWModule::renderText(const SWKey *tmpKey) {
  * RET: this module's text at specified key location massaged by Strip filters
  */
 
-const char *SWModule::stripText(const SWKey *tmpKey) {
+SWBuf SWModule::stripText(const SWKey *tmpKey) {
 	SWKey *saveKey;
-	const char *retVal;
+	SWBuf retVal;
 
 	if (!key->isPersist()) {
 		saveKey = createKey();
