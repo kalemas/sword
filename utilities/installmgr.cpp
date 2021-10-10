@@ -329,15 +329,21 @@ void remoteListModules(const char *sourceName, bool onlyNewAndUpdated = false, b
 }
 
 
-void remoteDescribeModule(const char *sourceName, const char *modName) {
+void describeModule(const char *sourceName, const char *modName) {
 	init();
-	InstallSourceMap::iterator source = installMgr->sources.find(sourceName);
-	if (source == installMgr->sources.end()) {
-		fprintf(stderr, "Couldn't find remote source [%s]\n", sourceName);
-		finish(-3);
+	SWMgr *mg = mgr;
+	if (sourceName) {
+		InstallSourceMap::iterator source = installMgr->sources.find(sourceName);
+		if (source == installMgr->sources.end()) {
+			fprintf(stderr, "Couldn't find remote source [%s]\n", sourceName);
+			finish(-3);
+		}
+		mg = source->second->getMgr();
 	}
-	SWMgr *mgr = source->second->getMgr();
-	SWModule *m = mgr->getModule(modName);
+	else {
+		sourceName = mgr->prefixPath;
+	}
+	SWModule *m = mg->getModule(modName);
 	if (!m) {
 		fprintf(stderr, "Couldn't find module [%s] in source [%s]\n", modName, sourceName);
 		finish(-3);
@@ -427,6 +433,7 @@ void usage(const char *progName, const char *error) {
 		"\t -rlu <remoteSrcName>\t\tlist available utility modules from remote source\n"
 		"\t -rd <remoteSrcName>\t\tlist new/updated user modules from remote source\n"
 		"\t -rdu <remoteSrcName>\t\tlist new/updated utility modules from remote source\n"
+		"\t -desc <modName>\tdescribe module from local install\n"
 		"\t -rdesc <remoteSrcName> <modName>\tdescribe module from remote source\n"
 		"\t -ri <remoteSrcName> <modName>\tinstall module from remote source\n"
 		"\t -l\t\t\t\tlist installed user modules\n"
@@ -513,11 +520,18 @@ int main(int argc, char **argv) {
 			if (i+1 < argc) remoteListModules(argv[++i], true, true);
 			else usage(*argv, "-rdu requires <remoteSrcName>");
 		}
-		else if (!strcmp(argv[i], "-rdesc")) {	// describe remove module
+		else if (!strcmp(argv[i], "-desc")) {	// describe module
+			if (i+1 < argc) {
+				const char *modName = argv[++i];
+				describeModule(0, modName);
+			}
+			else usage(*argv, "-rdesc requires <remoteSrcName> <modName>");
+		}
+		else if (!strcmp(argv[i], "-rdesc")) {	// describe remote module
 			if (i+2 < argc) {
 				const char *source = argv[++i];
 				const char *modName = argv[++i];
-				remoteDescribeModule(source, modName);
+				describeModule(source, modName);
 			}
 			else usage(*argv, "-rdesc requires <remoteSrcName> <modName>");
 		}
