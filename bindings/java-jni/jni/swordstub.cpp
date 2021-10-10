@@ -77,6 +77,9 @@ const char *SDCARD_PATH = "/sdcard/Documents/sword";
 const char *AND_BIBLE_MODULES_PATH = "/sdcard/Android/data/net.bible.android.activity/files";
 //ANativeActivity *_activity;
 
+typedef map<SWBuf, SWBuf> SearchFilterValuesType;
+SearchFilterValuesType searchFilterValues;
+
 // this method converts a UTF8 encoded SWBuf to a Java String, avoiding a bug in jni NewStringUTF
 jstring strToUTF8Java(JNIEnv *env, const SWBuf &str) {
 	const SWBuf safeStr = assureValidUTF8(str.c_str());
@@ -214,6 +217,12 @@ protected:
 static void init(JNIEnv *env) {
 
 	if (firstInit) {
+
+		searchFilterValues.insert(SearchFilterValuesType::value_type("Greek Accents", "Off"));
+		searchFilterValues.insert(SearchFilterValuesType::value_type("Strong's Numbers", "Off"));
+		searchFilterValues.insert(SearchFilterValuesType::value_type("Hebrew Vowel Points", "Off"));
+		searchFilterValues.insert(SearchFilterValuesType::value_type("Headings", "On"));
+
 		SWLog::setSystemLog(new AndroidLogger());
 		SWLog::getSystemLog()->setLogLevel(SWLog::LOG_DEBUG);
 		StringMgr::setSystemStringMgr(new AndroidStringMgr());
@@ -1828,7 +1837,8 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_search
 	pu *peeuuu = new pu(env, progressReporter);
 
 	if (module) {
-		ListKey lscope;
+		ListKey *lscope = nullptr;
+		ListKey localScope;
 		ListKey result;
 
 		if ((scope) && (strlen(scope)) > 0) {
@@ -1839,12 +1849,26 @@ JNIEXPORT jobjectArray JNICALL Java_org_crosswire_android_sword_SWModule_search
 				parser = new VerseKey();
 			}
 			*parser = module->getKeyText();
-			lscope = parser->parseVerseList(scope, *parser, true);
-			SWBuf searchTerm = module->stripText(expression);
-			result = module->search(searchTerm.c_str(), srchType, flags, &lscope, nullptr, &percentUpdate, peeuuu);
+			localScope = parser->parseVerseList(scope, *parser, true);
+			lscope = &localScope;
 			delete parser;
 		}
-		else	result = module->search(expression, srchType, flags, nullptr, nullptr, &percentUpdate, peeuuu);
+
+		// setup our option filters for strip mode; TODO: this sucks.  We need a second occurrence these filters set to their strip values
+		SearchFilterValuesType currentFilterValues;
+		for (SearchFilterValuesType::const_iterator it = searchFilterValues.begin(); it != searchFilterValues.end(); ++it) {
+			currentFilterValues.insert(SearchFilterValuesType::value_type(it->first, mgr->getGlobalOption(it->first)));
+		}
+		for (SearchFilterValuesType::const_iterator it = searchFilterValues.begin(); it != searchFilterValues.end(); ++it) {
+			mgr->setGlobalOption(it->first, it->second);
+		}
+
+        SWBuf searchTerm = module->stripText(expression);
+        result = module->search(searchTerm.c_str(), srchType, flags, lscope, nullptr, &percentUpdate, peeuuu);
+
+		for (SearchFilterValuesType::const_iterator it = currentFilterValues.begin(); it != currentFilterValues.end(); ++it) {
+			mgr->setGlobalOption(it->first, it->second);
+		}
 
 		delete peeuuu;
 
