@@ -119,7 +119,7 @@ int main(int argc, char **argv)
 
 	for ((*module) = TOP; !module->popError(); (*module)++) {
 		std::cout << "$$$" << module->getKeyText() << std::endl;
-		std::cout << ((render) ? module->renderText().c_str() : (strip) ? module->stripText() : module->getRawEntry()) << "\n";
+		std::cout << ((render) ? module->renderText().c_str() : (strip) ? module->stripText().c_str() : module->getRawEntry()) << "\n";
 	}
 
 	cout << endl;
