@@ -129,7 +129,7 @@ log(ERROR, "failed in attach", e);
 		// shut down external process
 		try {
 log(INFO, "calling finalize.", null);
-			getSWMgrInstance().terminate();
+			getSWMgrInstance(false).terminate();
 		}
 		catch (Exception e) {}	// we know this doesn't return property cuz we killed the orb! :)
 
@@ -148,7 +148,7 @@ size = orbs.size();
 				orbs.remove(this);
 			}
 log(INFO, "calling valueUnbound. size before: " + size + "; size after: "+orbs.size(), null);
-			getSWMgrInstance().terminate();
+			getSWMgrInstance(false).terminate();
 		}
 		catch (Exception e) {}	// we know this doesn't return properly cuz we killed the orb! :)
 //		catch (Exception e) {e.printStackTrace();}	// we know this doesn't return properly cuz we killed the orb! :)
@@ -200,8 +200,11 @@ log(INFO, "Launched ORB, IOR: " + ior, null);
 	}
 
 	public SWMgr getSWMgrInstance() throws Exception {
+		return getSWMgrInstance(true);
+	}
+	public SWMgr getSWMgrInstance(boolean checkAbuse) throws Exception {
 		lastAccessed = System.currentTimeMillis();
-		checkAccessAbuse();
+		if (checkAbuse) checkAccessAbuse();
 		SWMgr retVal = null;
 		try {
 log(INFO, "trying to see if we have and attach to a running ORB", null);
@@ -274,8 +277,11 @@ log(INFO, "ORB found in session", null);
 	}
 
 	public static SWMgr getSWMgrInstance(HttpServletRequest request) throws Exception {
+		return getSWMgrInstance(request, true);
+	}
+	public static SWMgr getSWMgrInstance(HttpServletRequest request, boolean checkAbuse) throws Exception {
 		SwordOrb orb = getSessionOrb(request);
-		SWMgr mgr = orb.getSWMgrInstance();
+		SWMgr mgr = orb.getSWMgrInstance(checkAbuse);
 		return mgr;
 	}
 
